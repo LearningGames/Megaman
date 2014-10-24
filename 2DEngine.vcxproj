@@ -60,7 +60,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\gl;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
@@ -69,7 +69,7 @@
       <ProgramDatabaseFile>$(OutDir)2DEngine.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
