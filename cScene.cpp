@@ -40,32 +40,27 @@ bool cScene::LoadLevel(int level)
 		for (i = 0; i<SCENE_WIDTH; i++)
 		{
 			fscanf(fd, "%d", &tile);
-			if (tile == 0)
-			{
-				//Tiles must be != 0 !!!
-				map[(j*SCENE_WIDTH) + i] = 0;
-			}
-			else
-			{
+		
+			
 				tile -= 1;
-				map[(j*SCENE_WIDTH) + i] = tile ;
+				map[(j*SCENE_WIDTH) + i] = tile;
 
-				coordx_tile = (map[(j*SCENE_WIDTH)+i])%7;
-				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 7;
-				
-				float size_g = 1.0f / 7.0f;
+				coordx_tile = (map[(j*SCENE_WIDTH) + i]) % 10;
+				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 10;
+
+				float size_g = 1.0f / 10.0f;
 
 				float size_x = coordx_tile * size_g;
 				float size_y = coordy_tile * size_g;
-				
+
 
 				//BLOCK_SIZE = 24, FILE_SIZE = 64
 				// 24 / 64 = 0.375
 				glTexCoord2f(size_x, size_y + size_g);	glVertex2i(px, py);
-				glTexCoord2f(size_x + size_g, size_y + size_g);	glVertex2i(px + BLOCK_SIZE, py);
-				glTexCoord2f(size_x + size_g, size_y);	glVertex2i(px + BLOCK_SIZE, py + BLOCK_SIZE);
-				glTexCoord2f(size_x, size_y);	glVertex2i(px, py + BLOCK_SIZE);
-			}
+				glTexCoord2f(size_x + size_g, size_y + size_g);	glVertex2i(px + TILE_SIZE, py);
+				glTexCoord2f(size_x + size_g, size_y);	glVertex2i(px + TILE_SIZE, py + TILE_SIZE);
+				glTexCoord2f(size_x, size_y);	glVertex2i(px, py + TILE_SIZE);
+			
 			px += TILE_SIZE;
 		}
 		fscanf(fd, "%d", &tile); //pass enter
@@ -78,7 +73,6 @@ bool cScene::LoadLevel(int level)
 
 	return res;
 }
-
 void cScene::Draw(int tex_id)
 {
 	glEnable(GL_TEXTURE_2D);

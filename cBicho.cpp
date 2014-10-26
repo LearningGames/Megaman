@@ -69,9 +69,9 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	
 	for(j=0;j<height_tiles;j++)
 	{
-		if(map[ tile_x + ((tile_y+j)*SCENE_WIDTH) ] != 0)	return true;
+		if(map[tile_x + ((tile_y + j)*SCENE_WIDTH)] != 2)
+			return true;
 	}
-	
 	return false;
 }
 
@@ -94,12 +94,12 @@ bool cBicho::CollidesMapFloor(int *map)
 	{
 		if( (y % TILE_SIZE) == 0 )
 		{
-			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] != 0)
+			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] != 2)
 				on_base = true;
 		}
 		else
 		{
-			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 0)
+			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 2)
 			{
 				y = (tile_y + 1) * TILE_SIZE;
 				on_base = true;
@@ -122,7 +122,7 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 	int screen_x,screen_y;
 
 	screen_x = x + SCENE_Xo;
-	screen_y = y + SCENE_Yo + (BLOCK_SIZE - TILE_SIZE);
+	screen_y = y + SCENE_Yo ;
 
 	glEnable(GL_TEXTURE_2D);
 	
