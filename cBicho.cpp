@@ -270,13 +270,17 @@ void cBicho::Jump(int *map)
 	}
 }
 
-bool cBicho::IsHited(int xRival, int yRival){
-	//35 = w&h && xR+10 = wShot/2 && xY+13 = hShot/2
-	if (x+35 >= xRival-(10) && x+35 <= xRival+(10)) {
-		if (((y + 35/2) >= (yRival -13)) && ((y + 35/2) <= (yRival + 13))) return true;
+bool cBicho::IsHited(cEnemy Enemies[], int size){
+	//35 = w&h && xR+10 = wShot/2 && xY+13 = hShot/
+	for (int i = 0; i < size; ++i) {
+		int xRival, yRival;
+		Enemies[i].GetPosition(&xRival, &yRival);
+		if (x + 35 >= xRival - (35) && x + 35 <= xRival + (35)) {
+			if (((y + 35 / 2) >= (yRival - 35/2)) && ((y + 35 / 2) <= (yRival + 35/2))) return true;
+			else return false;
+		}
 		else return false;
 	}
-	else return false;
 }
 
 void cBicho::Shot(int *map, bool isRight)
@@ -314,6 +318,38 @@ void cBicho::GetShotPosition(int *xResult, int *yResult) {
 	*yResult = yShot;
 }
 
+bool cBicho::ShotCollidesWall(int *map)
+{
+	int xo, yo, xf, yf, tile_x, tile_y;
+
+	xo = xShot;
+	yo = yShot;
+	xf = xShot + wShot;
+	yf = yShot + hShot;
+
+	if (isRightShot)
+	{
+		//xf e yf
+		tile_x = xf / TILE_SIZE;
+		tile_y = yf / TILE_SIZE;
+		char s[256];
+		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
+		OutputDebugStringA(s);
+		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
+	}
+	else
+	{
+		tile_x = xo / TILE_SIZE;
+		tile_y = yo / TILE_SIZE;
+		char s[256];
+		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
+		OutputDebugStringA(s);
+		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
+	}
+	OutputDebugStringA("return false");
+	return false;
+}
+
 void cBicho::Logic(int *map)
 {
 	float alfa;
@@ -321,7 +357,7 @@ void cBicho::Logic(int *map)
 	if (shooting) {
 		shotProgress += SHOT_STEP;
 		//We want to know if the shot collides with something
-		if (shotProgress >= DIST_SHOT) {
+			if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_SHOT) {
 			shooting = false;
 			shotProgress = 0;
 		}

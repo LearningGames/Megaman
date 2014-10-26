@@ -2,6 +2,7 @@
 
 #include "cTexture.h"
 #include "Globals.h"
+#include "cEnemy.h"
 #include <stdio.h>
 using namespace std;
 
@@ -18,6 +19,7 @@ using namespace std;
 #define STATE_JUMP_UP_RIGHT	5
 #define STATE_FALLING_LEFT	6
 #define STATE_FALLING_RIGHT	7
+#define STATE_HITED			8
 
 //New defines
 #define SHOT_STEP			5
@@ -59,7 +61,7 @@ public:
 	void Logic(int *map);
 
 	//Shooting functions
-	bool IsHited(int xRival, int yRival);
+	bool IsHited(cEnemy Enemies[], int size);
 	void Shot(int *map, bool isRight);
 	bool IsShooting();
 	bool IsShootingRight();
@@ -71,6 +73,8 @@ public:
 
 	void NextFrame(int max);
 	int  GetFrame();
+
+	bool ShotCollidesWall(int *map);
 	
 private:
 	int x,y;
