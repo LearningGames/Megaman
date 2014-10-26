@@ -1,9 +1,9 @@
-#include "cMonster.h"
+#include "cMonster2.h"
 
-cMonster::cMonster() {}
-cMonster::~cMonster(){}
+cMonster2::cMonster2() {}
+cMonster2::~cMonster2(){}
 
-void cMonster::Draw(int tex_id)
+void cMonster2::Draw(int tex_id)
 {
 	float xo, yo, xf, yf;
 	float size = 1.0f / 14.0f;
@@ -22,11 +22,11 @@ void cMonster::Draw(int tex_id)
 		//1..3
 	case STATE_WALKLEFT:
 		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
-		NextFrame(0);
+		NextFrame(7);
 		break;
 		//4..6
 	case STATE_WALKRIGHT:
-		xo = (size * 7.0f) + (GetFrame()* size); yo = 2.0f*size;
+		xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
 		NextFrame(7);
 		break;
 	case STATE_JUMP_UP_RIGHT:
@@ -45,7 +45,7 @@ void cMonster::Draw(int tex_id)
 		xo = (size * 6.0f); yo = 2.0f*size;
 		NextFrame(7);
 		break;
-	//8
+		//8
 	case STATE_DIE:
 		xo = 1.0f * size;	yo = 2.0f*size;
 		break;
