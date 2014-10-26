@@ -6,7 +6,7 @@
 #include "cData.h"
 
 #define GAME_WIDTH	400
-#define GAME_HEIGHT 200
+#define GAME_HEIGHT 240
 
 class cGame
 {

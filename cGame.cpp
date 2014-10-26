@@ -62,7 +62,8 @@ bool cGame::Loop()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(playerX-150,playerX +250, 0, GAME_HEIGHT, 0, 1);
+	if (playerX<100) glOrtho(0+32, GAME_WIDTH+32, 0 + 16, GAME_HEIGHT + 16, 0, 1);
+	else glOrtho(playerX-150,playerX +250, 0+16, GAME_HEIGHT+16, 0, 1);
 	glMatrixMode(GL_MODELVIEW);
 	bool res=true;
 
