@@ -122,7 +122,7 @@ void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
 	int screen_x,screen_y;
 
 	screen_x = x + SCENE_Xo;
-	screen_y = y + SCENE_Yo ;
+	screen_y = y + SCENE_Yo;
 
 	glEnable(GL_TEXTURE_2D);
 	

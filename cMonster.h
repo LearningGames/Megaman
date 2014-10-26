@@ -1,11 +1,11 @@
 #pragma once
 
-#include "cBicho.h"
+#include "cEnemy.h"
 
 #define MONSTER_START_CX		6
 #define MONSTER_START_CY		2
 
-class cMonster : public cBicho
+class cMonster : public cEnemy
 {
 public:
 	cMonster();

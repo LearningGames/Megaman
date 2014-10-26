@@ -12,7 +12,7 @@ cGame::~cGame(void)
 bool cGame::Init()
 {
 	bool res=true;
-
+	if (level == 0) level = 1;
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glMatrixMode(GL_PROJECTION);
@@ -26,7 +26,7 @@ bool cGame::Init()
 	//Scene initialization
 	res = Data.LoadImage(IMG_BLOCKS,"tile01.png",GL_RGBA);
 	if(!res) return false;
-	res = Scene.LoadLevel(1);
+	res = Scene.LoadLevel(level);
 	if(!res) return false;
 
 	//Player initialization
@@ -45,14 +45,19 @@ bool cGame::Init()
 	Player.SetShotDimensions(20, 26);
 
 	//Monster initialization
+	InitEnemies(level);
 	res = Data.LoadImage(IMG_PLAYER, "megaman.png", GL_RGBA);
 	if (!res) return false;
 	Monster.SetWidthHeight(35, 35);
-	Monster.SetTile(5, 1);
+	Monster.SetTile(8, 5);
 	Monster.SetWidthHeight(35, 35);
 	Monster.SetState(STATE_LOOKRIGHT);
 
 	return res;
+}
+
+void cGame::InitEnemies(int level) {
+
 }
 
 bool cGame::Loop()
@@ -104,11 +109,10 @@ bool cGame::Process()
 	//Get if the shot collides some enemy
 	int xShot, yShot;
 	Player.GetShotPosition(&xShot, &yShot);
-	if (Monster.IsHited(xShot, yShot)) Monster.Jump(Scene.GetMap());
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
 	Player.Logic(Scene.GetMap());
-	Monster.Logic(Scene.GetMap());
+	Monster.Move(Scene.GetMap(),xShot,yShot);
 
 	return res;
 }
