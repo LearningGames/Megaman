@@ -40,17 +40,13 @@ bool cScene::LoadLevel(int level)
 		for (i = 0; i<SCENE_WIDTH; i++)
 		{
 			fscanf(fd, "%d", &tile);
-		
-			
-
+			if (tile != 0) {
 				tile -= 1;
 				map[(j*SCENE_WIDTH) + i] = tile;
-				if (tile == 1) collisionMap[(j*SCENE_WIDTH) + i] = 0;
-				
-
-				else  collisionMap[(j*SCENE_WIDTH) + i] = 1;
+				if (tile >= 77 && tile <= 79 || tile >= 84 && tile <= 86) collisionMap[(j*SCENE_WIDTH) + i] = 1;
+				else  collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				char s[256];
-				sprintf(s, " asdf %d", tile);
+				sprintf(s, "%d", collisionMap[(j*SCENE_WIDTH) + i]);
 				OutputDebugStringA(s);
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
@@ -71,7 +67,10 @@ bool cScene::LoadLevel(int level)
 				glTexCoord2f(size_x + size_g, size_y + size_g);	glVertex2i(px + TILE_SIZE, py);
 				glTexCoord2f(size_x + size_g, size_y);	glVertex2i(px + TILE_SIZE, py + TILE_SIZE);
 				glTexCoord2f(size_x, size_y);	glVertex2i(px, py + TILE_SIZE);
-			
+			}
+			else {
+				OutputDebugStringA("a");
+			}
 			px += TILE_SIZE;
 		}
 		char s[256];

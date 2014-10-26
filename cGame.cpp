@@ -123,7 +123,7 @@ bool cGame::Process()
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
 	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Stop();
-	else Player.Logic(Scene.GetMap());
+	else Player.Logic(Scene.GetCollisionMap());
 	for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Move(Scene.GetMap(), xShot, yShot);
 	}

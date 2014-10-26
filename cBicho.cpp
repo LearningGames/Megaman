@@ -56,46 +56,28 @@ bool cBicho::Collides(cRect *rc)
 }
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
-	int ax, ay;
-	GetTile(&ax, &ay);
-	char s[256];
-	sprintf(s, "ELS TILES %d,%d,%d\n",  map[ax - 1 + (ay*SCENE_WIDTH)], map[ax + 1 + (ay*SCENE_WIDTH)]
-		, map[ax  + (ay*SCENE_WIDTH)]
-		);
-	OutputDebugStringA(s);
-
-	if (right){
-		if (map[ax + 2 + (ay*SCENE_WIDTH)] == 0) return false;
-		else return true;
-	}
-	else{
-		if (map[ax - 2 + (ay*SCENE_WIDTH)] == 0) return false;
-		else return true;
-	}
-	return true;
-	/*int tile_x,tile_y;
+	int tile_x, tile_y;
 	int j;
-	int width_tiles,height_tiles;
+	int width_tiles, height_tiles;
 
 	tile_x = x / TILE_SIZE;
 	tile_y = y / TILE_SIZE;
-	width_tiles  = w / TILE_SIZE;
+	width_tiles = w / TILE_SIZE;
 	height_tiles = h / TILE_SIZE;
 
-	if(right)	tile_x += width_tiles;
-	
-	for(j=0;j<height_tiles;j++)
+	if (right)	tile_x += width_tiles;
+
+	for (j = 0; j<height_tiles; j++)
 	{
-		if(map[ tile_x + ((tile_y)*SCENE_WIDTH) ] != 0)	return false;
+		if (map[tile_x + ((tile_y + j)*SCENE_WIDTH)] != 0)	return true;
 	}
-	
-	return true;*/
+
+	return false;
 }
 
 bool cBicho::CollidesMapFloor(int *map)
 {
-	/*
-	int tile_x,tile_y;
+	int tile_x, tile_y;
 	int width_tiles;
 	bool on_base;
 	int i;
@@ -104,20 +86,20 @@ bool cBicho::CollidesMapFloor(int *map)
 	tile_y = y / TILE_SIZE;
 
 	width_tiles = w / TILE_SIZE;
-	if( (x % TILE_SIZE) != 0) width_tiles++;
+	if ((x % TILE_SIZE) != 0) width_tiles++;
 
 	on_base = false;
-	i=0;
-	while((i<width_tiles) && !on_base)
+	i = 0;
+	while ((i<width_tiles) && !on_base)
 	{
-		if( (y % TILE_SIZE) == 0 )
+		if ((y % TILE_SIZE) == 0)
 		{
-			if(map[ (tile_x + i) + ((tile_y - 1) * SCENE_WIDTH) ] != 0)
+			if (map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)] != 0)
 				on_base = true;
 		}
 		else
 		{
-			if(map[ (tile_x + i) + (tile_y * SCENE_WIDTH) ] != 0)
+			if (map[(tile_x + i) + (tile_y * SCENE_WIDTH)] != 0)
 			{
 				y = (tile_y + 1) * TILE_SIZE;
 				on_base = true;
@@ -126,8 +108,6 @@ bool cBicho::CollidesMapFloor(int *map)
 		i++;
 	}
 	return on_base;
-	*/
-	return true;
 }
 
 void cBicho::GetArea(cRect *rc)
@@ -290,7 +270,7 @@ void cBicho::Shot(int *map, bool isRight)
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;
-		xShot = x + 35;
+		xShot = x + 40;
 		yShot = y + 20;
 		
 	}
