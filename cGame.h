@@ -4,10 +4,12 @@
 #include "cPlayer.h"
 #include "cMonster.h"
 #include "cData.h"
+#include "cMonster2.h"
 
 #define GAME_WIDTH	400
 #define GAME_HEIGHT 240
 #define ENEMIES_1	3
+#define ENEMIES_2	1
 
 class cGame
 {
@@ -35,4 +37,5 @@ private:
 	cPlayer Player;
 	cData Data;
 	cEnemy Enemies[ENEMIES_1];
+	cEnemy2 Enemies2[ENEMIES_2];
 };

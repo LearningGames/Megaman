@@ -56,7 +56,7 @@ void cEnemy2::GetWidthHeight(int *width, int *height)
 	*width = w;
 	*height = h;
 }
-bool cEnemy2::Collides(cEnemyRect *rc)
+bool cEnemy2::Collides(cEnemyRect2 *rc)
 {
 	return ((x>rc->left) && (x + w<rc->right) && (y>rc->bottom) && (y + h<rc->top));
 }
@@ -116,7 +116,7 @@ bool cEnemy2::CollidesMapFloor(int *map)
 	return on_base;
 }
 
-void cEnemy2::GetArea(cEnemyRect *rc)
+void cEnemy2::GetArea(cEnemyRect2 *rc)
 {
 	rc->left = x;
 	rc->right = x + w;

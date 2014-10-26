@@ -22,12 +22,12 @@ void cMonster::Draw(int tex_id)
 		//1..3
 	case STATE_WALKLEFT:
 		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
-		NextFrame(0);
+		NextFrame(6);
 		break;
 		//4..6
 	case STATE_WALKRIGHT:
 		xo = (size * 7.0f) + (GetFrame()* size); yo = 2.0f*size;
-		NextFrame(7);
+		NextFrame(6);
 		break;
 	case STATE_JUMP_UP_RIGHT:
 		xo = (size * 8.0f); yo = 2.0f*size;
