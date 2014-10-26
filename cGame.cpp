@@ -33,7 +33,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(4,1);
+	Player.SetTile(170,3);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -78,7 +78,8 @@ bool cGame::Loop()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if (playerX<100) glOrtho(0+32, GAME_WIDTH+32, 0 + 16, GAME_HEIGHT + 16, 0, 1);
+	if (playerX<180) glOrtho(0+32, GAME_WIDTH+32, 0 + 16, GAME_HEIGHT + 16, 0, 1);
+	else if (playerX>185 * 16) glOrtho(176* 16, 201 * 16, 0 + 16, GAME_HEIGHT + 16, 0, 1);
 	else glOrtho(playerX-150,playerX +250, 0+16, GAME_HEIGHT+16, 0, 1);
 	glMatrixMode(GL_MODELVIEW);
 	bool res=true;
@@ -111,9 +112,9 @@ bool cGame::Process()
 	//Process Input
 	if(keys[27])	res=false;
 	
-	if(keys[GLUT_KEY_UP])			Player.Jump(Scene.GetMap());
-	if(keys[GLUT_KEY_LEFT])			Player.MoveLeft(Scene.GetMap());
-	else if(keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetMap());
+	if(keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
+	if(keys[GLUT_KEY_LEFT])			Player.MoveLeft(Scene.GetCollisionMap());
+	else if(keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetCollisionMap());
 	else Player.Stop();
 
 	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));

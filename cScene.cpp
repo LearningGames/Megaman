@@ -43,8 +43,13 @@ bool cScene::LoadLevel(int level)
 		
 			
 				tile -= 1;
-				if (tile == 1) map[(j*SCENE_WIDTH) + i] = 0;
-				else map[(j*SCENE_WIDTH) + i] = tile;
+				map[(j*SCENE_WIDTH) + i] = tile;
+				if (tile == 2) collisionMap[(j*SCENE_WIDTH) + i] = 0;
+
+				else  collisionMap[(j*SCENE_WIDTH) + i] = 9;
+				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
+				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
+
 
 				coordx_tile = (map[(j*SCENE_WIDTH) + i]) % 10;
 				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 10;
@@ -84,4 +89,9 @@ void cScene::Draw(int tex_id)
 int* cScene::GetMap()
 {
 	return map;
+}
+
+int* cScene::GetCollisionMap()
+{
+	return collisionMap;
 }
