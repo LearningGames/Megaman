@@ -60,7 +60,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\gl;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
@@ -69,7 +69,7 @@
       <ProgramDatabaseFile>$(OutDir)2DEngine.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\PROJECTE_MEGAMAN\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,6 +98,7 @@
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
     <ClCompile Include="cMonster.cpp" />
+    <ClCompile Include="cEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="cMonster.h" />
+    <ClInclude Include="cEnemy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
