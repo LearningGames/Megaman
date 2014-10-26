@@ -25,6 +25,6 @@ public:
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
-	int collisionMap[SCENE_WIDTH * SCENE_HEIGHT];
+	int collisionMap[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
 	int id_DL;								//actual level display list
 };

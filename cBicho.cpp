@@ -69,10 +69,10 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	
 	for(j=0;j<height_tiles;j++)
 	{
-		if(map[ tile_x + ((tile_y+j)*SCENE_WIDTH) ] != 0)	return true;
+		if(map[ tile_x + ((tile_y+j)*SCENE_WIDTH) ] != 0)	return false;
 	}
 	
-	return false;
+	return true;
 }
 
 bool cBicho::CollidesMapFloor(int *map)
