@@ -94,7 +94,7 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 
 bool cBicho::CollidesMapFloor(int *map)
 {
-	/*
+	
 	int tile_x,tile_y;
 	int width_tiles;
 	bool on_base;
@@ -126,7 +126,7 @@ bool cBicho::CollidesMapFloor(int *map)
 		i++;
 	}
 	return on_base;
-	*/
+	
 }
 
 void cBicho::GetArea(cRect *rc)
