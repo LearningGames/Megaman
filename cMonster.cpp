@@ -45,6 +45,10 @@ void cMonster::Draw(int tex_id)
 		xo = (size * 6.0f); yo = 2.0f*size;
 		NextFrame(7);
 		break;
+	//8
+	case STATE_DIE:
+		xo = 1.0f * size;	yo = 2.0f*size;
+		break;
 
 
 	}

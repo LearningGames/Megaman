@@ -15,6 +15,7 @@ public:
 	virtual ~cGame(void);
 
 	bool Init();
+	void InitEnemies(int level);
 	bool Loop();
 	void Finalize();
 
@@ -28,6 +29,7 @@ public:
 
 private:
 	unsigned char keys[256];
+	int level = 0;
 	cScene Scene;
 	cPlayer Player;
 	cMonster Monster;

@@ -1,6 +1,8 @@
 #include "cEnemy.h"
 #include "cScene.h"
 #include "Globals.h"
+#include <stdio.h>
+using namespace std;
 
 cEnemy::cEnemy(void)
 {
@@ -17,6 +19,7 @@ cEnemy::cEnemy(int posx, int posy, int width, int height)
 	y = posy;
 	w = width;
 	h = height;
+	initialX = posx;
 }
 void cEnemy::SetPosition(int posx, int posy)
 {
@@ -32,6 +35,7 @@ void cEnemy::SetTile(int tx, int ty)
 {
 	x = tx * TILE_SIZE;
 	y = ty * TILE_SIZE;
+	initialX = x;
 }
 void cEnemy::GetTile(int *tx, int *ty)
 {
@@ -48,7 +52,7 @@ void cEnemy::GetWidthHeight(int *width, int *height)
 	*width = w;
 	*height = h;
 }
-bool cEnemy::Collides(cRectEnemy *rc)
+bool cEnemy::Collides(cEnemyRect *rc)
 {
 	return ((x>rc->left) && (x + w<rc->right) && (y>rc->bottom) && (y + h<rc->top));
 }
@@ -108,7 +112,7 @@ bool cEnemy::CollidesMapFloor(int *map)
 	return on_base;
 }
 
-void cEnemy::GetArea(cRectEnemy *rc)
+void cEnemy::GetArea(cEnemyRect *rc)
 {
 	rc->left = x;
 	rc->right = x + w;
@@ -120,7 +124,7 @@ void cEnemy::DrawRect(int tex_id, float xo, float yo, float xf, float yf)
 	int screen_x, screen_y;
 
 	screen_x = x + SCENE_Xo;
-	screen_y = y + SCENE_Yo + (BLOCK_SIZE - TILE_SIZE);
+	screen_y = y + SCENE_Yo;
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -131,46 +135,54 @@ void cEnemy::DrawRect(int tex_id, float xo, float yo, float xf, float yf)
 	glTexCoord2f(xf, yf);	glVertex2i(screen_x + w, screen_y + h);
 	glTexCoord2f(xo, yf);	glVertex2i(screen_x, screen_y + h);
 	glEnd();
+}
+
+void cEnemy::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
+{
+	int screen_x, screen_y;
+
+	screen_x = xShot;
+	screen_y = yShot;
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	glBegin(GL_QUADS);
+	glTexCoord2f(xo, yo);	glVertex2i(screen_x, screen_y);
+	glTexCoord2f(xf, yo);	glVertex2i(screen_x + wShot, screen_y);
+	glTexCoord2f(xf, yf);	glVertex2i(screen_x + wShot, screen_y + hShot);
+	glTexCoord2f(xo, yf);	glVertex2i(screen_x, screen_y + hShot);
+	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
 }
 
-void cEnemy::Move(int *map)
+void cEnemy::Move(int *map, int xShot, int yShot)
 {
-	int xaux;
-
-	//Whats next tile?
-	if ((x % SCENE_WIDTH) == 0)
-	{
-		xaux = x;
-		x -= STEP_LENGTH;
-
-		if (CollidesMapWall(map, false))
-		{
-			x = xaux;
-			state = STATE_LOOKLEFT;
+	if (state != STATE_DIE) {
+		if (IsHited(xShot, yShot)) {
+			Die();
+			char s[256];
+			sprintf(s, "\n x %d > %d", x, initialX + MAX_STEP);
+			OutputDebugStringA(s);
 		}
-	}
-	//Advance, no problem
-	else
-	{
-		x -= STEP_LENGTH;
-		if (state != STATE_WALKLEFT)
-		{
-			if (jumping) state = STATE_JUMP_UP_LEFT;
-			else state = STATE_WALKLEFT;
-			seq = 0;
-			delay = 0;
-		}
+		else if (x > initialX + MAX_STEP) MoveLeft(map);
+		else if (x < initialX - MAX_STEP) MoveRight(map);
+		else if (state == STATE_WALKLEFT) MoveLeft(map);
+		else if (state == STATE_WALKRIGHT) MoveRight(map);
+		else MoveRight(map);
 	}
 }
 
+void cEnemy::Die() {
+	state = STATE_DIE;
+}
 void cEnemy::MoveLeft(int *map)
 {
 	int xaux;
 
 	//Whats next tile?
-	if ((x % SCENE_WIDTH) == 0)
+	if ((x % TILE_SIZE) == 0)
 	{
 		xaux = x;
 		x -= STEP_LENGTH;
@@ -256,9 +268,67 @@ void cEnemy::Jump(int *map)
 		}
 	}
 }
+
+bool cEnemy::IsHited(int xRival, int yRival){
+	//35 = w&h && xR+10 = wShot/2 && xY+13 = hShot/2
+	if (x + 35 >= xRival - (10) && x + 35 <= xRival + (10)) {
+		if (((y + 35 / 2) >= (yRival - 13)) && ((y + 35 / 2) <= (yRival + 13))) return true;
+		else return false;
+	}
+	else return false;
+}
+
+void cEnemy::Shot(int *map, bool isRight)
+{
+	if (!shooting) {
+		if (isRight) isRightShot = true;
+		else isRightShot = false;
+		shooting = true;
+		xShot = x + 35;
+		yShot = y + 20;
+
+	}
+}
+
+bool cEnemy::IsShooting() {
+	return shooting;
+}
+
+bool cEnemy::IsShootingRight() {
+	return isRightShot;
+}
+
+void cEnemy::SetShotDimensions(int width, int height){
+	char s[256];
+	sprintf(s, "\n ShotDimensions %d %d", width, height);
+	OutputDebugStringA(s);
+	wShot = width;
+	hShot = height;
+	sprintf(s, "\n ShotDimensionsSetted %d %d", wShot, hShot);
+	OutputDebugStringA(s);
+}
+
+void cEnemy::GetShotPosition(int *xResult, int *yResult) {
+	*xResult = xShot;
+	*yResult = yShot;
+}
+
 void cEnemy::Logic(int *map)
 {
 	float alfa;
+
+	if (shooting) {
+		shotProgress += SHOT_STEP;
+		//We want to know if the shot collides with something
+		if (shotProgress >= DIST_SHOT) {
+			shooting = false;
+			shotProgress = 0;
+		}
+		else {
+			if (isRightShot) xShot += SHOT_STEP;
+			else xShot -= SHOT_STEP;
+		}
+	}
 
 	if (jumping)
 	{
@@ -297,6 +367,7 @@ void cEnemy::Logic(int *map)
 		}
 	}
 }
+
 void cEnemy::NextFrame(int max)
 {
 	delay++;
