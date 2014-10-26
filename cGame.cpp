@@ -68,6 +68,13 @@ void cGame::InitEnemies(int level) {
 		Monster.SetMaxStep(62);
 		Monster.SetTile(78, 5);
 		Enemies[2] = Monster;
+		cEnemy2 Monster2 = cEnemy2();
+		Monster2.SetWidthHeight(35, 35);
+		Monster2.SetMaxStep(40);
+		Monster2.SetTile(5, 3);
+		Monster2.SetWidthHeight(35, 35);
+		Monster2.SetState(STATE_LOOKRIGHT);
+		Enemies2[0] = Monster2;
 	}
 }
 

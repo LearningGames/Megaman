@@ -26,7 +26,7 @@ using namespace std;
 #define SHOT_STEP			5
 #define DIST_SHOT			150
 
-class cEnemyRect
+class cEnemyRect2
 {
 public:
 	int left, top,
@@ -48,11 +48,11 @@ public:
 	void SetWidthHeight(int w, int h);
 	void GetWidthHeight(int *w, int *h);
 
-	bool Collides(cEnemyRect *rc);
+	bool Collides(cEnemyRect2 *rc);
 	bool CollidesMapWall(int *map, bool right);
 	bool CollidesMapFloor(int *map);
 
-	void GetArea(cEnemyRect *rc);
+	void GetArea(cEnemyRect2 *rc);
 	void DrawRect(int tex_id, float xo, float yo, float xf, float yf);
 	void DrawShotRect(int tex_id, float xo, float yo, float xf, float yf);
 
