@@ -14,36 +14,36 @@ void cPlayer::Draw(int tex_id)
 	{
 		//1
 		case STATE_LOOKLEFT:	
-			xo = 6.0f * size;	yo = 0.0f;
+			xo = 13.0f * size;	yo = 1.0f*size;
 			break;
 		//4
 		case STATE_LOOKRIGHT:	
-			xo = 7.0f * size; yo = 0.0f;
+			xo = 13.0f * size; yo = 0.0f*size;
 			break;
 		//1..3
 		case STATE_WALKLEFT:	
-			xo = (6.0f * size) - (GetFrame()* size);	yo = 0.0f;
-			NextFrame(7);
+			xo = (11.0f * size) - (GetFrame()* size);	yo = 1.0f*size;
+			NextFrame(11);
 			break;
 		//4..6
 		case STATE_WALKRIGHT:	
-			xo = (size*7)+(GetFrame()* size); yo = 0.0f;
-			NextFrame(7);
+			xo = (size*0.0f)+(GetFrame()* size); yo = 0.0f;
+			NextFrame(11);
 			break;
 		case STATE_JUMP_UP_RIGHT:
-			xo = (size * 8.0f); yo = size;
+			xo = (size * 11.0f); yo = 0;
 			NextFrame(7);
 			break;
 		case STATE_JUMP_UP_LEFT:
-			xo = (size * 5.0f); yo = size;
+			xo = (size * 11.0f); yo = size;
 			NextFrame(7);
 			break;
 		case STATE_FALLING_RIGHT:
-			xo = (size * 7.0f); yo = size;
+			xo = (size * 12.0f); yo = 0;
 			NextFrame(7);
 			break;
 		case STATE_FALLING_LEFT:
-			xo = (size * 6.0f); yo = size;
+			xo = (size * 12.0f); yo = size;
 			NextFrame(7);
 			break;
 

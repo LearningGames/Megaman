@@ -30,7 +30,7 @@ bool cGame::Init()
 	if(!res) return false;
 
 	//Player initialization
-	res = Data.LoadImage(IMG_PLAYER,"sprites.png",GL_RGBA);
+	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
 	Player.SetTile(4,1);
@@ -45,7 +45,7 @@ bool cGame::Init()
 	Player.SetShotDimensions(20, 26);
 
 	//Monster initialization
-	res = Data.LoadImage(IMG_PLAYER, "sprites.png", GL_RGBA);
+	res = Data.LoadImage(IMG_PLAYER, "megaman.png", GL_RGBA);
 	if (!res) return false;
 	Monster.SetWidthHeight(35, 35);
 	Monster.SetTile(5, 1);
