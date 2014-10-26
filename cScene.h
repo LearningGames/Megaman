@@ -4,10 +4,10 @@
 
 #define SCENE_Xo		(2*TILE_SIZE)
 #define SCENE_Yo		TILE_SIZE
-#define SCENE_WIDTH		199
+#define SCENE_WIDTH		49
 #define SCENE_HEIGHT	15
 
-#define FILENAME		"mapa01"
+#define FILENAME		"try1"
 #define FILENAME_EXT	".txt"
 
 #define TILE_SIZE		16

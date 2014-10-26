@@ -127,6 +127,7 @@ bool cBicho::CollidesMapFloor(int *map)
 	}
 	return on_base;
 	*/
+	return true;
 }
 
 void cBicho::GetArea(cRect *rc)
