@@ -42,11 +42,16 @@ bool cScene::LoadLevel(int level)
 			fscanf(fd, "%d", &tile);
 		
 			
+
 				tile -= 1;
 				map[(j*SCENE_WIDTH) + i] = tile;
-				if (tile == 2) collisionMap[(j*SCENE_WIDTH) + i] = 0;
+				if (tile == 1) collisionMap[(j*SCENE_WIDTH) + i] = 0;
+				
 
-				else  collisionMap[(j*SCENE_WIDTH) + i] = 9;
+				else  collisionMap[(j*SCENE_WIDTH) + i] = 1;
+				char s[256];
+				sprintf(s, " asdf %d", tile);
+				OutputDebugStringA(s);
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 
@@ -69,6 +74,9 @@ bool cScene::LoadLevel(int level)
 			
 			px += TILE_SIZE;
 		}
+		char s[256];
+		sprintf(s, "\n");
+		OutputDebugStringA(s);
 		fscanf(fd, "%d", &tile); //pass enter
 	}
 

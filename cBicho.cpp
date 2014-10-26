@@ -56,7 +56,24 @@ bool cBicho::Collides(cRect *rc)
 }
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
-	int tile_x,tile_y;
+	int ax, ay;
+	GetTile(&ax, &ay);
+	char s[256];
+	sprintf(s, "ELS TILES %d,%d,%d\n",  map[ax - 1 + (ay*SCENE_WIDTH)], map[ax + 1 + (ay*SCENE_WIDTH)]
+		, map[ax  + (ay*SCENE_WIDTH)]
+		);
+	OutputDebugStringA(s);
+
+	if (right){
+		if (map[ax + 2 + (ay*SCENE_WIDTH)] == 0) return false;
+		else return true;
+	}
+	else{
+		if (map[ax - 2 + (ay*SCENE_WIDTH)] == 0) return false;
+		else return true;
+	}
+	return true;
+	/*int tile_x,tile_y;
 	int j;
 	int width_tiles,height_tiles;
 
@@ -69,14 +86,15 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	
 	for(j=0;j<height_tiles;j++)
 	{
-		if(map[ tile_x + ((tile_y+j)*SCENE_WIDTH) ] != 0)	return false;
+		if(map[ tile_x + ((tile_y)*SCENE_WIDTH) ] != 0)	return false;
 	}
 	
-	return true;
+	return true;*/
 }
 
 bool cBicho::CollidesMapFloor(int *map)
 {
+	/*
 	int tile_x,tile_y;
 	int width_tiles;
 	bool on_base;
@@ -108,6 +126,7 @@ bool cBicho::CollidesMapFloor(int *map)
 		i++;
 	}
 	return on_base;
+	*/
 }
 
 void cBicho::GetArea(cRect *rc)
@@ -159,6 +178,7 @@ void cBicho::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 
 void cBicho::MoveLeft(int *map)
 {
+	
 	int xaux;
 	
 	//Whats next tile?
@@ -167,7 +187,7 @@ void cBicho::MoveLeft(int *map)
 		xaux = x;
 		x -= STEP_LENGTH;
 
-		if(CollidesMapWall(map,false))
+		if(  CollidesMapWall(map,false))
 		{
 			x = xaux;
 			state = STATE_LOOKLEFT;
@@ -185,6 +205,7 @@ void cBicho::MoveLeft(int *map)
 			delay = 0;
 		}
 	}
+	
 }
 void cBicho::MoveRight(int *map)
 {

@@ -2,8 +2,8 @@
 
 #include "cBicho.h"
 
-#define PLAYER_START_CX		3
-#define PLAYER_START_CY		2
+#define PLAYER_START_CX		4
+#define PLAYER_START_CY		1
 
 class cPlayer: public cBicho
 {
