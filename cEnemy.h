@@ -41,6 +41,7 @@ public:
 	~cEnemy(void);
 
 	void SetPosition(int x, int y);
+	void SetMaxStep(int max);
 	void GetPosition(int *x, int *y);
 	void SetTile(int tx, int ty);
 	void GetTile(int *tx, int *ty);
@@ -78,11 +79,14 @@ public:
 	void NextFrame(int max);
 	int  GetFrame();
 
+	void Draw(int tex_id);
+
 private:
 	int x, y;
 	int w, h;
 	int state;
 	int initialX;
+	int maxStep;
 
 
 	bool jumping;

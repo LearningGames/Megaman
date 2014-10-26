@@ -45,19 +45,30 @@ bool cGame::Init()
 	Player.SetShotDimensions(20, 26);
 
 	//Monster initialization
-	InitEnemies(level);
 	res = Data.LoadImage(IMG_PLAYER, "megaman.png", GL_RGBA);
 	if (!res) return false;
-	Monster.SetWidthHeight(35, 35);
-	Monster.SetTile(8, 5);
-	Monster.SetWidthHeight(35, 35);
-	Monster.SetState(STATE_LOOKRIGHT);
+	InitEnemies(level);
 
 	return res;
 }
 
 void cGame::InitEnemies(int level) {
-
+	if (level == 1) {
+		//First Monster
+		cEnemy Monster = cEnemy();
+		Monster.SetWidthHeight(35, 35);
+		Monster.SetMaxStep(40);
+		Monster.SetTile(16, 6);
+		Monster.SetWidthHeight(35, 35);
+		Monster.SetState(STATE_LOOKRIGHT);
+		Enemies[0] = Monster;
+		Monster.SetMaxStep(60);
+		Monster.SetTile(42, 9);
+		Enemies[1] = Monster;
+		Monster.SetMaxStep(62);
+		Monster.SetTile(78, 5);
+		Enemies[2] = Monster;
+	}
 }
 
 bool cGame::Loop()
@@ -112,8 +123,9 @@ bool cGame::Process()
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
 	Player.Logic(Scene.GetMap());
-	Monster.Move(Scene.GetMap(),xShot,yShot);
-
+	for (int i = 0; i < ENEMIES_1; ++i) {
+		Enemies[i].Move(Scene.GetMap(), xShot, yShot);
+	}
 	return res;
 }
 
@@ -130,7 +142,9 @@ void cGame::Render()
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);
 	}
 	Player.Draw(Data.GetID(IMG_PLAYER));
-	Monster.Draw(Data.GetID(IMG_MONSTER));
+	for (int i = 0; i < ENEMIES_1; ++i) {
+		Enemies[i].Draw(Data.GetID(IMG_MONSTER));
+	}
 
 	glutSwapBuffers();
  }

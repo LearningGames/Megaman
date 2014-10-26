@@ -43,7 +43,8 @@ bool cScene::LoadLevel(int level)
 		
 			
 				tile -= 1;
-				map[(j*SCENE_WIDTH) + i] = tile;
+				if (tile == 1) map[(j*SCENE_WIDTH) + i] = 0;
+				else map[(j*SCENE_WIDTH) + i] = tile;
 
 				coordx_tile = (map[(j*SCENE_WIDTH) + i]) % 10;
 				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 10;

@@ -26,6 +26,10 @@ void cEnemy::SetPosition(int posx, int posy)
 	x = posx;
 	y = posy;
 }
+
+void cEnemy::SetMaxStep(int max) {
+	maxStep = max;
+}
 void cEnemy::GetPosition(int *posx, int *posy)
 {
 	*posx = x;
@@ -166,8 +170,8 @@ void cEnemy::Move(int *map, int xShot, int yShot)
 			sprintf(s, "\n x %d > %d", x, initialX + MAX_STEP);
 			OutputDebugStringA(s);
 		}
-		else if (x > initialX + MAX_STEP) MoveLeft(map);
-		else if (x < initialX - MAX_STEP) MoveRight(map);
+		else if (x > initialX + maxStep) MoveLeft(map);
+		else if (x < initialX - maxStep) MoveRight(map);
 		else if (state == STATE_WALKLEFT) MoveLeft(map);
 		else if (state == STATE_WALKRIGHT) MoveRight(map);
 		else MoveRight(map);
@@ -182,7 +186,7 @@ void cEnemy::MoveLeft(int *map)
 	int xaux;
 
 	//Whats next tile?
-	if ((x % TILE_SIZE) == 0)
+	/*if ((x % TILE_SIZE) == 0)
 	{
 		xaux = x;
 		x -= STEP_LENGTH;
@@ -195,7 +199,7 @@ void cEnemy::MoveLeft(int *map)
 	}
 	//Advance, no problem
 	else
-	{
+	{*/
 		x -= STEP_LENGTH;
 		if (state != STATE_WALKLEFT)
 		{
@@ -204,14 +208,14 @@ void cEnemy::MoveLeft(int *map)
 			seq = 0;
 			delay = 0;
 		}
-	}
+	//}
 }
 void cEnemy::MoveRight(int *map)
 {
 	int xaux;
 
 	//Whats next tile?
-	if ((x % TILE_SIZE) == 0)
+	/*if ((x % TILE_SIZE) == 0)
 	{
 		xaux = x;
 		x += STEP_LENGTH;
@@ -224,7 +228,7 @@ void cEnemy::MoveRight(int *map)
 	}
 	//Advance, no problem
 	else
-	{
+	{*/
 		x += STEP_LENGTH;
 
 		if (state != STATE_WALKRIGHT)
@@ -235,7 +239,7 @@ void cEnemy::MoveRight(int *map)
 			seq = 0;
 			delay = 0;
 		}
-	}
+	//}
 }
 void cEnemy::Stop()
 {
@@ -389,4 +393,59 @@ int cEnemy::GetState()
 void cEnemy::SetState(int s)
 {
 	state = s;
+}
+
+void cEnemy::Draw(int tex_id)
+{
+	float xo, yo, xf, yf;
+	float size = 1.0f / 14.0f;
+
+
+	switch (GetState())
+	{
+		//1
+	case STATE_LOOKLEFT:
+		xo = 1.0f * size;	yo = 2.0f*size;
+		break;
+		//4
+	case STATE_LOOKRIGHT:
+		xo = 12.0f * size; yo = 2.0f*size;
+		break;
+		//1..3
+	case STATE_WALKLEFT:
+		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
+		NextFrame(7);
+		break;
+		//4..6
+	case STATE_WALKRIGHT:
+		xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
+		NextFrame(7);
+		break;
+	case STATE_JUMP_UP_RIGHT:
+		xo = (size * 8.0f); yo = 2.0f*size;
+		NextFrame(7);
+		break;
+	case STATE_JUMP_UP_LEFT:
+		xo = (size * 5.0f); yo = 2.0f*size;
+		NextFrame(7);
+		break;
+	case STATE_FALLING_RIGHT:
+		xo = (size * 7.0f); yo = 2.0f*size;
+		NextFrame(7);
+		break;
+	case STATE_FALLING_LEFT:
+		xo = (size * 6.0f); yo = 2.0f*size;
+		NextFrame(7);
+		break;
+		//8
+	case STATE_DIE:
+		xo = 1.0f * size;	yo = 2.0f*size;
+		break;
+
+
+	}
+	xf = xo + size;
+	yf = yo + size;
+
+	DrawRect(tex_id, xo, yf, xf, yo);
 }
