@@ -50,6 +50,7 @@ bool cScene::LoadLevel(int level)
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 
+
 				coordx_tile = (map[(j*SCENE_WIDTH) + i]) % 10;
 				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 10;
 

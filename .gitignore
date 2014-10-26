@@ -58,6 +58,13 @@ ipch/
 *.psess
 *.vsp
 *.vspx
+*.sdf
+*.sln
+*.opensdf
+*.suo
+*.vcproj
+*.vcxproj
+*.filters
 
 # Guidance Automation Toolkit
 *.gpState

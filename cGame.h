@@ -7,6 +7,7 @@
 
 #define GAME_WIDTH	400
 #define GAME_HEIGHT 240
+#define ENEMIES_1	3
 
 class cGame
 {
@@ -32,6 +33,6 @@ private:
 	int level = 0;
 	cScene Scene;
 	cPlayer Player;
-	cMonster Monster;
 	cData Data;
+	cEnemy Enemies[ENEMIES_1];
 };
