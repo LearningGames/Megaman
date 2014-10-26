@@ -107,14 +107,13 @@ void cGame::ReadMouse(int button, int state, int x, int y)
 //Process
 bool cGame::Process()
 {
-	bool res=true;
-	
+	bool res = true;
 	//Process Input
-	if(keys[27])	res=false;
-	
-	if(keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
-	if(keys[GLUT_KEY_LEFT])			Player.MoveLeft(Scene.GetCollisionMap());
-	else if(keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetCollisionMap());
+	if (keys[27])	res = false;
+
+	if (keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
+	if (keys[GLUT_KEY_LEFT])			Player.MoveLeft(Scene.GetCollisionMap());
+	else if (keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetCollisionMap());
 	else Player.Stop();
 
 	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
@@ -123,7 +122,8 @@ bool cGame::Process()
 	Player.GetShotPosition(&xShot, &yShot);
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
-	Player.Logic(Scene.GetMap());
+	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Stop();
+	else Player.Logic(Scene.GetMap());
 	for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Move(Scene.GetMap(), xShot, yShot);
 	}
