@@ -256,12 +256,23 @@ bool cBicho::IsHited(cEnemy Enemies[], int size){
 	for (int i = 0; i < size; ++i) {
 		int xRival, yRival;
 		Enemies[i].GetPosition(&xRival, &yRival);
-		if (x + 35 >= xRival - (35) && x + 35 <= xRival + (35)) {
+		if (x >= xRival - (32/2) && x <= xRival + (32/2)) {
 			if (((y + 35 / 2) >= (yRival - 35/2)) && ((y + 35 / 2) <= (yRival + 35/2))) return true;
 			else return false;
 		}
 		else return false;
 	}
+}
+
+void cBicho::Hited()
+{
+	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT) {
+	}
+	else {
+		x -= STEP_LENGTH;
+		state = STATE_HITED;
+	}
+		
 }
 
 void cBicho::Shot(int *map, bool isRight)

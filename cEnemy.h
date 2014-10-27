@@ -87,6 +87,8 @@ private:
 	int state;
 	int initialX;
 	int maxStep;
+	bool alive;
+	int deadtime;
 
 
 	bool jumping;

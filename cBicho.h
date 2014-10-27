@@ -62,6 +62,7 @@ public:
 
 	//Shooting functions
 	bool IsHited(cEnemy Enemies[], int size);
+	void Hited();
 	void Shot(int *map, bool isRight);
 	bool IsShooting();
 	bool IsShootingRight();

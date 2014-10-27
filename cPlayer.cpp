@@ -46,6 +46,10 @@ void cPlayer::Draw(int tex_id)
 			xo = (size * 12.0f); yo = size;
 			NextFrame(7);
 			break;
+		case STATE_HITED:
+			xo = (size * 7.0f) + (GetFrame()* size); yo = 5.0f*size;
+			NextFrame(11);
+			break;
 
 
 	}

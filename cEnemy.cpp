@@ -10,6 +10,8 @@ cEnemy::cEnemy(void)
 	delay = 0;
 
 	jumping = false;
+	alive = true;
+	deadtime = 0;
 }
 cEnemy::~cEnemy(void){}
 
@@ -175,6 +177,10 @@ void cEnemy::Move(int *map, int xShot, int yShot)
 		else if (state == STATE_WALKLEFT) MoveLeft(map);
 		else if (state == STATE_WALKRIGHT) MoveRight(map);
 		else MoveRight(map);
+	}
+	else {
+		deadtime++;
+		if (deadtime > 30) alive = false;
 	}
 }
 
@@ -397,56 +403,58 @@ void cEnemy::SetState(int s)
 
 void cEnemy::Draw(int tex_id)
 {
-	float xo, yo, xf, yf;
-	float size = 1.0f / 14.0f;
+	if (alive) {
+		float xo, yo, xf, yf;
+		float size = 1.0f / 14.0f;
 
 
-	switch (GetState())
-	{
-		//1
-	case STATE_LOOKLEFT:
-		xo = 1.0f * size;	yo = 2.0f*size;
-		break;
-		//4
-	case STATE_LOOKRIGHT:
-		xo = 12.0f * size; yo = 2.0f*size;
-		break;
-		//1..3
-	case STATE_WALKLEFT:
-		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
-		NextFrame(6);
-		break;
-		//4..6
-	case STATE_WALKRIGHT:
-		xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
-		NextFrame(6);
-		break;
-	case STATE_JUMP_UP_RIGHT:
-		xo = (size * 8.0f); yo = 2.0f*size;
-		NextFrame(4);
-		break;
-	case STATE_JUMP_UP_LEFT:
-		xo = (size * 5.0f); yo = 2.0f*size;
-		NextFrame(7);
-		break;
-	case STATE_FALLING_RIGHT:
-		xo = (size * 7.0f); yo = 2.0f*size;
-		NextFrame(7);
-		break;
-	case STATE_FALLING_LEFT:
-		xo = (size * 6.0f); yo = 2.0f*size;
-		NextFrame(7);
-		break;
-		//8
-	case STATE_DIE:
-		xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
-		NextFrame(4);
-		break;
+		switch (GetState())
+		{
+			//1
+		case STATE_LOOKLEFT:
+			xo = 1.0f * size;	yo = 2.0f*size;
+			break;
+			//4
+		case STATE_LOOKRIGHT:
+			xo = 12.0f * size; yo = 2.0f*size;
+			break;
+			//1..3
+		case STATE_WALKLEFT:
+			xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
+			NextFrame(6);
+			break;
+			//4..6
+		case STATE_WALKRIGHT:
+			xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
+			NextFrame(6);
+			break;
+		case STATE_JUMP_UP_RIGHT:
+			xo = (size * 8.0f); yo = 2.0f*size;
+			NextFrame(4);
+			break;
+		case STATE_JUMP_UP_LEFT:
+			xo = (size * 5.0f); yo = 2.0f*size;
+			NextFrame(7);
+			break;
+		case STATE_FALLING_RIGHT:
+			xo = (size * 7.0f); yo = 2.0f*size;
+			NextFrame(7);
+			break;
+		case STATE_FALLING_LEFT:
+			xo = (size * 6.0f); yo = 2.0f*size;
+			NextFrame(7);
+			break;
+			//8
+		case STATE_DIE:
+			xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
+			NextFrame(4);
+			break;
 
 
+		}
+		xf = xo + size;
+		yf = yo + size;
+
+		DrawRect(tex_id, xo, yf, xf, yo);
 	}
-	xf = xo + size;
-	yf = yo + size;
-
-	DrawRect(tex_id, xo, yf, xf, yo);
 }
