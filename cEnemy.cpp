@@ -10,6 +10,8 @@ cEnemy::cEnemy(void)
 	delay = 0;
 
 	jumping = false;
+	alive = true;
+	deadtime = 0;
 }
 cEnemy::~cEnemy(void){}
 
@@ -175,6 +177,10 @@ void cEnemy::Move(int *map, int xShot, int yShot)
 		else if (state == STATE_WALKLEFT) MoveLeft(map);
 		else if (state == STATE_WALKRIGHT) MoveRight(map);
 		else MoveRight(map);
+	}
+	else {
+		deadtime++;
+		if (deadtime > 30) alive = false;
 	}
 }
 
@@ -397,8 +403,9 @@ void cEnemy::SetState(int s)
 
 void cEnemy::Draw(int tex_id)
 {
-	float xo, yo, xf, yf;
-	float size = 1.0f / 14.0f;
+	if (alive) {
+		float xo, yo, xf, yf;
+		float size = 1.0f / 14.0f;
 
 
 	switch (GetState())
@@ -444,9 +451,10 @@ void cEnemy::Draw(int tex_id)
 		break;
 
 
-	}
-	xf = xo + size;
-	yf = yo + size;
+		}
+		xf = xo + size;
+		yf = yo + size;
 
-	DrawRect(tex_id, xo, yf, xf, yo);
+		DrawRect(tex_id, xo, yf, xf, yo);
+	}
 }

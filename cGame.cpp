@@ -125,10 +125,11 @@ bool cGame::Process()
 	//Game Logic
 
 	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
+
 	else Player.Logic(Scene.GetCollisionMap());
-	for (int i = 0; i < ENEMIES_1; ++i) {
+	/*for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Move(Scene.GetMap(), xShot, yShot);
-	}
+	}*/
 	return res;
 }
 
