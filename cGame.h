@@ -37,5 +37,4 @@ private:
 	cPlayer Player;
 	cData Data;
 	cEnemy Enemies[ENEMIES_1];
-	cEnemy2 Enemies2[ENEMIES_2];
 };

@@ -20,6 +20,8 @@ using namespace std;
 #define STATE_FALLING_LEFT	6
 #define STATE_FALLING_RIGHT	7
 #define STATE_HITED			8
+#define STATE_JUMP_HIT_RIGHT 9 
+#define STATE_JUMP_HIT_LEFT 10
 
 //New defines
 #define SHOT_STEP			5
@@ -57,6 +59,7 @@ public:
 	void MoveRight(int *map);
 	void MoveLeft(int *map);
 	void Jump(int *map);
+	void Ostion(int *map);
 	void Stop();
 	void Logic(int *map);
 
@@ -83,6 +86,7 @@ private:
 
 	
 	bool jumping;
+	bool ostion;
 	int jump_alfa;
 	int jump_y;
 

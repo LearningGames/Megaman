@@ -440,7 +440,7 @@ void cEnemy::Draw(int tex_id)
 		//8
 	case STATE_DIE:
 		xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
-		NextFrame(4);
+		NextFrame(7);
 		break;
 
 

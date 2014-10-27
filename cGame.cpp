@@ -37,6 +37,7 @@ bool cGame::Init()
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
+
 	//Shot Initialization
 	res = Data.LoadImage(IMG_SHOTRIGHT, "shootRight.png", GL_RGBA);
 	if (!res) return false;
@@ -68,13 +69,6 @@ void cGame::InitEnemies(int level) {
 		Monster.SetMaxStep(62);
 		Monster.SetTile(78, 5);
 		Enemies[2] = Monster;
-		cEnemy2 Monster2 = cEnemy2();
-		Monster2.SetWidthHeight(35, 35);
-		Monster2.SetMaxStep(40);
-		Monster2.SetTile(5, 3);
-		Monster2.SetWidthHeight(35, 35);
-		Monster2.SetState(STATE_LOOKRIGHT);
-		Enemies2[0] = Monster2;
 	}
 }
 
@@ -129,7 +123,8 @@ bool cGame::Process()
 	Player.GetShotPosition(&xShot, &yShot);
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
-	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Stop();
+
+	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
 	else Player.Logic(Scene.GetCollisionMap());
 	for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Move(Scene.GetMap(), xShot, yShot);
