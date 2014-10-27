@@ -21,7 +21,7 @@ void cMonster::Draw(int tex_id)
 		break;
 		//1..3
 	case STATE_WALKLEFT:
-		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
+		xo = (6.0f * size) - (GetFrame()* size);	yo =2.0f*size;
 		NextFrame(6);
 		break;
 		//4..6

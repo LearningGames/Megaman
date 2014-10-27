@@ -26,7 +26,7 @@ void cMonster2::Draw(int tex_id)
 		break;
 		//4..6
 	case STATE_WALKRIGHT:
-		xo = (size * 7) + (GetFrame()* size); yo = 3.0f*size;
+		xo = (size * 7.0f) + (GetFrame()* size); yo = 3.0f*size;
 		NextFrame(7);
 		break;
 	case STATE_JUMP_UP_RIGHT:

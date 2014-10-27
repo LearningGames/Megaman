@@ -414,16 +414,16 @@ void cEnemy::Draw(int tex_id)
 		//1..3
 	case STATE_WALKLEFT:
 		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
-		NextFrame(7);
+		NextFrame(6);
 		break;
 		//4..6
 	case STATE_WALKRIGHT:
 		xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
-		NextFrame(7);
+		NextFrame(6);
 		break;
 	case STATE_JUMP_UP_RIGHT:
 		xo = (size * 8.0f); yo = 2.0f*size;
-		NextFrame(7);
+		NextFrame(4);
 		break;
 	case STATE_JUMP_UP_LEFT:
 		xo = (size * 5.0f); yo = 2.0f*size;
@@ -439,7 +439,8 @@ void cEnemy::Draw(int tex_id)
 		break;
 		//8
 	case STATE_DIE:
-		xo = 1.0f * size;	yo = 2.0f*size;
+		xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
+		NextFrame(4);
 		break;
 
 
