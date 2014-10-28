@@ -8,7 +8,7 @@ cBicho::cBicho(void)
 {
 	seq=0;
 	delay=0;
-
+	ostion = false;
 	jumping = false;
 }
 cBicho::~cBicho(void){}
@@ -180,7 +180,8 @@ void cBicho::MoveLeft(int *map)
 		x -= STEP_LENGTH;
 		if(state != STATE_WALKLEFT)
 		{
-			if (jumping) state = STATE_JUMP_UP_LEFT;
+			if (ostion) state = STATE_JUMP_HIT_LEFT;
+			else if (jumping) state = STATE_JUMP_UP_LEFT;
 			else state = STATE_WALKLEFT;
 			seq = 0;
 			delay = 0;
@@ -212,7 +213,8 @@ void cBicho::MoveRight(int *map)
 		if(state != STATE_WALKRIGHT)
 		{
 			//SI SALTA K SALTI
-			if (jumping) state = STATE_JUMP_UP_RIGHT;
+			if (ostion) state = STATE_JUMP_HIT_RIGHT;
+			else if (jumping) state = STATE_JUMP_UP_RIGHT;
 			else state = STATE_WALKRIGHT;
 			seq = 0;
 			delay = 0;
@@ -222,7 +224,7 @@ void cBicho::MoveRight(int *map)
 void cBicho::Stop()
 {
 	//SI ESTA SALTANT NO ESTA STOP, NO ES MOU PERO SALTA
-	if (!jumping){
+	if (!jumping ){
 		switch (state)
 		{
 			case STATE_WALKLEFT:	state = STATE_LOOKLEFT;		break;
@@ -251,17 +253,41 @@ void cBicho::Jump(int *map)
 	}
 }
 
+void cBicho::Ostion(int *map)
+{
+	char s[256];
+	sprintf(s, "\nOSTION ");
+	OutputDebugStringA(s);
+	if (!jumping)
+	{
+		if (CollidesMapFloor(map))
+		{
+			ostion = true;
+			jumping = true;
+			jump_alfa = 0;
+			jump_y = y;
+			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+				state = STATE_JUMP_HIT_LEFT;
+			else state = STATE_JUMP_HIT_RIGHT;
+		}
+	}
+}
+
 bool cBicho::IsHited(cEnemy Enemies[], int size){
-	//35 = w&h && xR+10 = wShot/2 && xY+13 = hShot/
+	bool mandao = false;
 	for (int i = 0; i < size; ++i) {
 		int xRival, yRival;
 		Enemies[i].GetPosition(&xRival, &yRival);
-		if (x >= xRival - (32/2) && x <= xRival + (32/2)) {
-			if (((y + 35 / 2) >= (yRival - 35/2)) && ((y + 35 / 2) <= (yRival + 35/2))) return true;
-			else return false;
-		}
-		else return false;
+
+		
+		if (x == xRival || x+1 == xRival || x-1 == xRival) {
+			if (((y + 35 / 2) >= (yRival - 35 / 2)) && ((y + 35 / 2) <= (yRival + 35 / 2))) {
+				return true;
+			}
+		}	
+
 	}
+	return false;
 }
 
 void cBicho::Hited()
@@ -296,13 +322,8 @@ bool cBicho::IsShootingRight() {
 }
 
 void cBicho::SetShotDimensions(int width, int height){
-	char s[256];
-	sprintf(s, "\n ShotDimensions %d %d", width, height);
-	OutputDebugStringA(s);
 	wShot = width;
 	hShot = height;
-	sprintf(s, "\n ShotDimensionsSetted %d %d", wShot, hShot);
-	OutputDebugStringA(s);
 }
 
 void cBicho::GetShotPosition(int *xResult, int *yResult) {
@@ -324,18 +345,12 @@ bool cBicho::ShotCollidesWall(int *map)
 		//xf e yf
 		tile_x = xf / TILE_SIZE;
 		tile_y = yf / TILE_SIZE;
-		char s[256];
-		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
-		OutputDebugStringA(s);
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
 	else
 	{
 		tile_x = xo / TILE_SIZE;
 		tile_y = yo / TILE_SIZE;
-		char s[256];
-		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
-		OutputDebugStringA(s);
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
 	OutputDebugStringA("return false");
@@ -366,6 +381,7 @@ void cBicho::Logic(int *map)
 		if(jump_alfa == 180)
 		{
 			jumping = false;
+			ostion = false;
 			y = jump_y;
 		}
 		else
@@ -376,11 +392,15 @@ void cBicho::Logic(int *map)
 			if(jump_alfa > 90)
 			{
 				//Over floor?
+				ostion = !CollidesMapFloor(map);
 				jumping = !CollidesMapFloor(map);
 				//ESTA CAIENT DESPRES DE SALTAR
-				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
-					state = STATE_FALLING_LEFT;
-				else state = STATE_FALLING_RIGHT;
+				if (ostion){
+					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+						state = STATE_FALLING_LEFT;
+					}
+					else state = STATE_FALLING_RIGHT;
+				}
 			}
 		}
 	}

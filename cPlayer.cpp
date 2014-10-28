@@ -51,6 +51,15 @@ void cPlayer::Draw(int tex_id)
 			NextFrame(11);
 			break;
 
+		case STATE_JUMP_HIT_LEFT:
+			xo = (size * 6.0f) - (GetFrame()* size); yo = size*5.0f;
+			NextFrame(3);
+			break;
+		case STATE_JUMP_HIT_RIGHT:
+			xo = (size * 7.0f) + (GetFrame()* size); yo = size*5.0f;
+			NextFrame(3);
+			break;
+
 
 	}
 	xf = xo + size;
