@@ -49,15 +49,17 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER, "megaman.png", GL_RGBA);
 	if (!res) return false;
 	InitEnemies(level);
+	res = Data.LoadImage(IMG_PLAYER, "boss1.png", GL_RGBA);
+	if (!res) return false;
 	InitBoss();
 
 	return res;
 }
 
 void cGame::InitBoss() {
-	BurstMan.SetWidthHeight(35, 35);
+	BurstMan.SetWidthHeight(54, 72);
 	BurstMan.SetTile(4, 3);
-	BurstMan.SetWidthHeight(35, 35);
+	BurstMan.SetWidthHeight(54, 72);
 	BurstMan.SetState(STATE_LOOKLEFT);
 }
 
