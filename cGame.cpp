@@ -172,16 +172,13 @@ void cGame::Render()
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);
 	}
 	Player.Draw(Data.GetID(IMG_PLAYER));
-<<<<<<< HEAD
 	for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Draw(Data.GetID(IMG_MONSTER));
 	}
 	BurstMan.Draw(Data.GetID(IMG_BOSS1));
-=======
 	for (int i = 0; i < ENEMIES_2; ++i) {
 		Enemies2[i].Draw(Data.GetID(IMG_PLAYER));
 	}
->>>>>>> 146da86755d7d89a80c8a728588703c280f18ebb
 
 	glutSwapBuffers();
  }
