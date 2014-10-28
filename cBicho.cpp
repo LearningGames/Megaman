@@ -282,9 +282,6 @@ bool cBicho::IsHited(cEnemy Enemies[], int size){
 		
 		if (x == xRival || x+1 == xRival || x-1 == xRival) {
 			if (((y + 35 / 2) >= (yRival - 35 / 2)) && ((y + 35 / 2) <= (yRival + 35 / 2))) {
-				char s[256];
-				sprintf(s, "\n MAN DAO! el enemigo %d",i);
-				OutputDebugStringA(s);
 				return true;
 			}
 		}	
@@ -325,13 +322,8 @@ bool cBicho::IsShootingRight() {
 }
 
 void cBicho::SetShotDimensions(int width, int height){
-	char s[256];
-	sprintf(s, "\n ShotDimensions %d %d", width, height);
-	OutputDebugStringA(s);
 	wShot = width;
 	hShot = height;
-	sprintf(s, "\n ShotDimensionsSetted %d %d", wShot, hShot);
-	OutputDebugStringA(s);
 }
 
 void cBicho::GetShotPosition(int *xResult, int *yResult) {
@@ -353,18 +345,12 @@ bool cBicho::ShotCollidesWall(int *map)
 		//xf e yf
 		tile_x = xf / TILE_SIZE;
 		tile_y = yf / TILE_SIZE;
-		char s[256];
-		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
-		OutputDebugStringA(s);
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
 	else
 	{
 		tile_x = xo / TILE_SIZE;
 		tile_y = yo / TILE_SIZE;
-		char s[256];
-		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
-		OutputDebugStringA(s);
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
 	OutputDebugStringA("return false");
@@ -409,7 +395,7 @@ void cBicho::Logic(int *map)
 				ostion = !CollidesMapFloor(map);
 				jumping = !CollidesMapFloor(map);
 				//ESTA CAIENT DESPRES DE SALTAR
-				if (!ostion){
+				if (ostion){
 					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
 						state = STATE_FALLING_LEFT;
 					}
