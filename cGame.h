@@ -4,6 +4,8 @@
 #include "cPlayer.h"
 #include "cBoss1.h"
 #include "cData.h"
+#include "cEnemy2.h"
+#include "cEnemy.h"
 
 #define GAME_WIDTH	400
 #define GAME_HEIGHT 240
@@ -18,6 +20,7 @@ public:
 
 	bool Init();
 	void InitEnemies(int level);
+	void InitEnemies2(int level);
 	void InitBoss();
 	bool Loop();
 	void Finalize();
@@ -37,5 +40,6 @@ private:
 	cPlayer Player;
 	cData Data;
 	cEnemy Enemies[ENEMIES_1];
+	cEnemy2 Enemies2[ENEMIES_2];
 	cBoss1 BurstMan;
 };

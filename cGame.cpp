@@ -46,10 +46,11 @@ bool cGame::Init()
 	Player.SetShotDimensions(20, 26);
 
 	//Monster initialization
-	res = Data.LoadImage(IMG_PLAYER, "megaman.png", GL_RGBA);
+	res = Data.LoadImage(IMG_MONSTER, "megaman.png", GL_RGBA);
 	if (!res) return false;
 	InitEnemies(level);
-	res = Data.LoadImage(IMG_PLAYER, "boss1.png", GL_RGBA);
+	InitEnemies2(level);
+	//res = Data.LoadImage(IMG_PLAYER, "boss1.png", GL_RGBA);
 	if (!res) return false;
 	InitBoss();
 
@@ -79,6 +80,20 @@ void cGame::InitEnemies(int level) {
 		Monster.SetMaxStep(62);
 		Monster.SetTile(78, 5);
 		Enemies[2] = Monster;
+	}
+}
+
+void cGame::InitEnemies2(int level) {
+	if (level == 1) {
+		//First Monster
+		cEnemy2 Monster = cEnemy2();
+		Monster.SetOrientation(true);
+		Monster.SetWidthHeight(35, 35);
+		Monster.SetMaxStep(40);
+		Monster.SetTile(6, 10);
+		Monster.SetWidthHeight(35, 35);
+		Monster.SetState(STATE_LOOKRIGHT);
+		Enemies2[0] = Monster;
 	}
 }
 
@@ -137,9 +152,9 @@ bool cGame::Process()
 	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
 
 	else Player.Logic(Scene.GetCollisionMap());
-	/*for (int i = 0; i < ENEMIES_1; ++i) {
-		Enemies[i].Move(Scene.GetMap(), xShot, yShot);
-	}*/
+	for (int i = 0; i < ENEMIES_2; ++i) {
+		Enemies2[i].Move(Scene.GetMap(), xShot, yShot, Data.GetID(IMG_PLAYER));
+	}
 	return res;
 }
 
@@ -156,9 +171,9 @@ void cGame::Render()
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);
 	}
 	Player.Draw(Data.GetID(IMG_PLAYER));
-	/*for (int i = 0; i < ENEMIES_1; ++i) {
-		Enemies[i].Draw(Data.GetID(IMG_MONSTER));
-	}*/
+	for (int i = 0; i < ENEMIES_2; ++i) {
+		Enemies2[i].Draw(Data.GetID(IMG_PLAYER));
+	}
 
 	glutSwapBuffers();
  }
