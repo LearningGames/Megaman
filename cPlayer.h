@@ -13,4 +13,5 @@ public:
 
 	void Draw(int tex_id);
 	void DrawShot(int tex_id, bool isRight);
+	void DrawLiveBar(int tex_id);
 };

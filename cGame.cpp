@@ -45,6 +45,9 @@ bool cGame::Init()
 	if (!res) return false;
 	Player.SetShotDimensions(20, 26);
 
+	res = Data.LoadImage(IMG_GUI_MEGA, "guimega.png", GL_RGBA);
+	Player.SetLiveBar(80, 16);
+
 	//Monster initialization
 	res = Data.LoadImage(IMG_MONSTER, "megaman.png", GL_RGBA);
 	if (!res) return false;
@@ -172,6 +175,7 @@ void cGame::Render()
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);
 	}
 	Player.Draw(Data.GetID(IMG_PLAYER));
+	Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
 	for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Draw(Data.GetID(IMG_MONSTER));
 	}

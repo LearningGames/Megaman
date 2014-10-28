@@ -440,12 +440,10 @@ void cEnemy2::SetState(int s)
 
 void cEnemy2::Draw(int tex_id)
 {
-	OutputDebugString("Draw \n");
 	if (alive) {
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
 
-		OutputDebugString("Get State \n");
 		switch (GetState())
 		{
 			//1
