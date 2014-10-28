@@ -361,31 +361,32 @@ void cBoss1::SetState(int s)
 void cBoss1::Draw(int tex_id)
 {
 	float xo, yo, xf, yf;
-	float size = 1.0f / 14.0f;
-
+	float size = 1.0f / (490.0f/54.0f);
+	float sizey = 1.0f / (490.0f / 72.0f);
 
 	switch (GetState())
 	{
 	case STATE_LOOKLEFT:
-		xo = 5.0f * size;	yo = 1.0f*size;
+		xo = (3.0f*size)+(GetFrame()* size); yo =0.0f;
+		NextFrame(3);
 		break;
 	case STATE_LOOKRIGHT:
-		xo = 13.0f * size; yo = 0.0f*size;
+		xo = 0.0f; yo = 0.0f*sizey;
 		break;
 	case STATE_JUMP_UP_RIGHT:
-		xo = (size * 11.0f); yo = 0;
+		xo = 0.0f; yo = 0.0f*sizey;
 		NextFrame(7);
 		break;
 	case STATE_JUMP_UP_LEFT:
-		xo = (size * 11.0f); yo = size;
+		xo = 0.0f; yo = 1.0f*sizey;
 		NextFrame(7);
 		break;
 	case STATE_FALLING_RIGHT:
-		xo = (size * 12.0f); yo = 0;
+		xo = 0.0f; yo = 1.0f*sizey;
 		NextFrame(7);
 		break;
 	case STATE_FALLING_LEFT:
-		xo = (size * 12.0f); yo = size;
+		xo = 0.0f; yo = 1.0f*sizey;
 		NextFrame(7);
 		break;
 	case STATE_HITED:
@@ -396,7 +397,7 @@ void cBoss1::Draw(int tex_id)
 
 	}
 	xf = xo + size;
-	yf = yo + size;
+	yf = yo + sizey;
 
 	DrawRect(tex_id, xo, yf, xf, yo);
 }
