@@ -3,6 +3,7 @@
 #include "cScene.h"
 #include "cPlayer.h"
 #include "cMonster.h"
+#include "cBoss1.h"
 #include "cData.h"
 #include "cMonster2.h"
 
@@ -19,6 +20,7 @@ public:
 
 	bool Init();
 	void InitEnemies(int level);
+	void InitBoss();
 	bool Loop();
 	void Finalize();
 
@@ -38,4 +40,5 @@ private:
 	cData Data;
 	cEnemy Enemies[ENEMIES_1];
 	cEnemy2 Enemies2[ENEMIES_2];
+	cBoss1 BurstMan;
 };

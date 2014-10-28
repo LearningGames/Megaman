@@ -101,6 +101,7 @@
     <ClCompile Include="cEnemy.cpp" />
     <ClCompile Include="cMonster2.cpp" />
     <ClCompile Include="cEnemy2.cpp" />
+    <ClCompile Include="cBoss1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cBicho.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="cEnemy.h" />
     <ClInclude Include="cEnemy2.h" />
     <ClInclude Include="cMonster2.h" />
+    <ClInclude Include="cBoss1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

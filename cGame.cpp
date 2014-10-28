@@ -48,8 +48,16 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER, "megaman.png", GL_RGBA);
 	if (!res) return false;
 	InitEnemies(level);
+	InitBoss();
 
 	return res;
+}
+
+void cGame::InitBoss() {
+	BurstMan.SetWidthHeight(35, 35);
+	BurstMan.SetTile(4, 3);
+	BurstMan.SetWidthHeight(35, 35);
+	BurstMan.SetState(STATE_LOOKLEFT);
 }
 
 void cGame::InitEnemies(int level) {
@@ -150,9 +158,9 @@ void cGame::Render()
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);
 	}
 	Player.Draw(Data.GetID(IMG_PLAYER));
-	for (int i = 0; i < ENEMIES_1; ++i) {
+	/*for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Draw(Data.GetID(IMG_MONSTER));
-	}
+	}*/
 
 	glutSwapBuffers();
  }
