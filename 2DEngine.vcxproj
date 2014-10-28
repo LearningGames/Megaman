@@ -97,10 +97,7 @@
     <ClCompile Include="cScene.cpp" />
     <ClCompile Include="cTexture.cpp" />
     <ClCompile Include="GLUTMain.cpp" />
-    <ClCompile Include="cMonster.cpp" />
     <ClCompile Include="cEnemy.cpp" />
-    <ClCompile Include="cMonster2.cpp" />
-    <ClCompile Include="cEnemy2.cpp" />
     <ClCompile Include="cBoss1.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,10 +108,7 @@
     <ClInclude Include="cScene.h" />
     <ClInclude Include="cTexture.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="cMonster.h" />
     <ClInclude Include="cEnemy.h" />
-    <ClInclude Include="cEnemy2.h" />
-    <ClInclude Include="cMonster2.h" />
     <ClInclude Include="cBoss1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -50,7 +50,7 @@ void cBoss1::GetWidthHeight(int *width, int *height)
 	*width = w;
 	*height = h;
 }
-bool cBoss1::Collides(cRect *rc)
+bool cBoss1::Collides(cBossRect *rc)
 {
 	return ((x>rc->left) && (x + w<rc->right) && (y>rc->bottom) && (y + h<rc->top));
 }
@@ -110,7 +110,7 @@ bool cBoss1::CollidesMapFloor(int *map)
 	return on_base;
 }
 
-void cBoss1::GetArea(cRect *rc)
+void cBoss1::GetArea(cBossRect *rc)
 {
 	rc->left = x;
 	rc->right = x + w;
@@ -180,7 +180,7 @@ void cBoss1::Jump(int *map)
 			jump_alfa = 0;
 			jump_y = y;
 			//SALTA A ALGUN CANTO
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_FALLING_LEFT)
 				state = STATE_JUMP_UP_LEFT;
 			else state = STATE_JUMP_UP_RIGHT;
 		}
@@ -202,7 +202,7 @@ void cBoss1::Jump(int *map)
 
 void cBoss1::Hited()
 {
-	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT) {
+	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_FALLING_LEFT) {
 	}
 	else {
 		x -= STEP_LENGTH;
@@ -303,7 +303,7 @@ void cBoss1::Logic(int *map)
 				//Over floor?
 				jumping = !CollidesMapFloor(map);
 				//ESTA CAIENT DESPRES DE SALTAR
-				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_FALLING_LEFT)
 					state = STATE_FALLING_LEFT;
 				else state = STATE_FALLING_RIGHT;
 			}
@@ -327,7 +327,7 @@ void cBoss1::Logic(int *map)
 		if (!CollidesMapFloor(map)){
 			y -= (2 * STEP_LENGTH);
 			//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_FALLING_LEFT)
 				state = STATE_FALLING_LEFT;
 			else state = STATE_FALLING_RIGHT;
 		}

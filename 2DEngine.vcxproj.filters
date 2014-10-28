@@ -32,16 +32,7 @@
     <ClCompile Include="GLUTMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cMonster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="cEnemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cMonster2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="cEnemy2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cBoss1.cpp">
@@ -70,16 +61,7 @@
     <ClInclude Include="Globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cMonster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="cEnemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cEnemy2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cMonster2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cBoss1.h">
