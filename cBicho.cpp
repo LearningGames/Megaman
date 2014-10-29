@@ -550,7 +550,7 @@ void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect En
 					}
 				}
 				else if (ostion) state = STATE_JUMP_HIT_RIGHT;
-					else state = STATE_FALLING_RIGHT;
+				else state = STATE_FALLING_RIGHT;
 
 			}
 		}
