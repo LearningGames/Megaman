@@ -147,6 +147,12 @@ void cBicho::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 	screen_x = xShot;
 	screen_y = yShot;
 
+	char s[256];
+	sprintf(s, "\n xShot Player %d \n", xShot);
+	OutputDebugStringA(s);
+	sprintf(s, "\n yShot Player %d \n", yShot);
+	OutputDebugStringA(s);
+
 	glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, tex_id);
@@ -346,7 +352,6 @@ void cBicho::Shot(int *map, bool isRight)
 		shooting = true;
 		xShot = x + 40;
 		yShot = y + 20;
-		
 	}
 }
 
