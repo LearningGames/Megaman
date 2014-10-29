@@ -1,7 +1,8 @@
 
 #include "cPlayer.h"
 
-cPlayer::cPlayer() {}
+cPlayer::cPlayer() {
+}
 cPlayer::~cPlayer(){}
 
 void cPlayer::Draw(int tex_id)
@@ -76,4 +77,14 @@ void cPlayer::DrawShot(int tex_id, bool isRight)
 	yo = 1.0f;
 	yf = 0.0f;
 	DrawShotRect(tex_id, xo, yo, xf, yf);
+}
+
+void cPlayer::DrawLiveBar(int tex_id)
+{
+	float xo, yo, xf, yf;
+	xo = 0.0f ;
+	xf = 1.0f;
+	yo = (live * 0.2f) + 0.2f;
+	yf = (live * 0.2f);
+	DrawLiveBarRect(tex_id, xo, yo, xf, yf);
 }

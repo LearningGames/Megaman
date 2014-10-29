@@ -8,6 +8,7 @@ cBicho::cBicho(void)
 {
 	seq=0;
 	delay=0;
+	live = 0;
 	ostion = false;
 	jumping = false;
 }
@@ -163,6 +164,37 @@ void cBicho::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 	glDisable(GL_TEXTURE_2D);
 }
 
+void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
+{
+	int screen_x, screen_y;
+
+	screen_x = 30;
+	screen_y = 230;
+
+	if (x < 180){ 
+		screen_x = 50;
+	}
+	else if (x >= 180 && x <= (185 * 16))
+	{
+		screen_x = x - 134;
+	}
+	else{
+		screen_x = (185 * 16) - 50;
+	}
+
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	glBegin(GL_QUADS);
+	glTexCoord2f(xo, yo);	glVertex2i(screen_x, screen_y);
+	glTexCoord2f(xf, yo);	glVertex2i(screen_x + 80, screen_y);
+	glTexCoord2f(xf, yf);	glVertex2i(screen_x + 80.0f, screen_y + 16.0f);
+	glTexCoord2f(xo, yf);	glVertex2i(screen_x, screen_y + 16.0f);
+	glEnd();
+
+	glDisable(GL_TEXTURE_2D);
+}
+
 void cBicho::MoveLeft(int *map)
 {
 	
@@ -261,9 +293,8 @@ void cBicho::Jump(int *map)
 
 void cBicho::Ostion(int *map)
 {
-	char s[256];
-	sprintf(s, "\nOSTION ");
-	OutputDebugStringA(s);
+	live += 1;
+	if (live == 5) live = 0;
 	if (!jumping)
 	{
 		if (CollidesMapFloor(map))
@@ -329,6 +360,11 @@ bool cBicho::IsShootingRight() {
 void cBicho::SetShotDimensions(int width, int height){
 	wShot = width;
 	hShot = height;
+}
+
+void cBicho::SetLiveBar(int width, int height){
+	wLive = width;
+	hLive = height;
 }
 
 void cBicho::GetShotPosition(int *xResult, int *yResult) {

@@ -55,6 +55,7 @@ public:
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 	void DrawShotRect(int tex_id, float xo, float yo, float xf, float yf);
+	void DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf);
 
 	void MoveRight(int *map);
 	void MoveLeft(int *map);
@@ -71,13 +72,14 @@ public:
 	bool IsShootingRight();
 	void SetShotDimensions(int width, int height);
 	void GetShotPosition(int *xResult, int *yResult);
+	void SetLiveBar(int width, int height);
 
 	int  GetState();
 	void SetState(int s);
 
 	void NextFrame(int max);
 	int  GetFrame();
-
+	int live;
 	bool ShotCollidesWall(int *map);
 	
 private:
@@ -91,11 +93,13 @@ private:
 	int jump_alfa;
 	int jump_y;
 
+
 	//shooting data
 	bool shooting;			//Get if the bicho is shooting or not
 	int xShot, yShot;		//Shot Position
 	int wShot, hShot;		//Shot size
 	int shotProgress;		//Shot Progres
+	int wLive, hLive;
 	bool isRightShot;
 
 	int seq,delay;
