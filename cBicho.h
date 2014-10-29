@@ -2,9 +2,7 @@
 
 #include "cTexture.h"
 #include "Globals.h"
-#include "cEnemy.h"
-#include <stdio.h>
-using namespace std;
+//#include "cEnemy.h"
 
 #define FRAME_DELAY		3
 #define STEP_LENGTH		3
@@ -22,10 +20,16 @@ using namespace std;
 #define STATE_HITED			8
 #define STATE_JUMP_HIT_RIGHT 9 
 #define STATE_JUMP_HIT_LEFT 10
+#define STATE_DIE			11
 
 //New defines
 #define SHOT_STEP			5
 #define DIST_SHOT			150
+#define SHOT_OFFSET_X		42
+#define SHOT_OFFSET_Y		20
+
+#define SHOT_ENEMY_STEP			2
+#define DIST_ENEMY_SHOT			80
 
 class cRect
 {
@@ -49,10 +53,11 @@ public:
 	void GetWidthHeight(int *w,int *h);
 
 	bool Collides(cRect *rc);
-	bool CollidesMapWall(int *map,bool right);
-	bool CollidesMapFloor(int *map);
+	bool CollidesMapWall(int *map, bool right);
+	bool CollidesMapFloor(int *map, bool nextStep);
 
 	void GetArea(cRect *rc);
+	void GetShotArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 	void DrawShotRect(int tex_id, float xo, float yo, float xf, float yf);
 	void DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf);
@@ -65,13 +70,15 @@ public:
 	void Logic(int *map);
 
 	//Shooting functions
-	bool IsHited(cEnemy Enemies[], int size);
+	//bool IsHited(cEnemy Enemies[], int size);
 	void Hited();
 	void Shot(int *map, bool isRight);
+	void ShotLogic(bool enemy);
 	bool IsShooting();
 	bool IsShootingRight();
 	void SetShotDimensions(int width, int height);
 	void GetShotPosition(int *xResult, int *yResult);
+	void SetShotPosition(int xResult, int yResult);
 	void SetLiveBar(int width, int height);
 
 	int  GetState();

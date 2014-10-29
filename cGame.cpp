@@ -48,7 +48,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(193,4);
+	Player.SetTile(3,3);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -90,15 +90,11 @@ void cGame::InitEnemies(int level) {
 		//First Monster
 		cEnemy Monster = cEnemy();
 		Monster.SetWidthHeight(35, 35);
-		Monster.SetMaxStep(40);
 		Monster.SetTile(16, 6);
-		Monster.SetWidthHeight(35, 35);
 		Monster.SetState(STATE_LOOKRIGHT);
 		Enemies[0] = Monster;
-		Monster.SetMaxStep(60);
 		Monster.SetTile(42, 9);
 		Enemies[1] = Monster;
-		Monster.SetMaxStep(62);
 		Monster.SetTile(78, 5);
 		Enemies[2] = Monster;
 	}
@@ -112,6 +108,9 @@ void cGame::InitEnemies2(int level) {
 		Monster.SetWidthHeight(35, 35);
 		Monster.SetMaxStep(22);
 		Monster.SetTile(35, 7);
+		int x, y;
+		Monster.GetPosition(&x, &y);
+		Monster.SetInitialPosition(y);
 		Monster.SetWidthHeight(35, 35);
 		Monster.SetState(STATE_LOOKLEFT);
 		Monster.SetShotDimensions(20, 26);
@@ -166,19 +165,25 @@ bool cGame::Process()
 
 	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
 	//Get if the shot collides some enemy
-	int xShot, yShot;
-	Player.GetShotPosition(&xShot, &yShot);
+	cRect playerShot;
+	Player.GetShotArea(&playerShot);
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
 
-	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
+//	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
 
-	else Player.Logic(Scene.GetCollisionMap());
-	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies[i].Logic(Scene.GetMap(), xShot, yShot);
+	/*else */ Player.Logic(Scene.GetCollisionMap());
+	char s[256];
+	sprintf(s, "Shot: left: %d right: %d bottom %d top: %d \n", playerShot.left, playerShot.right, playerShot.bottom, playerShot.top);
+	//OutputDebugStringA(s);
+	for (int i = 0; i < ENEMIES_1; ++i) {
+		//Enemies[i].GetArea(&playerShot);
+		//sprintf(s, "Enemy: left: %d right: %d bottom %d top: %d \n", playerShot.left, playerShot.right, playerShot.bottom, playerShot.top);
+
+		Enemies[i].Logic(Scene.GetCollisionMap(), &playerShot);
 	}
 	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies2[i].Logic(Scene.GetMap(), xShot, yShot);
+		Enemies2[i].Logic(Scene.GetCollisionMap(), &playerShot);
 	}
 	return res;
 }

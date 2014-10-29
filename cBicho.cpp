@@ -10,8 +10,10 @@ cBicho::cBicho(void)
 	seq=0;
 	delay=0;
 	live = 0;
+	shooting = false;
 	ostion = false;
 	jumping = false;
+	shotProgress = 0;
 }
 
 cBicho::~cBicho(void){}
@@ -55,7 +57,22 @@ void cBicho::GetWidthHeight(int *width,int *height)
 }
 bool cBicho::Collides(cRect *rc)
 {
-	return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
+	char s[256];
+	sprintf(s, "Enemy x: %d x+w: %d y: %d y+h %d \n", x, x+w, y, y+h);
+	//OutputDebugStringA(s);
+	sprintf(s, "Shot: left: %d right: %d bottom %d top: %d \n", rc->left, rc ->right, rc->bottom, rc->top);
+	//OutputDebugStringA(s);
+	int centerX = rc->left; 
+	centerX += rc->right;
+	centerX /= 2;
+	sprintf(s, "left %d right %d CenterX %d \n", rc->left, rc->right, centerX);
+	//OutputDebugStringA(s);
+	int centerY = rc->top; 
+	centerY += rc->bottom;
+	centerY /= 2;
+	sprintf(s, "Center y %d \n", centerY);
+	//OutputDebugStringA(s);
+	return ((x<centerX) && (x+w>centerX) && (y<centerY) && (y+h>centerY));
 }
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
@@ -78,14 +95,24 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	return false;
 }
 
-bool cBicho::CollidesMapFloor(int *map)
+bool cBicho::CollidesMapFloor(int *map, bool nextStep)
 {
 	int tile_x, tile_y;
 	int width_tiles;
 	bool on_base;
 	int i;
 
-	tile_x = x / TILE_SIZE;
+	if (nextStep) {
+		char s[256];
+		sprintf(s, "x %d \n", x);
+		//OutputDebugStringA(s);
+		int xAux = x;
+		xAux += STEP_LENGTH;
+		sprintf(s, "xAux %d \n", xAux);
+		//OutputDebugStringA(s);
+		tile_x = xAux / TILE_SIZE;
+	}
+	else tile_x = x / TILE_SIZE;
 	tile_y = y / TILE_SIZE;
 
 	width_tiles = w / TILE_SIZE;
@@ -97,8 +124,9 @@ bool cBicho::CollidesMapFloor(int *map)
 	{
 		if ((y % TILE_SIZE) == 0)
 		{
-			if (map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)] != 0)
+			if (map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)] != 0) {
 				on_base = true;
+			}
 		}
 		else
 		{
@@ -120,7 +148,16 @@ void cBicho::GetArea(cRect *rc)
 	rc->bottom = y;
 	rc->top    = y+h;
 }
-void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
+
+void cBicho::GetShotArea(cRect *rc)
+{
+	rc->left = xShot-SHOT_OFFSET_X;
+	rc->right = xShot + wShot -SHOT_OFFSET_X;
+	rc->bottom = yShot - SHOT_OFFSET_Y;
+	rc->top = yShot + hShot - SHOT_OFFSET_Y;
+}
+
+void cBicho::DrawRect(int tex_id, float xo, float yo, float xf, float yf)
 {
 	int screen_x,screen_y;
 
@@ -275,7 +312,7 @@ void cBicho::Jump(int *map)
 {
 	if(!jumping)
 	{
-		if(CollidesMapFloor(map))
+		if(CollidesMapFloor(map, false))
 		{
 			jumping = true;
 			jump_alfa = 0;
@@ -300,7 +337,7 @@ void cBicho::Ostion(int *map)
 	}
 	if (!jumping)
 	{
-		if (CollidesMapFloor(map))
+		if (CollidesMapFloor(map, false))
 		{
 			ostion = true;
 			jumping = true;
@@ -313,7 +350,7 @@ void cBicho::Ostion(int *map)
 	}
 }
 
-bool cBicho::IsHited(cEnemy Enemies[], int size){
+/*bool cBicho::IsHited(cEnemy Enemies[], int size){
 	bool mandao = false;
 	for (int i = 0; i < size; ++i) {
 		int xRival, yRival;
@@ -328,7 +365,7 @@ bool cBicho::IsHited(cEnemy Enemies[], int size){
 
 	}
 	return false;
-}
+}*/
 
 void cBicho::Hited()
 {
@@ -347,8 +384,8 @@ void cBicho::Shot(int *map, bool isRight)
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;
-		xShot = x + 40;
-		yShot = y + 20;
+		xShot = x + SHOT_OFFSET_X;
+		yShot = y + SHOT_OFFSET_Y;
 	}
 }
 
@@ -375,6 +412,11 @@ void cBicho::GetShotPosition(int *xResult, int *yResult) {
 	*yResult = yShot;
 }
 
+void cBicho::SetShotPosition(int xResult, int yResult) {
+	xShot = xResult;
+	yShot = yResult;
+}
+
 bool cBicho::ShotCollidesWall(int *map)
 {
 	int xo, yo, xf, yf, tile_x, tile_y;
@@ -397,8 +439,21 @@ bool cBicho::ShotCollidesWall(int *map)
 		tile_y = yo / TILE_SIZE;
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
-	OutputDebugStringA("return false");
 	return false;
+}
+
+void cBicho::ShotLogic(bool enemy)
+{
+	shotProgress += SHOT_ENEMY_STEP;
+	//We want to know if the shot collides with something
+	if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_ENEMY_SHOT) {
+		shooting = false;
+		shotProgress = 0;
+	}
+	else {
+		if (isRightShot) xShot += SHOT_ENEMY_STEP;
+		else xShot -= SHOT_ENEMY_STEP;
+	}
 }
 
 void cBicho::Logic(int *map)
@@ -406,16 +461,7 @@ void cBicho::Logic(int *map)
 	float alfa;
 
 	if (shooting) {
-		shotProgress += SHOT_STEP;
-		//We want to know if the shot collides with something
-			if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_SHOT) {
-			shooting = false;
-			shotProgress = 0;
-		}
-		else {
-			if (isRightShot) xShot += SHOT_STEP;
-			else xShot -= SHOT_STEP;
-		}
+		ShotLogic(false);
 	}
 
 	if(jumping)
@@ -436,8 +482,8 @@ void cBicho::Logic(int *map)
 			if(jump_alfa > 90)
 			{
 				//Over floor?
-				ostion = !CollidesMapFloor(map);
-				jumping = !CollidesMapFloor(map);
+				ostion = !CollidesMapFloor(map, false);
+				jumping = !CollidesMapFloor(map, false);
 				//ESTA CAIENT DESPRES DE SALTAR
 				if (ostion){
 					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
@@ -451,7 +497,7 @@ void cBicho::Logic(int *map)
 	else
 	{
 		//Over floor?
-		if (!CollidesMapFloor(map)){
+		if (!CollidesMapFloor(map, false)){
 			y -= (2 * STEP_LENGTH);
 			//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
 			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
@@ -481,5 +527,11 @@ int cBicho::GetState()
 }
 void cBicho::SetState(int s)
 {
+	if (s == STATE_DIE) OutputDebugString("setStateDIE");
+	char sAux[256];
+	sprintf(sAux, "state %d \n", GetState());
+	OutputDebugString(sAux);
 	state = s;
+	sprintf(sAux, "state2 %d\n", GetState());
+	OutputDebugString(sAux);
 }
