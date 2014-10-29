@@ -183,6 +183,10 @@ void cEnemy2::Logic(int *map, int xShotMegaman, int yShotMegaman)
 			shotProgress = 0;
 		}
 		else {
+
+			/*char s[256];
+			sprintf(s, "\n xShot -= SHOT_STEP: %d", xShot);
+			OutputDebugStringA(s);*/
 			xShot -= SHOT_STEP;
 		}
 	}

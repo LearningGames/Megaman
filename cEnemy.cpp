@@ -163,7 +163,7 @@ void cEnemy::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 	glDisable(GL_TEXTURE_2D);
 }
 
-void cEnemy::Move(int *map, int xShot, int yShot)
+void cEnemy::Logic(int *map, int xShot, int yShot)
 {
 	if (state != STATE_DIE) {
 		if (IsHited(xShot, yShot)) {
@@ -316,7 +316,7 @@ void cEnemy::GetShotPosition(int *xResult, int *yResult) {
 	*yResult = yShot;
 }
 
-void cEnemy::Logic(int *map)
+/*void cEnemy::Logic(int *map)
 {
 	float alfa;
 
@@ -369,7 +369,7 @@ void cEnemy::Logic(int *map)
 			else state = STATE_FALLING_RIGHT;
 		}
 	}
-}
+}*/
 
 void cEnemy::NextFrame(int max)
 {

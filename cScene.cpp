@@ -45,7 +45,7 @@ bool cScene::LoadLevel(int level)
 				map[(j*SCENE_WIDTH) + i] = tile;
 				if (tile >= 77 && tile <= 79 || tile >= 84 && tile <= 86) collisionMap[(j*SCENE_WIDTH) + i] = 1;
 				else  collisionMap[(j*SCENE_WIDTH) + i] = 0;
-				
+
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 
