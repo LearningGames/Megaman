@@ -232,13 +232,9 @@ bool cBoss1::IsShootingRight() {
 }
 
 void cBoss1::SetShotDimensions(int width, int height){
-	char s[256];
-	sprintf(s, "\n ShotDimensions %d %d", width, height);
-	OutputDebugStringA(s);
+
 	wShot = width;
 	hShot = height;
-	sprintf(s, "\n ShotDimensionsSetted %d %d", wShot, hShot);
-	OutputDebugStringA(s);
 }
 
 void cBoss1::GetShotPosition(int *xResult, int *yResult) {
@@ -260,21 +256,14 @@ bool cBoss1::ShotCollidesWall(int *map)
 		//xf e yf
 		tile_x = xf / TILE_SIZE;
 		tile_y = yf / TILE_SIZE;
-		char s[256];
-		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
-		OutputDebugStringA(s);
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
 	else
 	{
 		tile_x = xo / TILE_SIZE;
 		tile_y = yo / TILE_SIZE;
-		char s[256];
-		sprintf(s, "map [%d] = %d", tile_x + tile_y*(199 / TILE_SIZE), map[tile_x + tile_y*(199 / TILE_SIZE)]);
-		OutputDebugStringA(s);
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
-	OutputDebugStringA("return false");
 	return false;
 }
 

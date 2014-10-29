@@ -183,27 +183,19 @@ void cEnemy2::Logic(int *map, int xShotMegaman, int yShotMegaman)
 			shotProgress = 0;
 		}
 		else {
-			char s[256];
-			sprintf(s, "\n xShot -= SHOT_STEP: %d", xShot);
-			OutputDebugStringA(s);
 			xShot -= SHOT_STEP;
 		}
 	}
 	if (state != STATE_DIE) {
 		if (IsHited(xShotMegaman, yShotMegaman)) {
 			Die();
-			char s[256];
-			sprintf(s, "\n x %d > %d", x, initialX + MAX_STEP);
-			OutputDebugStringA(s);
 		}
 		else if (y > initialY + maxStep) {
 			MoveDown(map);
-			OutputDebugString("Shot");
 			Shot();
 		}
 		else if (y < initialY - maxStep) {
 			MoveUp(map);
-			OutputDebugString("Shot");
 			Shot();
 		}
 		if (movingDown) {

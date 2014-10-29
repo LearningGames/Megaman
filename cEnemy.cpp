@@ -168,9 +168,6 @@ void cEnemy::Move(int *map, int xShot, int yShot)
 	if (state != STATE_DIE) {
 		if (IsHited(xShot, yShot)) {
 			Die();
-			char s[256];
-			sprintf(s, "\n x %d > %d", x, initialX + MAX_STEP);
-			OutputDebugStringA(s);
 		}
 		else if (x > initialX + maxStep) MoveLeft(map);
 		else if (x < initialX - maxStep) MoveRight(map);
@@ -309,13 +306,9 @@ bool cEnemy::IsShootingRight() {
 }
 
 void cEnemy::SetShotDimensions(int width, int height){
-	char s[256];
-	sprintf(s, "\n ShotDimensions %d %d", width, height);
-	OutputDebugStringA(s);
+	
 	wShot = width;
 	hShot = height;
-	sprintf(s, "\n ShotDimensionsSetted %d %d", wShot, hShot);
-	OutputDebugStringA(s);
 }
 
 void cEnemy::GetShotPosition(int *xResult, int *yResult) {

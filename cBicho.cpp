@@ -147,11 +147,6 @@ void cBicho::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 	screen_x = xShot;
 	screen_y = yShot;
 
-	char s[256];
-	sprintf(s, "\n xShot Player %d \n", xShot);
-	OutputDebugStringA(s);
-	sprintf(s, "\n yShot Player %d \n", yShot);
-	OutputDebugStringA(s);
 
 	glEnable(GL_TEXTURE_2D);
 
@@ -297,10 +292,14 @@ void cBicho::Ostion(int *map)
 {
 	//PlaySound(TEXT("hit.wav"), NULL, SND_FILENAME);
 	//PlaySound("hit g.WAV", NULL, SND_ASYNC);
-	PlaySound("./hit.wav", NULL, SND_ASYNC);
+	
 
 	live += 1;
-	if (live == 5) live = 0;
+	if (live == 5){
+		live = 0;
+		PlaySound("./shout.wav", NULL, SND_ASYNC);
+	}
+	else PlaySound("./hit.wav", NULL, SND_ASYNC);
 	if (!jumping)
 	{
 		if (CollidesMapFloor(map))
