@@ -176,7 +176,7 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 		screen_x = x - 134;
 	}
 	else{
-		screen_x = (185 * 16) - 50;
+		screen_x = (180 * 16) - 50;
 	}
 
 	glEnable(GL_TEXTURE_2D);
