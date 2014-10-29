@@ -305,6 +305,8 @@ void cBicho::Stop()
 			case STATE_FALLING_RIGHT:state = STATE_LOOKRIGHT;	break;
 			case STATE_JUMP_UP_LEFT:state = STATE_LOOKLEFT;		break;
 			case STATE_JUMP_UP_RIGHT:state = STATE_LOOKRIGHT;	break;
+			case STATE_JUMP_HIT_LEFT:state = STATE_LOOKLEFT;	break;
+			case STATE_JUMP_HIT_RIGHT:state = STATE_LOOKRIGHT;	break;
 		}
 	}
 }
@@ -470,8 +472,8 @@ void cBicho::Logic(int *map)
 		
 		if(jump_alfa == 180)
 		{
-			jumping = false;
 			ostion = false;
+			jumping = false;
 			y = jump_y;
 		}
 		else
@@ -482,15 +484,16 @@ void cBicho::Logic(int *map)
 			if(jump_alfa > 90)
 			{
 				//Over floor?
-				ostion = !CollidesMapFloor(map, false);
 				jumping = !CollidesMapFloor(map, false);
 				//ESTA CAIENT DESPRES DE SALTAR
-				if (ostion){
-					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
-						state = STATE_FALLING_LEFT;
-					}
-					else state = STATE_FALLING_RIGHT;
+				
+				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+					if (ostion) state = STATE_JUMP_HIT_LEFT;
+					else state = STATE_FALLING_LEFT;
 				}
+				else if (ostion) state = STATE_JUMP_HIT_RIGHT;
+					else state = STATE_FALLING_RIGHT;
+
 			}
 		}
 	}
