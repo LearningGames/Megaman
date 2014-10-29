@@ -48,6 +48,8 @@ bool cGame::Init()
 	//Monster initialization
 	res = Data.LoadImage(IMG_MONSTER, "megaman.png", GL_RGBA);
 	if (!res) return false;
+	res = Data.LoadImage(IMG_HELISHOT, "helishot.png", GL_RGBA);
+	if (!res) return false;
 	InitEnemies(level);
 	res = Data.LoadImage(IMG_BOSS1, "boss1.png", GL_RGBA);
 	InitEnemies2(level);
@@ -88,12 +90,13 @@ void cGame::InitEnemies2(int level) {
 	if (level == 1) {
 		//First Monster
 		cEnemy2 Monster = cEnemy2();
-		Monster.SetOrientation(true);
+		Monster.SetOrientation(false);
 		Monster.SetWidthHeight(35, 35);
 		Monster.SetMaxStep(40);
 		Monster.SetTile(6, 10);
 		Monster.SetWidthHeight(35, 35);
-		Monster.SetState(STATE_LOOKRIGHT);
+		Monster.SetState(STATE_LOOKLEFT);
+		Monster.SetShotDimensions(20, 26);
 		Enemies2[0] = Monster;
 	}
 }
@@ -154,7 +157,7 @@ bool cGame::Process()
 
 	else Player.Logic(Scene.GetCollisionMap());
 	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies2[i].Move(Scene.GetMap(), xShot, yShot, Data.GetID(IMG_PLAYER));
+		Enemies2[i].Logic(Scene.GetMap(), xShot, yShot);
 	}
 	return res;
 }
@@ -178,6 +181,9 @@ void cGame::Render()
 	BurstMan.Draw(Data.GetID(IMG_BOSS1));
 	for (int i = 0; i < ENEMIES_2; ++i) {
 		Enemies2[i].Draw(Data.GetID(IMG_PLAYER));
+		if (Enemies2[i].IsShooting()) {
+			Enemies2[i].DrawShot(Data.GetID(IMG_HELISHOT));
+		}
 	}
 
 	glutSwapBuffers();

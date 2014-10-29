@@ -13,6 +13,8 @@ cEnemy2::cEnemy2(void)
 	alive = true;
 	deadtime = 0;
 	movingDown = true;
+	shooting = false;
+	shotProgress = 0;
 }
 cEnemy2::~cEnemy2(void){}
 
@@ -154,6 +156,7 @@ void cEnemy2::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 {
 	int screen_x, screen_y;
 
+	char s[256];
 	screen_x = xShot;
 	screen_y = yShot;
 
@@ -170,10 +173,24 @@ void cEnemy2::DrawShotRect(int tex_id, float xo, float yo, float xf, float yf)
 	glDisable(GL_TEXTURE_2D);
 }
 
-void cEnemy2::Move(int *map, int xShot, int yShot, int tex_id)
+void cEnemy2::Logic(int *map, int xShotMegaman, int yShotMegaman)
 {
+	if (shooting) {
+		shotProgress += SHOT_STEP;
+		//We want to know if the shot collides with something
+		if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_SHOT) {
+			shooting = false;
+			shotProgress = 0;
+		}
+		else {
+			char s[256];
+			sprintf(s, "\n xShot -= SHOT_STEP: %d", xShot);
+			OutputDebugStringA(s);
+			xShot -= SHOT_STEP;
+		}
+	}
 	if (state != STATE_DIE) {
-		if (IsHited(xShot, yShot)) {
+		if (IsHited(xShotMegaman, yShotMegaman)) {
 			Die();
 			char s[256];
 			sprintf(s, "\n x %d > %d", x, initialX + MAX_STEP);
@@ -181,11 +198,13 @@ void cEnemy2::Move(int *map, int xShot, int yShot, int tex_id)
 		}
 		else if (y > initialY + maxStep) {
 			MoveDown(map);
-			DrawShot(tex_id);
+			OutputDebugString("Shot");
+			Shot();
 		}
 		else if (y < initialY - maxStep) {
 			MoveUp(map);
-			DrawShot(tex_id);
+			OutputDebugString("Shot");
+			Shot();
 		}
 		if (movingDown) {
 			MoveDown(map);
@@ -325,15 +344,13 @@ bool cEnemy2::IsHited(int xRival, int yRival){
 	else return false;
 }
 
-void cEnemy2::Shot(int *map, bool isRight)
+void cEnemy2::Shot()
 {
 	if (!shooting) {
-		if (isRight) isRightShot = true;
-		else isRightShot = false;
+		char s[256];
 		shooting = true;
-		xShot = x + 35;
+		xShot = x + 40;
 		yShot = y + 20;
-
 	}
 }
 
@@ -341,78 +358,15 @@ bool cEnemy2::IsShooting() {
 	return shooting;
 }
 
-bool cEnemy2::IsShootingRight() {
-	return isRightShot;
-}
-
 void cEnemy2::SetShotDimensions(int width, int height){
 	char s[256];
-	sprintf(s, "\n ShotDimensions %d %d", width, height);
-	OutputDebugStringA(s);
 	wShot = width;
 	hShot = height;
-	sprintf(s, "\n ShotDimensionsSetted %d %d", wShot, hShot);
-	OutputDebugStringA(s);
 }
 
 void cEnemy2::GetShotPosition(int *xResult, int *yResult) {
 	*xResult = xShot;
 	*yResult = yShot;
-}
-
-void cEnemy2::Logic(int *map)
-{
-	float alfa;
-
-	if (shooting) {
-		shotProgress += SHOT_STEP;
-		//We want to know if the shot collides with something
-		if (shotProgress >= DIST_SHOT) {
-			shooting = false;
-			shotProgress = 0;
-		}
-		else {
-			if (isRightShot) xShot += SHOT_STEP;
-			else xShot -= SHOT_STEP;
-		}
-	}
-
-	if (jumping)
-	{
-		jump_alfa += JUMP_STEP;
-
-		if (jump_alfa == 180)
-		{
-			jumping = false;
-			y = jump_y;
-		}
-		else
-		{
-			alfa = ((float)jump_alfa) * 0.017453f;
-			y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
-
-			if (jump_alfa > 90)
-			{
-				//Over floor?
-				jumping = !CollidesMapFloor(map);
-				//ESTA CAIENT DESPRES DE SALTAR
-				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
-					state = STATE_FALLING_LEFT;
-				else state = STATE_FALLING_RIGHT;
-			}
-		}
-	}
-	else
-	{
-		//Over floor?
-		if (!CollidesMapFloor(map)){
-			y -= (2 * STEP_LENGTH);
-			//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
-				state = STATE_FALLING_LEFT;
-			else state = STATE_FALLING_RIGHT;
-		}
-	}
 }
 
 void cEnemy2::NextFrame(int max)
@@ -440,17 +394,14 @@ void cEnemy2::SetState(int s)
 
 void cEnemy2::Draw(int tex_id)
 {
-	OutputDebugString("Draw \n");
 	if (alive) {
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
-
-		OutputDebugString("Get State \n");
 		switch (GetState())
 		{
 			//1
 		case STATE_LOOKLEFT:
-			xo = 3.0f * size;	yo = 3.0f*size;
+			xo = 6.0f * size;	yo = 3.0f*size;
 			break;
 			//4
 		case STATE_LOOKRIGHT:
@@ -458,7 +409,7 @@ void cEnemy2::Draw(int tex_id)
 			break;
 			//1..3
 		case STATE_WALKLEFT:
-			xo = (10.0f * size) - (GetFrame()* size);	yo = 3.0f*size;
+			xo = (6.0f * size) - (GetFrame()* size);	yo = 3.0f*size;
 			NextFrame(4);
 			break;
 			//4..6
@@ -501,9 +452,9 @@ void cEnemy2::Draw(int tex_id)
 void cEnemy2::DrawShot(int tex_id)
 {
 	float xo, yo, xf, yf;
-	xo = 0.0f + (GetFrame()*0.25f);
-	NextFrame(4);
-	xf = xo + 0.25f;
+	xo = 1.0f - (GetFrame()*(1.0f/7.0f));
+	NextFrame(7);
+	xf = xo - (1.0f / 7.0f);
 	yo = 1.0f;
 	yf = 0.0f;
 	DrawShotRect(tex_id, xo, yo, xf, yf);

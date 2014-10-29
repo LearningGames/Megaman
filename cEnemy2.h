@@ -23,8 +23,8 @@ using namespace std;
 #define STATE_DIE			8	
 
 //New defines
-#define SHOT_STEP			5
-#define DIST_SHOT			150
+#define SHOT_STEP			3
+#define DIST_SHOT			100
 
 class cEnemy2Rect
 {
@@ -61,16 +61,15 @@ public:
 	void MoveLeft(int *map);
 	void Jump(int *map);
 	void Stop();
-	void Logic(int *map);
+	void Logic(int *map, int xShot, int yShot);
 
-	void Move(int *map, int xShot, int yShot, int tex_id);
 	void MoveDown(int *map);
 	void MoveUp(int *map);
 	void Die();
 
 	//Shooting functions
 	bool IsHited(int xRival, int yRival);
-	void Shot(int *map, bool isRight);
+	void Shot();
 	bool IsShooting();
 	bool IsShootingRight();
 	void SetShotDimensions(int width, int height);
@@ -94,6 +93,7 @@ private:
 	bool alive;
 	int deadtime;
 	bool lookRight;
+	bool startShoot;
 
 
 	bool movingDown;
