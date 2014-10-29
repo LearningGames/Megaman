@@ -2,6 +2,7 @@
 #include "cScene.h"
 #include "Globals.h"
 #include <stdio.h>
+#include <Windows.h>
 using namespace std;
 
 cBicho::cBicho(void)
@@ -12,6 +13,7 @@ cBicho::cBicho(void)
 	ostion = false;
 	jumping = false;
 }
+
 cBicho::~cBicho(void){}
 
 cBicho::cBicho(int posx,int posy,int width,int height)
@@ -287,6 +289,10 @@ void cBicho::Jump(int *map)
 
 void cBicho::Ostion(int *map)
 {
+	//PlaySound(TEXT("hit.wav"), NULL, SND_FILENAME);
+	//PlaySound("hit g.WAV", NULL, SND_ASYNC);
+	PlaySound("./hit.wav", NULL, SND_ASYNC);
+
 	live += 1;
 	if (live == 5) live = 0;
 	if (!jumping)
