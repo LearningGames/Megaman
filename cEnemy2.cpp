@@ -26,33 +26,35 @@ void cEnemy2::SetMaxStep(int max) {
 	maxStep = max;
 }
 
-void cEnemy2::Logic(int *map, int xShotMegaman, int yShotMegaman)
+void cEnemy2::Logic(int *map, cRect *playerShot)
 {
 	if (IsShooting()) {
-		OutputDebugString("Shot Logic \n");
 		ShotLogic(true);
 	}
 	int x, y;
 	GetPosition(&x, &y);
-	if (GetState() != STATE_DIE) {
-		if (IsHited(xShotMegaman, yShotMegaman)) {
+	char sAux[256];
+	sprintf(sAux, "stateLogic %d \n", GetState());
+	OutputDebugString(sAux);
+	if (alive && GetState() != STATE_DIE) {
+		if (Collides(playerShot)) {
+			OutputDebugString("Die \n");
 			Die();
 		}
-		else if (y > initialY + maxStep) {
+		else if (y > initialY + maxStep) {		
 			MoveDown(map);
-			OutputDebugString("Shot \n");
-			Shot(map,lookRight,true);
+			Shot(map,lookRight);
 		}
 		else if (y < initialY - maxStep) {
 			MoveUp(map);
-			Shot(map, lookRight, true);
+			Shot(map, lookRight);
 		}
-		if (movingDown) {
+		else if (movingDown) {
 			MoveDown(map);
 		}
 		else MoveUp(map);
 	}
-	else {
+	else if (alive) {
 		deadtime++;
 		if (deadtime > 30) alive = false;
 	}
@@ -65,10 +67,11 @@ void cEnemy2::MoveDown(int *map)
 	y -= STEP_LENGTH;
 	SetPosition(x, y);
 	movingDown = true;
+	
 	if (lookRight) {
-		SetState(STATE_WALKRIGHT);
+		if (GetState() != STATE_WALKRIGHT) SetState(STATE_WALKRIGHT);
 	}
-	else SetState(STATE_WALKLEFT);
+	else if (GetState() != STATE_WALKLEFT)SetState(STATE_WALKLEFT);
 }
 
 void cEnemy2::MoveUp(int *map)
@@ -79,13 +82,13 @@ void cEnemy2::MoveUp(int *map)
 	SetPosition(x, y);
 	movingDown = false;
 	if (lookRight) {
-		SetState(STATE_WALKRIGHT);
+		if (GetState() != STATE_WALKRIGHT) SetState(STATE_WALKRIGHT);
 	}
-	else
-		SetState(STATE_WALKLEFT);
+	else if (GetState() != STATE_WALKLEFT)SetState(STATE_WALKLEFT);
 }
 
 void cEnemy2::Die() {
+	OutputDebugString("SetStateEnemy \n");
 	SetState(STATE_DIE);
 }
 
@@ -102,52 +105,44 @@ bool cEnemy2::IsHited(int xRival, int yRival){
 
 void cEnemy2::Draw(int tex_id)
 {
+	OutputDebugString("Draw \n");
 	if (alive) {
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
+		char s[256];
+		sprintf(s, "state %d", GetState());
+		OutputDebugString(s);
 		switch (GetState())
 		{
 			//1
 		case STATE_LOOKLEFT:
+			OutputDebugString("LOOK_LEFT \n");
 			xo = 6.0f * size;	yo = 3.0f*size;
 			break;
 			//4
 		case STATE_LOOKRIGHT:
+			OutputDebugString("LOOK_RIGHT \n");
 			xo = 10.0f * size; yo = 3.0f*size;
 			break;
 			//1..3
 		case STATE_WALKLEFT:
+			OutputDebugString("WALK_LEFT \n");
 			xo = (6.0f * size) - (GetFrame()* size);	yo = 3.0f*size;
 			NextFrame(4);
 			break;
 			//4..6
 		case STATE_WALKRIGHT:
+			OutputDebugString("WALK_RIGHT \n");
 			xo = (size * 7) + (GetFrame()* size); yo = 3.0f*size;
 			NextFrame(4);
 			break;
-		case STATE_JUMP_UP_RIGHT:
-			xo = (size * 8.0f); yo = 3.0f*size;
-			NextFrame(4);
-			break;
-		case STATE_JUMP_UP_LEFT:
-			xo = (size * 5.0f); yo = 3.0f*size;
-			NextFrame(7);
-			break;
-		case STATE_FALLING_RIGHT:
-			xo = (size * 7.0f); yo = 2.0f*size;
-			NextFrame(7);
-			break;
-		case STATE_FALLING_LEFT:
-			xo = (size * 6.0f); yo = 2.0f*size;
-			NextFrame(7);
-			break;
-			//8
 		case STATE_DIE:
+			OutputDebugString("STATE_DIE");
 			xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
 			NextFrame(7);
 			break;
 		default:
-			xo = 3.0f * size;	yo = 3.0f*size;
+			OutputDebugString("default");
 			break;
 		}
 		xf = xo + size;

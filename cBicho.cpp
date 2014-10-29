@@ -57,7 +57,22 @@ void cBicho::GetWidthHeight(int *width,int *height)
 }
 bool cBicho::Collides(cRect *rc)
 {
-	return ((x>rc->left) && (x+w<rc->right) && (y>rc->bottom) && (y+h<rc->top));
+	char s[256];
+	sprintf(s, "Enemy x: %d x+w: %d y: %d y+h %d \n", x, x+w, y, y+h);
+	//OutputDebugStringA(s);
+	sprintf(s, "Shot: left: %d right: %d bottom %d top: %d \n", rc->left, rc ->right, rc->bottom, rc->top);
+	//OutputDebugStringA(s);
+	int centerX = rc->left; 
+	centerX += rc->right;
+	centerX /= 2;
+	sprintf(s, "left %d right %d CenterX %d \n", rc->left, rc->right, centerX);
+	//OutputDebugStringA(s);
+	int centerY = rc->top; 
+	centerY += rc->bottom;
+	centerY /= 2;
+	sprintf(s, "Center y %d \n", centerY);
+	//OutputDebugStringA(s);
+	return ((x<centerX) && (x+w>centerX) && (y<centerY) && (y+h>centerY));
 }
 bool cBicho::CollidesMapWall(int *map,bool right)
 {
@@ -133,7 +148,16 @@ void cBicho::GetArea(cRect *rc)
 	rc->bottom = y;
 	rc->top    = y+h;
 }
-void cBicho::DrawRect(int tex_id,float xo,float yo,float xf,float yf)
+
+void cBicho::GetShotArea(cRect *rc)
+{
+	rc->left = xShot-SHOT_OFFSET_X;
+	rc->right = xShot + wShot -SHOT_OFFSET_X;
+	rc->bottom = yShot - SHOT_OFFSET_Y;
+	rc->top = yShot + hShot - SHOT_OFFSET_Y;
+}
+
+void cBicho::DrawRect(int tex_id, float xo, float yo, float xf, float yf)
 {
 	int screen_x,screen_y;
 
@@ -356,15 +380,14 @@ void cBicho::Hited()
 		
 }
 
-void cBicho::Shot(int *map, bool isRight, bool ignoreShooting)
+void cBicho::Shot(int *map, bool isRight)
 {
-	if (!shooting || ignoreShooting) {
-		OutputDebugString("not shooting \n");
+	if (!shooting) {
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;
-		xShot = x + 40;
-		yShot = y + 20;
+		xShot = x + SHOT_OFFSET_X;
+		yShot = y + SHOT_OFFSET_Y;
 	}
 }
 
@@ -506,5 +529,11 @@ int cBicho::GetState()
 }
 void cBicho::SetState(int s)
 {
+	if (s == STATE_DIE) OutputDebugString("setStateDIE");
+	char sAux[256];
+	sprintf(sAux, "state %d \n", GetState());
+	OutputDebugString(sAux);
 	state = s;
+	sprintf(sAux, "state2 %d\n", GetState());
+	OutputDebugString(sAux);
 }

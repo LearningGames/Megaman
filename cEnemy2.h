@@ -6,18 +6,7 @@
 #define STEP_LENGTH		1
 #define JUMP_HEIGHT		60
 #define JUMP_STEP		4
-#define MAX_STEP		60
-
-#define STATE_LOOKLEFT		0
-#define STATE_LOOKRIGHT		1
-#define STATE_WALKLEFT		2
-#define STATE_WALKRIGHT		3
-#define STATE_JUMP_UP_LEFT	4
-#define STATE_JUMP_UP_RIGHT	5
-#define STATE_FALLING_LEFT	6
-#define STATE_FALLING_RIGHT	7
-
-#define STATE_DIE			8	
+#define MAX_STEP		60	
 
 //New defines
 #define SHOT_STEP			3
@@ -35,7 +24,7 @@ public:
 	void SetMaxStep(int max);
 
 
-	void Logic(int *map, int xShot, int yShot);
+	void Logic(int *map, cRect *playerShot);
 
 	void MoveDown(int *map);
 	void MoveUp(int *map);

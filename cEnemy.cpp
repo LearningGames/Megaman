@@ -11,10 +11,10 @@ cEnemy::cEnemy(void)
 }
 cEnemy::~cEnemy(void){}
 
-void cEnemy::Logic(int *map, int xShot, int yShot)
+void cEnemy::Logic(int *map, cRect *playerShot)
 {
 	if (alive && GetState() != STATE_DIE) {
-		if (IsHited(xShot, yShot)) {
+		if (Collides(playerShot)) {
 			Die();
 		}
 		else if (!CollidesMapFloor(map,true)) {

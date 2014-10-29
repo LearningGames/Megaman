@@ -148,21 +148,27 @@ bool cGame::Process()
 	else if (keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetCollisionMap());
 	else Player.Stop();
 
-	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT),false);
+	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
 	//Get if the shot collides some enemy
-	int xShot, yShot;
-	Player.GetShotPosition(&xShot, &yShot);
+	cRect playerShot;
+	Player.GetShotArea(&playerShot);
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
 
 //	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
 
 	/*else */ Player.Logic(Scene.GetCollisionMap());
+	char s[256];
+	sprintf(s, "Shot: left: %d right: %d bottom %d top: %d \n", playerShot.left, playerShot.right, playerShot.bottom, playerShot.top);
+	//OutputDebugStringA(s);
 	for (int i = 0; i < ENEMIES_1; ++i) {
-		Enemies[i].Logic(Scene.GetCollisionMap(), xShot, yShot);
+		//Enemies[i].GetArea(&playerShot);
+		//sprintf(s, "Enemy: left: %d right: %d bottom %d top: %d \n", playerShot.left, playerShot.right, playerShot.bottom, playerShot.top);
+
+		Enemies[i].Logic(Scene.GetCollisionMap(), &playerShot);
 	}
 	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies2[i].Logic(Scene.GetCollisionMap(), xShot, yShot);
+		Enemies2[i].Logic(Scene.GetCollisionMap(), &playerShot);
 	}
 	return res;
 }
