@@ -60,9 +60,9 @@ public:
 	void MoveLeft(int *map);
 	void Jump(int *map);
 	void Stop();
-	void Logic(int *map);
+	/*void Logic(int *map);*/
 
-	void Move(int *map, int xShot, int yShot);
+	void Logic(int *map, int xShot, int yShot);
 	void Die();
 
 	//Shooting functions

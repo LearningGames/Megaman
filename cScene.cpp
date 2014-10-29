@@ -47,7 +47,7 @@ bool cScene::LoadLevel(int level)
 				else  collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				char s[256];
 				sprintf(s, "%d", collisionMap[(j*SCENE_WIDTH) + i]);
-				OutputDebugStringA(s);
+				//OutputDebugStringA(s);
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 
