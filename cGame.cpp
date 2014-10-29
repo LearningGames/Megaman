@@ -1,9 +1,14 @@
 #include "cGame.h"
-#include "Globals.h"
+#include "SDL.h";
+#include "Globals.h";
+#include "SDL2-2.0.3\include\SDL_audio.h"
+
+#define SND_FILENAME 0x20000 
+#define SND_LOOP 8 
+#define SND_ASYNC 1
 
 cGame::cGame(void)
-{
-}
+{}
 
 cGame::~cGame(void)
 {
@@ -11,6 +16,16 @@ cGame::~cGame(void)
 
 bool cGame::Init()
 {
+
+	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_AudioSpec wav_spec;
+	Uint32 wav_length;
+	Uint8 *wav_buffer;
+	if (SDL_LoadWAV("shout.wav", &wav_spec, &wav_buffer, &wav_length) == NULL){ return 3; }
+	SDL_PauseAudio(0);
+	
+	SDLK_AUDIOPLAY;
+
 	bool res=true;
 	if (level == 0) level = 1;
 	//Graphics initialization
@@ -174,7 +189,6 @@ void cGame::Render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glLoadIdentity();
-
 	Scene.Draw(Data.GetID(IMG_BLOCKS));
 	if (Player.IsShooting()) {
 		if (Player.IsShootingRight()) Player.DrawShot(Data.GetID(IMG_SHOTRIGHT),true);

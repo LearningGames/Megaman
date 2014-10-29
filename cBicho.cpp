@@ -297,9 +297,7 @@ void cBicho::Ostion(int *map)
 	live += 1;
 	if (live == 5){
 		live = 0;
-		PlaySound("./shout.wav", NULL, SND_ASYNC);
 	}
-	else PlaySound("./hit.wav", NULL, SND_ASYNC);
 	if (!jumping)
 	{
 		if (CollidesMapFloor(map))

@@ -44,6 +44,8 @@
     <OutDir>Debug\</OutDir>
     <IntDir>Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3-win32-x86;\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3\include;\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3;$(IncludePath)</IncludePath>
+    <LibraryPath>\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3\lib\x86;\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3\lib;\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3-win32-x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>Release\</OutDir>
@@ -67,9 +69,10 @@
       <OutputFile>$(OutDir)2DEngine.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)2DEngine.pdb</ProgramDatabaseFile>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3-win32-x86;\\psf\Home\Desktop\PROJECTE_MEGAMAN\SDL2-2.0.3;C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2main.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
