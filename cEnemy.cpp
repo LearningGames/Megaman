@@ -11,19 +11,25 @@ cEnemy::cEnemy(void)
 }
 cEnemy::~cEnemy(void){}
 
-void cEnemy::Logic(int *map, cRect *playerShot)
+void cEnemy::Logic(int *map, cRect *playerShot, cPlayer player)
 {
 	if (alive && GetState() != STATE_DIE) {
+		cRect playerArea;
+		player.GetArea(&playerArea);
+		if (Collides(&playerArea)) {
+			OutputDebugString("Collision Player \n");
+			player.Jump(map);
+		}
 		if (Collides(playerShot)) {
 			Die();
 		}
-		else if (!CollidesMapFloor(map,true)) {
+		/*else if (!CollidesMapFloor(map,true)) {
 			if (GetState() == STATE_WALKLEFT) MoveRight(map);
 			else if (GetState() == STATE_WALKRIGHT) MoveLeft(map);
 		}
 		else if (GetState() == STATE_WALKLEFT) MoveLeft(map);
 		else if (GetState() == STATE_WALKRIGHT) MoveRight(map);
-		else MoveRight(map);
+		else MoveRight(map);*/
 	}
 	else if (alive) {
 		deadtime++;

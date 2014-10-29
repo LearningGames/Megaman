@@ -40,6 +40,9 @@ private:
 	cPlayer Player;
 	cData Data;
 	cEnemy Enemies[ENEMIES_1];
+	cRect EnemiesPosition[ENEMIES_1];
+	cRect EnemiesShot[ENEMIES_2];
+	cRect EnemiesPosition2[ENEMIES_2];
 	cEnemy2 Enemies2[ENEMIES_2];
 	cBoss1 BurstMan;
 };

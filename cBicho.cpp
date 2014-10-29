@@ -57,21 +57,23 @@ void cBicho::GetWidthHeight(int *width,int *height)
 }
 bool cBicho::Collides(cRect *rc)
 {
-	char s[256];
-	sprintf(s, "Enemy x: %d x+w: %d y: %d y+h %d \n", x, x+w, y, y+h);
-	//OutputDebugStringA(s);
-	sprintf(s, "Shot: left: %d right: %d bottom %d top: %d \n", rc->left, rc ->right, rc->bottom, rc->top);
-	//OutputDebugStringA(s);
-	int centerX = rc->left; 
+	int centerX = rc->left;
 	centerX += rc->right;
 	centerX /= 2;
-	sprintf(s, "left %d right %d CenterX %d \n", rc->left, rc->right, centerX);
-	//OutputDebugStringA(s);
-	int centerY = rc->top; 
+	int centerY = rc->top;
 	centerY += rc->bottom;
 	centerY /= 2;
-	sprintf(s, "Center y %d \n", centerY);
-	//OutputDebugStringA(s);
+	/*if ((x<centerX) && (x + w>centerX) && (y<centerY) && (y + h>centerY)) {
+		char s[256];
+		sprintf(s, "Player x: %d x+w: %d y: %d y+h %d \n", x, x + w, y, y + h);
+		OutputDebugStringA(s);
+		sprintf(s, "Enemy left: %d right: %d bottom %d top: %d \n", rc->left, rc->right, rc->bottom, rc->top);
+		OutputDebugStringA(s);
+		sprintf(s, "CenterX %d \n", rc->left, rc->right, centerX);
+		OutputDebugStringA(s);
+		sprintf(s, "Center y %d \n", centerY);
+		OutputDebugStringA(s);
+	}*/
 	return ((x<centerX) && (x+w>centerX) && (y<centerY) && (y+h>centerY));
 }
 bool cBicho::CollidesMapWall(int *map,bool right)
@@ -108,8 +110,6 @@ bool cBicho::CollidesMapFloor(int *map, bool nextStep)
 		//OutputDebugStringA(s);
 		int xAux = x;
 		xAux += STEP_LENGTH;
-		sprintf(s, "xAux %d \n", xAux);
-		//OutputDebugStringA(s);
 		tile_x = xAux / TILE_SIZE;
 	}
 	else tile_x = x / TILE_SIZE;
@@ -310,10 +310,13 @@ void cBicho::Stop()
 }
 void cBicho::Jump(int *map)
 {
+	OutputDebugString("jump\n");
 	if(!jumping)
 	{
+		OutputDebugString("not jumping ");
 		if(CollidesMapFloor(map, false))
 		{
+			OutputDebugString("jumping true");
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
@@ -322,6 +325,7 @@ void cBicho::Jump(int *map)
 				state = STATE_JUMP_UP_LEFT;
 			else state = STATE_JUMP_UP_RIGHT;
 		}
+		OutputDebugString("\n");
 	}
 }
 
@@ -369,10 +373,11 @@ void cBicho::Ostion(int *map)
 
 void cBicho::Hited()
 {
+	OutputDebugString("Player hited \n");
 	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT) {
 	}
 	else {
-		x -= STEP_LENGTH;
+		x -= STEP_LENGTH*3;
 		state = STATE_HITED;
 	}
 		
@@ -456,55 +461,87 @@ void cBicho::ShotLogic(bool enemy)
 	}
 }
 
-void cBicho::Logic(int *map)
+bool cBicho::CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
+{
+	char s[256];
+	sprintf(s, "CollideWithSomething \n");
+	OutputDebugStringA(s);
+	sprintf(s, "EnemyPos %d \n", sizeEnemies1);
+	OutputDebugStringA(s);
+	for (int i = 0; i < sizeEnemies1; ++i) {
+		if (Collides(&EnemiesPosition[i])) return true;
+	}
+	sprintf(s, "EnemyPos2 %d \n", sizeEnemies2);
+	OutputDebugStringA(s);
+	for (int i = 0; i < sizeEnemies2; ++i) {
+		sprintf(s, "Heli x %d y %d \n", EnemiesPosition2[i].right, EnemiesPosition2[i].top);
+		OutputDebugStringA(s);
+		if (Collides(&EnemiesPosition2[i])) return true;
+	}
+	for (int i = 0; i < sizeShot; ++i) {
+		if (Collides(&EnemiesShot[i])) return true;
+	}
+	return false;
+}
+
+void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
 	float alfa;
 
-	if (shooting) {
-		ShotLogic(false);
-	}
+	/*if (CollideWithSomething(EnemiesPosition, sizeEnemies1, EnemiesPosition2, sizeEnemies2, EnemiesShot, sizeShot)) {
+		char s[256];
+		sprintf(s, "Collision");
+		OutputDebugStringA(s);
+	}*/
+	//else {
 
-	if(jumping)
-	{
-		jump_alfa += JUMP_STEP;
-		
-		if(jump_alfa == 180)
-		{
-			jumping = false;
-			ostion = false;
-			y = jump_y;
+		if (shooting) {
+			ShotLogic(false);
 		}
-		else
+
+		if (jumping)
 		{
-			alfa = ((float)jump_alfa) * 0.017453f;
-			y = jump_y + (int)( ((float)JUMP_HEIGHT) * sin(alfa) );
-		
-			if(jump_alfa > 90)
+			OutputDebugString("jumping logic\n");
+			jump_alfa += JUMP_STEP;
+
+			if (jump_alfa == 180)
 			{
-				//Over floor?
-				ostion = !CollidesMapFloor(map, false);
-				jumping = !CollidesMapFloor(map, false);
-				//ESTA CAIENT DESPRES DE SALTAR
-				if (ostion){
-					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
-						state = STATE_FALLING_LEFT;
+				jumping = false;
+				ostion = false;
+				y = jump_y;
+			}
+			else
+			{
+				alfa = ((float)jump_alfa) * 0.017453f;
+				y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
+
+				if (jump_alfa > 90)
+				{
+					//Over floor?
+					ostion = !CollidesMapFloor(map, false);
+					jumping = !CollidesMapFloor(map, false);
+					//ESTA CAIENT DESPRES DE SALTAR
+					if (ostion){
+						if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+							state = STATE_FALLING_LEFT;
+						}
+						else state = STATE_FALLING_RIGHT;
 					}
-					else state = STATE_FALLING_RIGHT;
 				}
 			}
 		}
-	}
-	else
-	{
-		//Over floor?
-		if (!CollidesMapFloor(map, false)){
-			y -= (2 * STEP_LENGTH);
-			//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
-				state = STATE_FALLING_LEFT;
-			else state = STATE_FALLING_RIGHT;
+		else
+		{
+			//Over floor?
+			if (!CollidesMapFloor(map, false)){
+				y -= (2 * STEP_LENGTH);
+				//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
+				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+					state = STATE_FALLING_LEFT;
+				else state = STATE_FALLING_RIGHT;
+			}
 		}
-	}
+	//}
 }
 
 void cBicho::NextFrame(int max)
@@ -527,11 +564,5 @@ int cBicho::GetState()
 }
 void cBicho::SetState(int s)
 {
-	if (s == STATE_DIE) OutputDebugString("setStateDIE");
-	char sAux[256];
-	sprintf(sAux, "state %d \n", GetState());
-	OutputDebugString(sAux);
 	state = s;
-	sprintf(sAux, "state2 %d\n", GetState());
-	OutputDebugString(sAux);
 }
