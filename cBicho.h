@@ -53,6 +53,7 @@ public:
 	void GetWidthHeight(int *w,int *h);
 
 	bool Collides(cRect *rc);
+	bool CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
 	bool CollidesMapWall(int *map, bool right);
 	bool CollidesMapFloor(int *map, bool nextStep);
 
@@ -67,7 +68,7 @@ public:
 	void Jump(int *map);
 	void Ostion(int *map);
 	void Stop();
-	void Logic(int *map);
+	void Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
 
 	//Shooting functions
 	//bool IsHited(cEnemy Enemies[], int size);

@@ -33,12 +33,8 @@ void cEnemy2::Logic(int *map, cRect *playerShot)
 	}
 	int x, y;
 	GetPosition(&x, &y);
-	char sAux[256];
-	sprintf(sAux, "stateLogic %d \n", GetState());
-	OutputDebugString(sAux);
 	if (alive && GetState() != STATE_DIE) {
 		if (Collides(playerShot)) {
-			OutputDebugString("Die \n");
 			Die();
 		}
 		else if (y > initialY + maxStep) {		
@@ -88,7 +84,6 @@ void cEnemy2::MoveUp(int *map)
 }
 
 void cEnemy2::Die() {
-	OutputDebugString("SetStateEnemy \n");
 	SetState(STATE_DIE);
 }
 
@@ -105,44 +100,34 @@ bool cEnemy2::IsHited(int xRival, int yRival){
 
 void cEnemy2::Draw(int tex_id)
 {
-	OutputDebugString("Draw \n");
 	if (alive) {
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
-		char s[256];
-		sprintf(s, "state %d", GetState());
-		OutputDebugString(s);
 		switch (GetState())
 		{
 			//1
 		case STATE_LOOKLEFT:
-			OutputDebugString("LOOK_LEFT \n");
 			xo = 6.0f * size;	yo = 3.0f*size;
 			break;
 			//4
 		case STATE_LOOKRIGHT:
-			OutputDebugString("LOOK_RIGHT \n");
 			xo = 10.0f * size; yo = 3.0f*size;
 			break;
 			//1..3
 		case STATE_WALKLEFT:
-			OutputDebugString("WALK_LEFT \n");
 			xo = (6.0f * size) - (GetFrame()* size);	yo = 3.0f*size;
 			NextFrame(4);
 			break;
 			//4..6
 		case STATE_WALKRIGHT:
-			OutputDebugString("WALK_RIGHT \n");
 			xo = (size * 7) + (GetFrame()* size); yo = 3.0f*size;
 			NextFrame(4);
 			break;
 		case STATE_DIE:
-			OutputDebugString("STATE_DIE");
 			xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
 			NextFrame(7);
 			break;
 		default:
-			OutputDebugString("default");
 			break;
 		}
 		xf = xo + size;

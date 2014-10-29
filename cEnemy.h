@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cBicho.h"
+#include "cPlayer.h"
 
 #define FRAME_DELAY		3
 #define STEP_LENGTH		1
@@ -20,7 +21,7 @@ public:
 	void Stop();
 	/*void Logic(int *map);*/
 
-	void Logic(int *map, cRect *playerShot);
+	void Logic(int *map, cRect *playerShot, cPlayer player);
 	void Die();
 
 	bool IsHited(int xRival, int yRival);
