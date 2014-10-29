@@ -78,14 +78,24 @@ bool cBicho::CollidesMapWall(int *map,bool right)
 	return false;
 }
 
-bool cBicho::CollidesMapFloor(int *map)
+bool cBicho::CollidesMapFloor(int *map, bool nextStep)
 {
 	int tile_x, tile_y;
 	int width_tiles;
 	bool on_base;
 	int i;
 
-	tile_x = x / TILE_SIZE;
+	if (nextStep) {
+		char s[256];
+		sprintf(s, "x %d \n", x);
+		OutputDebugStringA(s);
+		int xAux = x;
+		xAux += STEP_LENGTH;
+		sprintf(s, "xAux %d \n", xAux);
+		OutputDebugStringA(s);
+		tile_x = xAux / TILE_SIZE;
+	}
+	else tile_x = x / TILE_SIZE;
 	tile_y = y / TILE_SIZE;
 
 	width_tiles = w / TILE_SIZE;
@@ -97,8 +107,9 @@ bool cBicho::CollidesMapFloor(int *map)
 	{
 		if ((y % TILE_SIZE) == 0)
 		{
-			if (map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)] != 0)
+			if (map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)] != 0) {
 				on_base = true;
+			}
 		}
 		else
 		{
@@ -280,7 +291,7 @@ void cBicho::Jump(int *map)
 {
 	if(!jumping)
 	{
-		if(CollidesMapFloor(map))
+		if(CollidesMapFloor(map, false))
 		{
 			jumping = true;
 			jump_alfa = 0;
@@ -303,7 +314,7 @@ void cBicho::Ostion(int *map)
 	if (live == 5) live = 0;
 	if (!jumping)
 	{
-		if (CollidesMapFloor(map))
+		if (CollidesMapFloor(map, false))
 		{
 			ostion = true;
 			jumping = true;
@@ -316,7 +327,7 @@ void cBicho::Ostion(int *map)
 	}
 }
 
-bool cBicho::IsHited(cEnemy Enemies[], int size){
+/*bool cBicho::IsHited(cEnemy Enemies[], int size){
 	bool mandao = false;
 	for (int i = 0; i < size; ++i) {
 		int xRival, yRival;
@@ -331,7 +342,7 @@ bool cBicho::IsHited(cEnemy Enemies[], int size){
 
 	}
 	return false;
-}
+}*/
 
 void cBicho::Hited()
 {
@@ -439,8 +450,8 @@ void cBicho::Logic(int *map)
 			if(jump_alfa > 90)
 			{
 				//Over floor?
-				ostion = !CollidesMapFloor(map);
-				jumping = !CollidesMapFloor(map);
+				ostion = !CollidesMapFloor(map, false);
+				jumping = !CollidesMapFloor(map, false);
 				//ESTA CAIENT DESPRES DE SALTAR
 				if (ostion){
 					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
@@ -454,7 +465,7 @@ void cBicho::Logic(int *map)
 	else
 	{
 		//Over floor?
-		if (!CollidesMapFloor(map)){
+		if (!CollidesMapFloor(map, false)){
 			y -= (2 * STEP_LENGTH);
 			//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
 			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)

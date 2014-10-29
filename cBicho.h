@@ -2,9 +2,7 @@
 
 #include "cTexture.h"
 #include "Globals.h"
-#include "cEnemy.h"
-#include <stdio.h>
-using namespace std;
+//#include "cEnemy.h"
 
 #define FRAME_DELAY		3
 #define STEP_LENGTH		3
@@ -49,8 +47,8 @@ public:
 	void GetWidthHeight(int *w,int *h);
 
 	bool Collides(cRect *rc);
-	bool CollidesMapWall(int *map,bool right);
-	bool CollidesMapFloor(int *map);
+	bool CollidesMapWall(int *map, bool right);
+	bool CollidesMapFloor(int *map, bool nextStep);
 
 	void GetArea(cRect *rc);
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
@@ -65,7 +63,7 @@ public:
 	void Logic(int *map);
 
 	//Shooting functions
-	bool IsHited(cEnemy Enemies[], int size);
+	//bool IsHited(cEnemy Enemies[], int size);
 	void Hited();
 	void Shot(int *map, bool isRight);
 	bool IsShooting();

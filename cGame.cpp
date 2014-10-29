@@ -33,7 +33,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(193,4);
+	Player.SetTile(3,3);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -75,15 +75,11 @@ void cGame::InitEnemies(int level) {
 		//First Monster
 		cEnemy Monster = cEnemy();
 		Monster.SetWidthHeight(35, 35);
-		Monster.SetMaxStep(40);
 		Monster.SetTile(16, 6);
-		Monster.SetWidthHeight(35, 35);
 		Monster.SetState(STATE_LOOKRIGHT);
 		Enemies[0] = Monster;
-		Monster.SetMaxStep(60);
 		Monster.SetTile(42, 9);
 		Enemies[1] = Monster;
-		Monster.SetMaxStep(62);
 		Monster.SetTile(78, 5);
 		Enemies[2] = Monster;
 	}
@@ -156,14 +152,14 @@ bool cGame::Process()
 	//Monster.Move(Scene.GetMap());
 	//Game Logic
 
-	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
+//	if (Player.IsHited(Enemies, ENEMIES_1)) Player.Ostion(Scene.GetMap());
 
-	else Player.Logic(Scene.GetCollisionMap());
-	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies[i].Logic(Scene.GetMap(), xShot, yShot);
+	/*else */ Player.Logic(Scene.GetCollisionMap());
+	for (int i = 0; i < ENEMIES_1; ++i) {
+		Enemies[i].Logic(Scene.GetCollisionMap(), xShot, yShot);
 	}
 	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies2[i].Logic(Scene.GetMap(), xShot, yShot);
+		Enemies2[i].Logic(Scene.GetCollisionMap(), xShot, yShot);
 	}
 	return res;
 }
