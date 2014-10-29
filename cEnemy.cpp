@@ -13,17 +13,11 @@ cEnemy::~cEnemy(void){}
 
 void cEnemy::Logic(int *map, int xShot, int yShot)
 {
-	char s[256];
-	sprintf(s, "Enemy Logic \n");
-	OutputDebugStringA(s);
 	if (alive && GetState() != STATE_DIE) {
 		if (IsHited(xShot, yShot)) {
 			Die();
 		}
 		else if (!CollidesMapFloor(map,true)) {
-			char s[256];
-			sprintf(s, "Not Collides");
-			OutputDebugStringA(s);
 			if (GetState() == STATE_WALKLEFT) MoveRight(map);
 			else if (GetState() == STATE_WALKRIGHT) MoveLeft(map);
 		}
@@ -42,7 +36,6 @@ void cEnemy::Die() {
 }
 void cEnemy::MoveLeft(int *map)
 {
-	OutputDebugStringA("MoveLeft \n");
 	int xEnemy, yEnemy;
 	GetPosition(&xEnemy, &yEnemy);
 	SetPosition(xEnemy - STEP_LENGTH, yEnemy);
@@ -58,7 +51,6 @@ void cEnemy::MoveRight(int *map)
 	int xEnemy, yEnemy;
 	GetPosition(&xEnemy, &yEnemy);
 	SetPosition(xEnemy + STEP_LENGTH, yEnemy);
-		OutputDebugStringA("MoveRight \n");
 		if (GetState() != STATE_WALKRIGHT)
 		{
 			SetState(STATE_WALKRIGHT);
@@ -93,11 +85,8 @@ bool cEnemy::IsHited(int xRival, int yRival){
 void cEnemy::Draw(int tex_id)
 {
 	if (alive) {
-		OutputDebugString("Draw Enemy \n");
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
-
-
 	switch (GetState())
 	{
 		//1

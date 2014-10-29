@@ -19,9 +19,6 @@
 
 #define STATE_DIE			8	
 
-//New defines
-#define SHOT_STEP			5
-#define DIST_SHOT			150
 
 class cEnemy : public cBicho
 {

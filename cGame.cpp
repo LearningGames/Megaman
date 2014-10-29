@@ -93,6 +93,9 @@ void cGame::InitEnemies2(int level) {
 		Monster.SetWidthHeight(35, 35);
 		Monster.SetMaxStep(22);
 		Monster.SetTile(35, 7);
+		int x, y;
+		Monster.GetPosition(&x, &y);
+		Monster.SetInitialPosition(y);
 		Monster.SetWidthHeight(35, 35);
 		Monster.SetState(STATE_LOOKLEFT);
 		Monster.SetShotDimensions(20, 26);
@@ -145,7 +148,7 @@ bool cGame::Process()
 	else if (keys[GLUT_KEY_RIGHT])	Player.MoveRight(Scene.GetCollisionMap());
 	else Player.Stop();
 
-	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
+	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT),false);
 	//Get if the shot collides some enemy
 	int xShot, yShot;
 	Player.GetShotPosition(&xShot, &yShot);

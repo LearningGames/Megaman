@@ -25,6 +25,9 @@
 #define SHOT_STEP			5
 #define DIST_SHOT			150
 
+#define SHOT_ENEMY_STEP			2
+#define DIST_ENEMY_SHOT			100
+
 class cRect
 {
 public:
@@ -65,11 +68,13 @@ public:
 	//Shooting functions
 	//bool IsHited(cEnemy Enemies[], int size);
 	void Hited();
-	void Shot(int *map, bool isRight);
+	void Shot(int *map, bool isRight, bool ignoreShooting);
+	void ShotLogic(bool enemy);
 	bool IsShooting();
 	bool IsShootingRight();
 	void SetShotDimensions(int width, int height);
 	void GetShotPosition(int *xResult, int *yResult);
+	void SetShotPosition(int xResult, int yResult);
 	void SetLiveBar(int width, int height);
 
 	int  GetState();

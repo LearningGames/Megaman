@@ -10,8 +10,10 @@ cBicho::cBicho(void)
 	seq=0;
 	delay=0;
 	live = 0;
+	shooting = false;
 	ostion = false;
 	jumping = false;
+	shotProgress = 0;
 }
 
 cBicho::~cBicho(void){}
@@ -88,11 +90,11 @@ bool cBicho::CollidesMapFloor(int *map, bool nextStep)
 	if (nextStep) {
 		char s[256];
 		sprintf(s, "x %d \n", x);
-		OutputDebugStringA(s);
+		//OutputDebugStringA(s);
 		int xAux = x;
 		xAux += STEP_LENGTH;
 		sprintf(s, "xAux %d \n", xAux);
-		OutputDebugStringA(s);
+		//OutputDebugStringA(s);
 		tile_x = xAux / TILE_SIZE;
 	}
 	else tile_x = x / TILE_SIZE;
@@ -354,9 +356,10 @@ void cBicho::Hited()
 		
 }
 
-void cBicho::Shot(int *map, bool isRight)
+void cBicho::Shot(int *map, bool isRight, bool ignoreShooting)
 {
-	if (!shooting) {
+	if (!shooting || ignoreShooting) {
+		OutputDebugString("not shooting \n");
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;
@@ -388,6 +391,11 @@ void cBicho::GetShotPosition(int *xResult, int *yResult) {
 	*yResult = yShot;
 }
 
+void cBicho::SetShotPosition(int xResult, int yResult) {
+	xShot = xResult;
+	yShot = yResult;
+}
+
 bool cBicho::ShotCollidesWall(int *map)
 {
 	int xo, yo, xf, yf, tile_x, tile_y;
@@ -410,8 +418,21 @@ bool cBicho::ShotCollidesWall(int *map)
 		tile_y = yo / TILE_SIZE;
 		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
 	}
-	OutputDebugStringA("return false");
 	return false;
+}
+
+void cBicho::ShotLogic(bool enemy)
+{
+	shotProgress += SHOT_ENEMY_STEP;
+	//We want to know if the shot collides with something
+	if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_ENEMY_SHOT) {
+		shooting = false;
+		shotProgress = 0;
+	}
+	else {
+		if (isRightShot) xShot += SHOT_ENEMY_STEP;
+		else xShot -= SHOT_ENEMY_STEP;
+	}
 }
 
 void cBicho::Logic(int *map)
@@ -419,16 +440,7 @@ void cBicho::Logic(int *map)
 	float alfa;
 
 	if (shooting) {
-		shotProgress += SHOT_STEP;
-		//We want to know if the shot collides with something
-			if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_SHOT) {
-			shooting = false;
-			shotProgress = 0;
-		}
-		else {
-			if (isRightShot) xShot += SHOT_STEP;
-			else xShot -= SHOT_STEP;
-		}
+		ShotLogic(false);
 	}
 
 	if(jumping)
