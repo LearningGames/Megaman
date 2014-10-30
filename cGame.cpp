@@ -4,7 +4,8 @@
 
 
 cGame::cGame(void)
-{}
+{
+}
 
 cGame::~cGame(void)
 {
@@ -28,6 +29,10 @@ bool cGame::Init()
 	glEnable(GL_ALPHA_TEST);
 
 	//Scene initialization
+
+	res = Data.LoadImage(IMG_MENU, "menu.png", GL_RGBA);
+	if(!res) return false;
+
 	res = Data.LoadImage(IMG_BLOCKS,"tile01.png",GL_RGBA);
 	if(!res) return false;
 	res = Scene.LoadLevel(level);
@@ -48,9 +53,12 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_SHOTLEFT, "shootLeft.png", GL_RGBA);
 	if (!res) return false;
 	Player.SetShotDimensions(20, 26);
-
+	
+	//Barra vida initialization
 	res = Data.LoadImage(IMG_GUI_MEGA, "guimega.png", GL_RGBA);
 	Player.SetLiveBar(80, 16);
+
+
 
 	//Monster initialization
 	res = Data.LoadImage(IMG_MONSTER, "megaman.png", GL_RGBA);
