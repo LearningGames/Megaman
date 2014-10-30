@@ -19,40 +19,37 @@ void cBoss1::Logic(int *map)
 	}
 	if (IsShooting()) ShotLogic(false);
 	if (IsJumping()) {
-		char s[256];
-		sprintf(s, "State %d \n", GetState());
-		OutputDebugString(s);
 		if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-			OutputDebugString("MoveLeft \n");
-			MoveLeft(map);
+			MoveLeft(map,true);
 		}
 		else {
-			OutputDebugString("MoveRight \n");
-			MoveRight(map);
+			MoveRight(map,true);
 		}
-		JumpLogic(map);
+		JumpLogic(map,true);
 	}
 	else if (!CollidesMapFloor(map, false)) {
-		OutputDebugString("Falling \n");
 		FallingLogic(map);
 	}
 	else {
 		++shootingTime;
-		OutputDebugString("Shoting \n");
 		if (shootingTime >= SHOT_TIME) {
 			Jump(map);
 			shootingTime = 0;
 		}
 		else if (shootingTime >= 3) {
-			if (shootingTime%20 == 0) 
-				if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT)
-					SetState(STATE_LOOKLEFT);
-				else SetState(STATE_LOOKRIGHT); 
-		}
-		else {
 			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT)
+				SetState(STATE_SHOOTLEFT);
+			else SetState(STATE_SHOOTRIGHT);
+			if (shootingTime % 20 == 0)
+				OutputDebugString("Shot");
+		}
+		else if (shootingTime == 1) {
+			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
 				SetState(STATE_LOOKRIGHT);
-			else SetState(STATE_LOOKLEFT);
+			}
+			else {
+				SetState(STATE_LOOKLEFT);
+			}
 		}
 	}
 }
@@ -79,7 +76,7 @@ void cBoss1::Draw(int tex_id)
 		NextFrame(3);
 		break;
 	case STATE_JUMP_UP_RIGHT:
-		xo = 0.0f; yo = 0.0f*sizey;
+		xo = 1.0f*size; yo = 1.0f*sizey;
 		NextFrame(7);
 		break;
 	case STATE_JUMP_UP_LEFT:
@@ -87,7 +84,7 @@ void cBoss1::Draw(int tex_id)
 		NextFrame(7);
 		break;
 	case STATE_FALLING_RIGHT:
-		xo = 2.0f*size; yo = 0.0f;
+		xo = 2.0f*size; yo = 1.0f*sizey;
 		NextFrame(7);
 		break;
 	case STATE_FALLING_LEFT:

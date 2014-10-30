@@ -42,7 +42,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(5, 4);
+	Player.SetTile(189, 4);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -77,7 +77,7 @@ bool cGame::Init()
 
 void cGame::InitBoss() {
 	BurstMan.SetWidthHeight(54, 72);
-	BurstMan.SetTile(192, 4);
+	BurstMan.SetTile(194, 4);
 	BurstMan.SetWidthHeight(54, 72);
 	BurstMan.SetState(STATE_LOOKLEFT);
 }
@@ -156,8 +156,8 @@ bool cGame::Process()
 	if (keys[27])	res = false;
 
 	if (keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
-	if (keys[GLUT_KEY_LEFT] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap());
-	else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap());
+	if (keys[GLUT_KEY_LEFT] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap(), false);
+	else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false);
 	else Player.Stop();
 
 	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));

@@ -253,11 +253,12 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 	glDisable(GL_TEXTURE_2D);
 }
 
-void cBicho::MoveLeft(int *map)
+void cBicho::MoveLeft(int *map, bool boss)
 {
 	int xaux;
 	int step = STEP_LENGTH;
 	if (ostion) step = 1;
+	if (boss) step = 5;
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
 	{
@@ -283,15 +284,17 @@ void cBicho::MoveLeft(int *map)
 	}	
 }
 
-void cBicho::MoveRight(int *map)
+void cBicho::MoveRight(int *map, bool boss)
 {
 	int xaux;
-
+	int step = STEP_LENGTH;
+	if (ostion) step = 1;
+	if (boss) step = 5;
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
 	{
 		xaux = x;
-		x += STEP_LENGTH;
+		x += step;
 
 		if(CollidesMapWall(map,true))
 		{
@@ -302,7 +305,7 @@ void cBicho::MoveRight(int *map)
 	//Advance, no problem
 	else
 	{
-		x += STEP_LENGTH;
+		x += step;
 
 		if(state != STATE_WALKRIGHT)
 		{
@@ -506,7 +509,7 @@ void cBicho::ShotLogic(bool enemy)
 	return false;
 }*/
 
-void cBicho::JumpLogic(int *map) {
+void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
 	OutputDebugString("jumping logic\n");
 	int step = JUMP_STEP;
@@ -515,6 +518,7 @@ void cBicho::JumpLogic(int *map) {
 		step = 6;
 		height = 40;
 	}
+	if (boss) height = 100;
 	jump_alfa += step;//JUMP_STEP;
 
 	if (jump_alfa == 180)
@@ -525,7 +529,7 @@ void cBicho::JumpLogic(int *map) {
 	}
 	else
 	{
-		if (ostion) MoveLeft(map);
+		if (ostion) MoveLeft(map, boss);
 		alfa = ((float)jump_alfa) * 0.017453f;
 		y = jump_y + (int)(((float)height) * sin(alfa));
 		if (jump_alfa > 90)
@@ -555,7 +559,7 @@ void cBicho::FallingLogic(int *map)
 void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
 	if (shooting) ShotLogic(false);
-	if (jumping) JumpLogic(map);
+	if (jumping) JumpLogic(map,false);
 	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
 }
 
