@@ -32,14 +32,14 @@
 
 
 //New defines
-#define SHOT_STEP			6
+#define SHOT_STEP			5
 #define DIST_SHOT			120
 #define SHOT_OFFSET_X		42
 #define SHOT_OFFSET_Y		20
 
 #define SHOT_ENEMY_STEP			2
 #define DIST_SHOT_ENEMY			80
-#define SHOT_BOSS_STEP			4
+#define SHOT_BOSS_STEP			3
 #define DIST_SHOT_BOSS			150
 
 
@@ -90,7 +90,7 @@ public:
 	void Stop();
 	void JumpLogic(int *map, bool boss);
 	void FallingLogic(int *map);
-	void Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
+	void Logic(int *map);
 
 	//Shooting functions
 	//bool IsHited(cEnemy Enemies[], int size);

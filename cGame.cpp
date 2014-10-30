@@ -174,13 +174,15 @@ bool cGame::Process()
 		if (Enemies2[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
 		Enemies2[i].GetArea(&EnemyPos);
 		Enemies2[i].GetShotArea(&EnemyShotPos);
+		if (Player.Collides(&EnemyShotPos)) Enemies2[i].EraseShot();
 		if (Enemies2[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
 	}
 	//Boss Area
 	BurstMan.GetArea(&EnemyPos);
 	BurstMan.GetShotArea(&EnemyShotPos);
+	if (Player.Collides(&EnemyShotPos)) BurstMan.EraseShot();
 	if (BurstMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
-	Player.Logic(Scene.GetCollisionMap(), EnemiesPosition, ENEMIES_1, EnemiesPosition2, ENEMIES_2, EnemiesShot, ENEMIES_2);
+	Player.Logic(Scene.GetCollisionMap());
 	if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
 	return res;
 }

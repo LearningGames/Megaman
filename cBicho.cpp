@@ -581,7 +581,7 @@ void cBicho::FallingLogic(int *map)
 		state = STATE_FALLING_LEFT;
 	else state = STATE_FALLING_RIGHT;
 }
-void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
+void cBicho::Logic(int *map)
 {
 	if (shooting) ShotLogic(PLAYER);
 	if (jumping) JumpLogic(map,false);
