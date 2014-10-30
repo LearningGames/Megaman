@@ -4,16 +4,14 @@
 
 cEnemy::cEnemy(void)
 {
-	seq = 0;
-	delay = 0;
-	alive = true;
-	deadtime = 0;
+	SetDeadTime(0);
 }
+
 cEnemy::~cEnemy(void){}
 
 void cEnemy::Logic(int *map, cRect *playerShot)
 {
-	if (alive && GetState() != STATE_DIE) {
+	if (IsAlive() && GetState() != STATE_DIE) {
 		if (Collides(playerShot)) {
 			Die();
 		}
@@ -25,9 +23,17 @@ void cEnemy::Logic(int *map, cRect *playerShot)
 		else if (GetState() == STATE_WALKRIGHT) MoveRight(map);
 		else MoveRight(map);*/
 	}
-	else if (alive) {
-		deadtime++;
-		if (deadtime > 30) alive = false;
+	else if (IsAlive()) {
+		int time = GetDeadTime();
+		char s[256];
+		sprintf(s, "DeadTime %d", time);
+		OutputDebugStringA(s);
+		time++;
+		SetDeadTime(time);
+		sprintf(s, "time++ %d", GetDeadTime());
+		if (GetDeadTime() > DEAD_TIME) {
+			SetAlive(false);
+		}
 	}
 }
 
@@ -42,8 +48,7 @@ void cEnemy::MoveLeft(int *map)
 	if (GetState() != STATE_WALKLEFT)
 		{
 			SetState(STATE_WALKLEFT);
-			seq = 0;
-			delay = 0;
+			ResetFrame();
 		}
 }
 void cEnemy::MoveRight(int *map)
@@ -54,8 +59,7 @@ void cEnemy::MoveRight(int *map)
 		if (GetState() != STATE_WALKRIGHT)
 		{
 			SetState(STATE_WALKRIGHT);
-			seq = 0;
-			delay = 0;
+			ResetFrame();
 		}
 }
 void cEnemy::Stop()
@@ -84,54 +88,54 @@ bool cEnemy::IsHited(int xRival, int yRival){
 
 void cEnemy::Draw(int tex_id)
 {
-	if (alive) {
+	if (IsAlive()) {
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
-	switch (GetState())
-	{
+		switch (GetState())
+		{
 		//1
-	case STATE_LOOKLEFT:
-		xo = 1.0f * size;	yo = 2.0f*size;
-		break;
-		//4
-	case STATE_LOOKRIGHT:
-		xo = 12.0f * size; yo = 2.0f*size;
-		break;
-		//1..3
-	case STATE_WALKLEFT:
-		xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
-		NextFrame(6);
-		break;
-		//4..6
-	case STATE_WALKRIGHT:
-		xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
-		NextFrame(6);
-		break;
-	case STATE_JUMP_UP_RIGHT:
-		xo = (size * 8.0f); yo = 2.0f*size;
-		NextFrame(4);
-		break;
-	case STATE_JUMP_UP_LEFT:
-		xo = (size * 5.0f); yo = 2.0f*size;
-		NextFrame(7);
-		break;
-	case STATE_FALLING_RIGHT:
-		xo = (size * 7.0f); yo = 2.0f*size;
-		NextFrame(7);
-		break;
-	case STATE_FALLING_LEFT:
-		xo = (size * 6.0f); yo = 2.0f*size;
-		NextFrame(7);
-		break;
-		//8
-	case STATE_DIE:
-		xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
-		NextFrame(7);
-		break;
-		}
-		xf = xo + size;
-		yf = yo + size;
+		case STATE_LOOKLEFT:
+			xo = 1.0f * size;	yo = 2.0f*size;
+			break;
+			//4
+		case STATE_LOOKRIGHT:
+			xo = 12.0f * size; yo = 2.0f*size;
+			break;
+			//1..3
+		case STATE_WALKLEFT:
+			xo = (6.0f * size) - (GetFrame()* size);	yo = 2.0f*size;
+			NextFrame(6);
+			break;
+			//4..6
+		case STATE_WALKRIGHT:
+			xo = (size * 7) + (GetFrame()* size); yo = 2.0f*size;
+			NextFrame(6);
+			break;
+		case STATE_JUMP_UP_RIGHT:
+			xo = (size * 8.0f); yo = 2.0f*size;
+			NextFrame(4);
+			break;
+		case STATE_JUMP_UP_LEFT:
+			xo = (size * 5.0f); yo = 2.0f*size;
+			NextFrame(7);
+			break;
+		case STATE_FALLING_RIGHT:
+			xo = (size * 7.0f); yo = 2.0f*size;
+			NextFrame(7);
+			break;
+		case STATE_FALLING_LEFT:
+			xo = (size * 6.0f); yo = 2.0f*size;
+			NextFrame(7);
+			break;
+			//8
+		case STATE_DIE:
+			xo = (size * 6) - (GetFrame()* size);	yo = 4.0f*size;
+			NextFrame(7);
+			break;
+			}
+			xf = xo + size;
+			yf = yo + size;
 
-		DrawRect(tex_id, xo, yf, xf, yo);
+			DrawRect(tex_id, xo, yf, xf, yo);
 	}
 }

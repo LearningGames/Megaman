@@ -51,6 +51,12 @@ public:
 	void GetTile(int *tx,int *ty);
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
+	bool IsAlive();
+	void SetAlive(bool aliveState);
+	void SetDeadTime(int time);
+	int GetDeadTime();
+
+	void ResetFrame();
 
 	bool Collides(cRect *rc);
 	bool CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
@@ -95,6 +101,9 @@ private:
 	int x,y;
 	int w,h;
 	int state;
+
+	bool isAlive;
+	int deadTime;
 
 	
 	bool jumping;

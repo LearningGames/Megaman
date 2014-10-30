@@ -12,6 +12,8 @@
 #define SHOT_STEP			3
 #define DIST_SHOT			100
 
+#define DEAD_TIME	30
+
 class cEnemy2 : public cBicho
 {
 public:
@@ -39,12 +41,7 @@ public:
 private:
 	int initialY;
 	int maxStep;
-	bool alive;
+
 	bool lookRight;
-	int deadtime;
-
-	bool startShoot;
 	bool movingDown;
-
-	int seq, delay;
 };

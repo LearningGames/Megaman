@@ -14,6 +14,8 @@ cBicho::cBicho(void)
 	ostion = false;
 	jumping = false;
 	shotProgress = 0;
+	isAlive = true;
+	deadTime = 0;
 }
 
 cBicho::~cBicho(void){}
@@ -54,6 +56,28 @@ void cBicho::GetWidthHeight(int *width,int *height)
 {
 	*width = w;
 	*height = h;
+}
+
+bool cBicho::IsAlive() {
+	return isAlive;
+}
+
+void cBicho::SetAlive(bool aliveState)
+{
+	isAlive = aliveState;
+}
+
+void cBicho::SetDeadTime(int time) {
+	deadTime = time;
+}
+
+int cBicho::GetDeadTime() {
+	return deadTime;
+}
+
+void cBicho::ResetFrame() {
+	seq = 0;
+	delay = 0;
 }
 bool cBicho::Collides(cRect *rc)
 {
@@ -255,8 +279,7 @@ void cBicho::MoveLeft(int *map)
 			if (ostion) state = STATE_JUMP_HIT_LEFT;
 			else if (jumping) state = STATE_JUMP_UP_LEFT;
 			else state = STATE_WALKLEFT;
-			seq = 0;
-			delay = 0;
+			ResetFrame();
 		}
 	}
 	
@@ -288,8 +311,7 @@ void cBicho::MoveRight(int *map)
 			if (ostion) state = STATE_JUMP_HIT_RIGHT;
 			else if (jumping) state = STATE_JUMP_UP_RIGHT;
 			else state = STATE_WALKRIGHT;
-			seq = 0;
-			delay = 0;
+			ResetFrame();
 		}
 	}
 }

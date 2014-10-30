@@ -4,11 +4,6 @@
 
 cEnemy2::cEnemy2(void)
 {
-	seq = 0;
-	delay = 0;
-
-	alive = true;
-	deadtime = 0;
 	movingDown = true;
 }
 cEnemy2::~cEnemy2(void){}
@@ -33,7 +28,7 @@ void cEnemy2::Logic(int *map, cRect *playerShot)
 	}
 	int x, y;
 	GetPosition(&x, &y);
-	if (alive && GetState() != STATE_DIE) {
+	if (IsAlive() && GetState() != STATE_DIE) {
 		if (Collides(playerShot)) {
 			Die();
 		}
@@ -50,9 +45,11 @@ void cEnemy2::Logic(int *map, cRect *playerShot)
 		}
 		else MoveUp(map);
 	}
-	else if (alive) {
-		deadtime++;
-		if (deadtime > 30) alive = false;
+	else if (IsAlive()) {
+		int time = GetDeadTime();
+		++time;
+		SetDeadTime(time);
+		if (GetDeadTime() > DEAD_TIME) SetAlive(false);
 	}
 }
 
@@ -100,7 +97,7 @@ bool cEnemy2::IsHited(int xRival, int yRival){
 
 void cEnemy2::Draw(int tex_id)
 {
-	if (alive) {
+	if (IsAlive()) {
 		float xo, yo, xf, yf;
 		float size = 1.0f / 14.0f;
 		switch (GetState())

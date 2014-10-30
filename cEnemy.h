@@ -8,6 +8,8 @@
 #define JUMP_STEP		4
 #define MAX_STEP		60	
 
+#define DEAD_TIME	30
+
 class cEnemy : public cBicho
 {
 public:
@@ -26,10 +28,4 @@ public:
 	bool IsHited(int xRival, int yRival);
 
 	void Draw(int tex_id);
-
-private:
-	bool alive;
-	int deadtime;
-
-	int seq, delay;
 };
