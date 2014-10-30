@@ -167,7 +167,7 @@ bool cGame::Process()
 		Enemies[i].Logic(Scene.GetCollisionMap(), &playerShot);
 		cRect EnemyPos;
 		Enemies[i].GetArea(&EnemyPos);
-		if (Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+		if (Enemies[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
 	}
 	for (int i = 0; i < ENEMIES_2; ++i) {
 		Enemies2[i].Logic(Scene.GetCollisionMap(), &playerShot);
@@ -175,7 +175,7 @@ bool cGame::Process()
 		cRect EnemyShotPos;
 		Enemies2[i].GetArea(&EnemyPos);
 		Enemies2[i].GetShotArea(&EnemyShotPos);
-		if (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos)) Player.Ostion(Scene.GetCollisionMap());
+		if (Enemies2[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
 	}
 
 	Player.Logic(Scene.GetCollisionMap(), EnemiesPosition, ENEMIES_1, EnemiesPosition2, ENEMIES_2, EnemiesShot, ENEMIES_2);
