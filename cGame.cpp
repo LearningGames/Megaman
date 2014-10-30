@@ -172,8 +172,8 @@ bool cGame::Process()
 		if (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos)) Player.Ostion(Scene.GetCollisionMap());
 	}
 
-	//Game Logic
 	Player.Logic(Scene.GetCollisionMap(), EnemiesPosition, ENEMIES_1, EnemiesPosition2, ENEMIES_2, EnemiesShot, ENEMIES_2);
+	BurstMan.Logic(Scene.GetCollisionMap());
 	return res;
 }
 

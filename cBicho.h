@@ -52,6 +52,7 @@ public:
 	void SetWidthHeight(int w,int h);
 	void GetWidthHeight(int *w,int *h);
 	bool IsAlive();
+	bool IsJumping();
 	void SetAlive(bool aliveState);
 	void SetDeadTime(int time);
 	int GetDeadTime();
@@ -75,6 +76,7 @@ public:
 	void Ostion(int *map);
 	void Stop();
 	void JumpLogic(int *map);
+	void FallingLogic(int *map);
 	void Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
 
 	//Shooting functions

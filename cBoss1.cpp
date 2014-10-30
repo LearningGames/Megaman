@@ -11,7 +11,11 @@ cBoss1::~cBoss1(void){}
 
 void cBoss1::Logic(int *map)
 {
-	SetState(STATE_LOOKLEFT);
+	Jump(map);
+	if (IsShooting()) ShotLogic(false);
+	if (IsJumping()) JumpLogic(map);
+	else FallingLogic(map);
+	//SetState(STATE_LOOKLEFT);
 }
 
 //Draw functions
@@ -35,15 +39,15 @@ void cBoss1::Draw(int tex_id)
 		NextFrame(7);
 		break;
 	case STATE_JUMP_UP_LEFT:
-		xo = 0.0f; yo = 1.0f*sizey;
+		xo = 1.0f*size; yo = 0.0f;
 		NextFrame(7);
 		break;
 	case STATE_FALLING_RIGHT:
-		xo = 0.0f; yo = 1.0f*sizey;
+		xo = 2.0f*size; yo = 0.0f;
 		NextFrame(7);
 		break;
 	case STATE_FALLING_LEFT:
-		xo = 0.0f; yo = 1.0f*sizey;
+		xo = 2.0f*size; yo = 0.0f;
 		NextFrame(7);
 		break;
 	case STATE_HITED:
