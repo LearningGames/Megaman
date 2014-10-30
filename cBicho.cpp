@@ -545,20 +545,17 @@ void cBicho::JumpLogic(int *map) {
 
 void cBicho::FallingLogic(int *map)
 {
-	//Over floor?
-	if (!CollidesMapFloor(map, false)){
-		y -= (2 * STEP_LENGTH);
-		//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
-		if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
-			state = STATE_FALLING_LEFT;
-		else state = STATE_FALLING_RIGHT;
-	}
+	y -= (2 * STEP_LENGTH);
+	//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
+	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+		state = STATE_FALLING_LEFT;
+	else state = STATE_FALLING_RIGHT;
 }
 void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
 	if (shooting) ShotLogic(false);
 	if (jumping) JumpLogic(map);
-	else FallingLogic(map);
+	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
 }
 
 void cBicho::NextFrame(int max)

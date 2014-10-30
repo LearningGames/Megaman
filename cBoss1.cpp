@@ -6,16 +6,20 @@ using namespace std;
 
 cBoss1::cBoss1(void)
 {
+	first = true;
 }
 cBoss1::~cBoss1(void){}
 
 void cBoss1::Logic(int *map)
 {
-	Jump(map);
+	if (first) {
+		Jump(map);
+		first = false;
+	}
 	if (IsShooting()) ShotLogic(false);
 	if (IsJumping()) JumpLogic(map);
-	else FallingLogic(map);
-	//SetState(STATE_LOOKLEFT);
+	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
+	else SetState(STATE_LOOKLEFT);
 }
 
 //Draw functions

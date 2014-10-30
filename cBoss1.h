@@ -27,5 +27,5 @@ public:
 	void DrawShot(int tex_id, bool isRight);
 
 private:
-	
+	bool first;
 };
