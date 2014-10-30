@@ -26,7 +26,7 @@ public:
 	void SetMaxStep(int max);
 
 
-	void Logic(int *map, cRect *playerShot);
+	bool Logic(int *map, cRect *playerShot);
 
 	void MoveDown(int *map);
 	void MoveUp(int *map);

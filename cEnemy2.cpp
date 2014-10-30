@@ -21,16 +21,18 @@ void cEnemy2::SetMaxStep(int max) {
 	maxStep = max;
 }
 
-void cEnemy2::Logic(int *map, cRect *playerShot)
+bool cEnemy2::Logic(int *map, cRect *playerShot)
 {
+	boolean result = false;
 	if (IsShooting()) {
-		ShotLogic(true);
+		ShotLogic(ENEMY2);
 	}
 	int x, y;
 	GetPosition(&x, &y);
 	if (IsAlive() && GetState() != STATE_DIE) {
 		if (Collides(playerShot)) {
 			Die();
+			result = true;
 		}
 		else if (y > initialY + maxStep) {		
 			MoveDown(map);
@@ -51,6 +53,7 @@ void cEnemy2::Logic(int *map, cRect *playerShot)
 		SetDeadTime(time);
 		if (GetDeadTime() > DEAD_TIME) SetAlive(false);
 	}
+	return result;
 }
 
 void cEnemy2::MoveDown(int *map)

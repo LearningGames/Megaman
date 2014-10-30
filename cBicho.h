@@ -24,15 +24,24 @@
 #define STATE_HITED			12
 #define STATE_DIE			13
 
+//Define type of Bicho
+#define PLAYER			0
+#define ENEMY1			1
+#define	ENEMY2			2
+#define BURSTMAN		3
+
 
 //New defines
-#define SHOT_STEP			5
-#define DIST_SHOT			150
+#define SHOT_STEP			6
+#define DIST_SHOT			120
 #define SHOT_OFFSET_X		42
 #define SHOT_OFFSET_Y		20
 
 #define SHOT_ENEMY_STEP			2
-#define DIST_ENEMY_SHOT			80
+#define DIST_SHOT_ENEMY			80
+#define SHOT_BOSS_STEP			4
+#define DIST_SHOT_BOSS			150
+
 
 class cRect
 {
@@ -87,12 +96,14 @@ public:
 	//bool IsHited(cEnemy Enemies[], int size);
 	void Hited();
 	void Shot(int *map, bool isRight);
-	void ShotLogic(bool enemy);
+	void ShotLogic(int type);
 	bool IsShooting();
 	bool IsShootingRight();
 	void SetShotDimensions(int width, int height);
 	void GetShotPosition(int *xResult, int *yResult);
 	void SetShotPosition(int xResult, int yResult);
+	void SetShotProgress(int prog);
+	void EraseShot();
 	void SetLiveBar(int width, int height);
 
 	int  GetState();
@@ -118,14 +129,13 @@ private:
 	int jump_y;
 	int jump_x;
 
-
-	//shooting data
-	bool shooting;			//Get if the bicho is shooting or not
 	int xShot, yShot;		//Shot Position
 	int wShot, hShot;		//Shot size
 	int shotProgress;		//Shot Progres
-	int wLive, hLive;
 	bool isRightShot;
+
+	bool shooting;			//Get if the bicho is shooting or not
+	int wLive, hLive;
 
 	int seq,delay;
 };
