@@ -7,6 +7,7 @@ using namespace std;
 cBoss1::cBoss1(void)
 {
 	first = true;
+	shootingTime = 0;
 }
 cBoss1::~cBoss1(void){}
 
@@ -17,9 +18,43 @@ void cBoss1::Logic(int *map)
 		first = false;
 	}
 	if (IsShooting()) ShotLogic(false);
-	if (IsJumping()) JumpLogic(map);
-	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
-	else SetState(STATE_LOOKLEFT);
+	if (IsJumping()) {
+		char s[256];
+		sprintf(s, "State %d \n", GetState());
+		OutputDebugString(s);
+		if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
+			OutputDebugString("MoveLeft \n");
+			MoveLeft(map);
+		}
+		else {
+			OutputDebugString("MoveRight \n");
+			MoveRight(map);
+		}
+		JumpLogic(map);
+	}
+	else if (!CollidesMapFloor(map, false)) {
+		OutputDebugString("Falling \n");
+		FallingLogic(map);
+	}
+	else {
+		++shootingTime;
+		OutputDebugString("Shoting \n");
+		if (shootingTime >= SHOT_TIME) {
+			Jump(map);
+			shootingTime = 0;
+		}
+		else if (shootingTime >= 3) {
+			if (shootingTime%20 == 0) 
+				if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT)
+					SetState(STATE_LOOKLEFT);
+				else SetState(STATE_LOOKRIGHT); 
+		}
+		else {
+			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT)
+				SetState(STATE_LOOKRIGHT);
+			else SetState(STATE_LOOKLEFT);
+		}
+	}
 }
 
 //Draw functions
@@ -31,12 +66,17 @@ void cBoss1::Draw(int tex_id)
 
 	switch (GetState())
 	{
-	case STATE_LOOKLEFT:
+	case STATE_SHOOTLEFT:
 		xo = (3.0f*size)+(GetFrame()* size); yo =0.0f;
 		NextFrame(3);
 		break;
+	case STATE_LOOKLEFT:
+		xo = (0.0f*size); yo = 0.0f;
+		NextFrame(3);
+		break;
 	case STATE_LOOKRIGHT:
-		xo = 0.0f; yo = 0.0f*sizey;
+		xo = (0.0f*size); yo = 1.0f*sizey;
+		NextFrame(3);
 		break;
 	case STATE_JUMP_UP_RIGHT:
 		xo = 0.0f; yo = 0.0f*sizey;
@@ -58,8 +98,9 @@ void cBoss1::Draw(int tex_id)
 		xo = (size * 7.0f) + (GetFrame()* size); yo = 5.0f*size;
 		NextFrame(11);
 		break;
-
-
+	default:
+		xo = 0.0f; yo = 0.0f*sizey;
+		break;
 	}
 	xf = xo + size;
 	yf = yo + sizey;
