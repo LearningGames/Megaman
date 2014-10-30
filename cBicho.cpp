@@ -463,7 +463,7 @@ void cBicho::ShotLogic(bool enemy)
 	}
 }
 
-bool cBicho::CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
+/*bool cBicho::CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
 	char s[256];
 	sprintf(s, "CollideWithSomething \n");
@@ -484,7 +484,7 @@ bool cBicho::CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRe
 		if (Collides(&EnemiesShot[i])) return true;
 	}
 	return false;
-}
+}*/
 
 void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
@@ -496,64 +496,39 @@ void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect En
 		OutputDebugStringA(s);
 	}*/
 	//else {
-
-	if(jumping)
+	if (shooting) {
+		ShotLogic(false);
+	}
+	if (jumping)
 	{
+		OutputDebugString("jumping logic\n");
 		jump_alfa += JUMP_STEP;
-		
+
 		if (jump_alfa == 180)
 		{
 			ostion = false;
 			jumping = false;
 			y = jump_y;
 		}
-		if (shooting) {
-			ShotLogic(false);
-		}
-
-		if (jumping)
+		else
 		{
-			OutputDebugString("jumping logic\n");
-			jump_alfa += JUMP_STEP;
-
-			if (jump_alfa == 180)
+			alfa = ((float)jump_alfa) * 0.017453f;
+			y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
+			if (jump_alfa > 90)
 			{
-				jumping = false;
-				ostion = false;
-				y = jump_y;
-			}
-			else
-			{
-
 				//Over floor?
+				ostion = !CollidesMapFloor(map, false);
 				jumping = !CollidesMapFloor(map, false);
 				//ESTA CAIENT DESPRES DE SALTAR
-				
-				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
-					if (ostion) state = STATE_JUMP_HIT_LEFT;
-					else state = STATE_FALLING_LEFT;
-				}
-				alfa = ((float)jump_alfa) * 0.017453f;
-				y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
-
-				if (jump_alfa > 90)
-				{
-					//Over floor?
-					ostion = !CollidesMapFloor(map, false);
-					jumping = !CollidesMapFloor(map, false);
-					//ESTA CAIENT DESPRES DE SALTAR
-					if (ostion){
-						if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
-							state = STATE_FALLING_LEFT;
-						}
-						else state = STATE_FALLING_RIGHT;
+				if (ostion){
+					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+						state = STATE_FALLING_LEFT;
 					}
+					else state = STATE_FALLING_RIGHT;
 				}
-				else if (ostion) state = STATE_JUMP_HIT_RIGHT;
-				else state = STATE_FALLING_RIGHT;
-
 			}
 		}
+	}
 		else
 		{
 			//Over floor?
@@ -566,7 +541,6 @@ void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect En
 			}
 		}
 	}
-}
 
 void cBicho::NextFrame(int max)
 {
