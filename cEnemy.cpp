@@ -15,13 +15,13 @@ void cEnemy::Logic(int *map, cRect *playerShot)
 		if (Collides(playerShot)) {
 			Die();
 		}
-		/*else if (!CollidesMapFloor(map,true)) {
+		else if (!CollidesMapFloor(map,true)) {
 			if (GetState() == STATE_WALKLEFT) MoveRight(map);
 			else if (GetState() == STATE_WALKRIGHT) MoveLeft(map);
 		}
 		else if (GetState() == STATE_WALKLEFT) MoveLeft(map);
 		else if (GetState() == STATE_WALKRIGHT) MoveRight(map);
-		else MoveRight(map);*/
+		else MoveRight(map);
 	}
 	else if (IsAlive()) {
 		int time = GetDeadTime();
