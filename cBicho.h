@@ -74,12 +74,12 @@ public:
 	void DrawShotRect(int tex_id, float xo, float yo, float xf, float yf);
 	void DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf);
 
-	void MoveRight(int *map);
-	void MoveLeft(int *map);
+	void MoveRight(int *map, bool boss);
+	void MoveLeft(int *map, bool boss);
 	void Jump(int *map);
 	void Ostion(int *map);
 	void Stop();
-	void JumpLogic(int *map);
+	void JumpLogic(int *map, bool boss);
 	void FallingLogic(int *map);
 	void Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
 

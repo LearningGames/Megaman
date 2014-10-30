@@ -253,11 +253,12 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 	glDisable(GL_TEXTURE_2D);
 }
 
-void cBicho::MoveLeft(int *map)
+void cBicho::MoveLeft(int *map, bool boss)
 {
 	int xaux;
 	int step = STEP_LENGTH;
 	if (ostion) step = 1;
+	if (boss) step = 5;
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
 	{
@@ -283,15 +284,17 @@ void cBicho::MoveLeft(int *map)
 	}	
 }
 
-void cBicho::MoveRight(int *map)
+void cBicho::MoveRight(int *map, bool boss)
 {
 	int xaux;
-
+	int step = STEP_LENGTH;
+	if (ostion) step = 1;
+	if (boss) step = 5;
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
 	{
 		xaux = x;
-		x += STEP_LENGTH;
+		x += step;
 
 		if(CollidesMapWall(map,true))
 		{
@@ -302,7 +305,7 @@ void cBicho::MoveRight(int *map)
 	//Advance, no problem
 	else
 	{
-		x += STEP_LENGTH;
+		x += step;
 
 		if(state != STATE_WALKRIGHT)
 		{
@@ -337,12 +340,11 @@ void cBicho::Jump(int *map)
 	{
 		if(CollidesMapFloor(map, false))
 		{
-			OutputDebugString("jumping true");
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
 			//SALTA A ALGUN CANTO
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+			if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
 				state = STATE_JUMP_UP_LEFT;
 			else state = STATE_JUMP_UP_RIGHT;
 		}
@@ -361,7 +363,7 @@ void cBicho::Ostion(int *map)
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+			if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
 				state = STATE_JUMP_HIT_LEFT;
 			else state = STATE_JUMP_HIT_RIGHT;
 
@@ -392,7 +394,7 @@ bool cBicho::IsOstioning(){
 void cBicho::Hited()
 {
 	OutputDebugString("Player hited \n");
-	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT) {
+	if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT) {
 	}
 	else {
 		x -= STEP_LENGTH*3;
@@ -404,6 +406,7 @@ void cBicho::Hited()
 void cBicho::Shot(int *map, bool isRight)
 {
 	if (!shooting) {
+		OutputDebugString("Shot 1");
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;
@@ -506,15 +509,16 @@ void cBicho::ShotLogic(bool enemy)
 	return false;
 }*/
 
-void cBicho::JumpLogic(int *map) {
+void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
-	OutputDebugString("jumping logic\n");
+
 	int step = JUMP_STEP;
 	int height = JUMP_HEIGHT;
 	if (ostion){
 		step = 6;
 		height = 40;
 	}
+	if (boss) height = 100;
 	jump_alfa += step;//JUMP_STEP;
 
 	if (jump_alfa == 180)
@@ -525,7 +529,7 @@ void cBicho::JumpLogic(int *map) {
 	}
 	else
 	{
-		if (ostion) MoveLeft(map);
+		if (ostion) MoveLeft(map, boss);
 		alfa = ((float)jump_alfa) * 0.017453f;
 		y = jump_y + (int)(((float)height) * sin(alfa));
 		if (jump_alfa > 90)
@@ -534,7 +538,7 @@ void cBicho::JumpLogic(int *map) {
 			jumping = !CollidesMapFloor(map, false);
 			//ESTA CAIENT DESPRES DE SALTAR
 			
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+			if (state >= STATE_LOOKLEFT && state<= STATE_SHOOTLEFT){
 				if (ostion) state = STATE_JUMP_HIT_LEFT;
 				else state = STATE_FALLING_LEFT;
 			}
@@ -548,14 +552,14 @@ void cBicho::FallingLogic(int *map)
 {
 	y -= (2 * STEP_LENGTH);
 	//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
-	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+	if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
 		state = STATE_FALLING_LEFT;
 	else state = STATE_FALLING_RIGHT;
 }
 void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
 	if (shooting) ShotLogic(false);
-	if (jumping) JumpLogic(map);
+	if (jumping) JumpLogic(map,false);
 	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
 }
 

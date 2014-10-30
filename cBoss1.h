@@ -13,7 +13,8 @@
 #define SHOT_STEP			5
 #define DIST_SHOT			150
 
-#define SHOT_TIME		60
+#define SHOT_TIME		120
+#define JUMP_TIME		160
 
 
 class cBoss1 : public cBicho
@@ -26,7 +27,7 @@ public:
 	void Logic(int *map);
 
 	void Draw(int tex_id);
-	void DrawShot(int tex_id, bool isRight);
+	void DrawShot(int tex_id);
 
 private:
 	bool first;
