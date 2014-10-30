@@ -7,7 +7,7 @@
 #define SCENE_WIDTH		199
 #define SCENE_HEIGHT	15
 
-#define FILENAME		"mapa01"
+#define FILENAME		"map0"
 #define FILENAME_EXT	".txt"
 
 #define TILE_SIZE		16

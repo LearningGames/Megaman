@@ -13,9 +13,6 @@ cGame::~cGame(void)
 
 bool cGame::Init()
 {
-
-
-
 	bool res=true;
 	if (level == 0) level = 1;
 	//Graphics initialization

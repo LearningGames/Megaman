@@ -2,9 +2,11 @@
 #include "Globals.h"
 
 int size = 1 / 16;
+int lev;
 
 cScene::cScene(void)
 {
+	lev = 10;
 }
 
 cScene::~cScene(void)
@@ -22,7 +24,7 @@ bool cScene::LoadLevel(int level)
 
 	res = true;
 
-	if (level<10) sprintf(file, "%s%s", (char *)FILENAME, (char *)FILENAME_EXT);
+	if (level<10) sprintf(file, "%s%d%s", (char *)FILENAME, level, (char *)FILENAME_EXT);
 	else		 sprintf(file, "%s%d%s", (char *)FILENAME, level, (char *)FILENAME_EXT);
 
 	fd = fopen(file, "r");
@@ -82,10 +84,13 @@ bool cScene::LoadLevel(int level)
 }
 void cScene::Draw(int tex_id)
 {
+	if (lev > 29) lev = 10;
+	if (lev%10 == 0) LoadLevel(lev/10);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D,tex_id);
 	glCallList(id_DL);
 	glDisable(GL_TEXTURE_2D);
+	++lev;
 }
 int* cScene::GetMap()
 {
