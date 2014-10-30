@@ -13,6 +13,8 @@
 #define SHOT_STEP			5
 #define DIST_SHOT			150
 
+#define SHOT_TIME		60
+
 
 class cBoss1 : public cBicho
 {
@@ -28,4 +30,5 @@ public:
 
 private:
 	bool first;
+	int shootingTime;
 };
