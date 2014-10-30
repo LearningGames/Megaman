@@ -68,6 +68,7 @@ public:
 	void Jump(int *map);
 	void Ostion(int *map);
 	void Stop();
+	void JumpLogic(int *map);
 	void Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
 
 	//Shooting functions

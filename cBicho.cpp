@@ -486,10 +486,39 @@ void cBicho::ShotLogic(bool enemy)
 	return false;
 }*/
 
+void cBicho::JumpLogic(int *map) {
+	float alfa;
+	OutputDebugString("jumping logic\n");
+	jump_alfa += JUMP_STEP;
+
+	if (jump_alfa == 180)
+	{
+		ostion = false;
+		jumping = false;
+		y = jump_y;
+	}
+	else
+	{
+		alfa = ((float)jump_alfa) * 0.017453f;
+		y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
+		if (jump_alfa > 90)
+		{
+			//Over floor?
+			ostion = !CollidesMapFloor(map, false);
+			jumping = !CollidesMapFloor(map, false);
+			//ESTA CAIENT DESPRES DE SALTAR
+			if (ostion){
+				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+					state = STATE_FALLING_LEFT;
+				}
+				else state = STATE_FALLING_RIGHT;
+			}
+		}
+	}
+}
 void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
 {
-	float alfa;
-
+	OutputDebugString("logic\n");
 	/*if (CollideWithSomething(EnemiesPosition, sizeEnemies1, EnemiesPosition2, sizeEnemies2, EnemiesShot, sizeShot)) {
 		char s[256];
 		sprintf(s, "Collision");
@@ -499,35 +528,10 @@ void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect En
 	if (shooting) {
 		ShotLogic(false);
 	}
+
 	if (jumping)
 	{
-		OutputDebugString("jumping logic\n");
-		jump_alfa += JUMP_STEP;
-
-		if (jump_alfa == 180)
-		{
-			ostion = false;
-			jumping = false;
-			y = jump_y;
-		}
-		else
-		{
-			alfa = ((float)jump_alfa) * 0.017453f;
-			y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
-			if (jump_alfa > 90)
-			{
-				//Over floor?
-				ostion = !CollidesMapFloor(map, false);
-				jumping = !CollidesMapFloor(map, false);
-				//ESTA CAIENT DESPRES DE SALTAR
-				if (ostion){
-					if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
-						state = STATE_FALLING_LEFT;
-					}
-					else state = STATE_FALLING_RIGHT;
-				}
-			}
-		}
+		JumpLogic(map);
 	}
 		else
 		{

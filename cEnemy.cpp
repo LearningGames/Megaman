@@ -11,15 +11,9 @@ cEnemy::cEnemy(void)
 }
 cEnemy::~cEnemy(void){}
 
-void cEnemy::Logic(int *map, cRect *playerShot, cPlayer player)
+void cEnemy::Logic(int *map, cRect *playerShot)
 {
 	if (alive && GetState() != STATE_DIE) {
-		cRect playerArea;
-		player.GetArea(&playerArea);
-		if (Collides(&playerArea)) {
-			OutputDebugString("Collision Player \n");
-			player.Jump(map);
-		}
 		if (Collides(playerShot)) {
 			Die();
 		}
