@@ -406,7 +406,6 @@ void cBicho::Hited()
 void cBicho::Shot(int *map, bool isRight)
 {
 	if (!shooting) {
-		OutputDebugString("Shot 1");
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;

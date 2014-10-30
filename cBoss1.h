@@ -29,7 +29,11 @@ public:
 	void Draw(int tex_id);
 	void DrawShot(int tex_id);
 
+	void NextShotFrame(int max);
+
 private:
 	bool first;
 	int shootingTime;
+
+	int seqShot, delayShot;
 };

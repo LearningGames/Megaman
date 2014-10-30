@@ -17,8 +17,12 @@ void cBoss1::Logic(int *map)
 		Jump(map);
 		first = false;
 	}
-	if (IsShooting()) ShotLogic(false);
+	if (IsShooting()) {
+		OutputDebugString("shot logic\n");
+		ShotLogic(false);
+	}
 	if (IsJumping()) {
+		OutputDebugString("isJumping\n");
 		if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
 			MoveLeft(map,true);
 		}
@@ -28,15 +32,18 @@ void cBoss1::Logic(int *map)
 		JumpLogic(map,true);
 	}
 	else if (!CollidesMapFloor(map, false)) {
+		OutputDebugString("Falling\n");
 		FallingLogic(map);
 	}
 	else {
 		++shootingTime;
 		if (shootingTime >= JUMP_TIME) {
+			OutputDebugString("Jump_shoot\n");
 			Jump(map);
 			shootingTime = 0;
 		}
 		else if (shootingTime >= SHOT_TIME) {
+			OutputDebugString("Wait\n");
 			if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
 				SetState(STATE_LOOKLEFT);
 			}
@@ -104,8 +111,7 @@ void cBoss1::Draw(int tex_id)
 		NextFrame(7);
 		break;
 	case STATE_HITED:
-		xo = (size * 7.0f) + (GetFrame()* size); yo = 5.0f*size;
-		NextFrame(11);
+		xo = (size * 6.0f); yo = 0.0f;
 		break;
 	default:
 		xo = 0.0f; yo = 0.0f*sizey;
@@ -119,11 +125,22 @@ void cBoss1::Draw(int tex_id)
 void cBoss1::DrawShot(int tex_id)
 {
 	float xo, yo, xf, yf;
-	xo = 1.0f - (GetFrame()*(1.0f / 7.0f));
-	NextFrame(7);
+	xo = 1.0f - (seqShot*(1.0f / 7.0f));
+	NextShotFrame(7);
 	xf = xo - (1.0f / 7.0f);
 	yo = 1.0f;
 	yf = 0.0f;
 	DrawShotRect(tex_id, xo, yo, xf, yf);
+}
+
+void cBoss1::NextShotFrame(int max)
+{
+	delayShot++;
+	if (delayShot == FRAME_DELAY)
+	{
+		seqShot++;
+		seqShot %= max;
+		delayShot = 0;
+	}
 }
 
