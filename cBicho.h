@@ -53,6 +53,7 @@ public:
 	void GetWidthHeight(int *w,int *h);
 	bool IsAlive();
 	bool IsJumping();
+	bool IsOstioning();
 	void SetAlive(bool aliveState);
 	void SetDeadTime(int time);
 	int GetDeadTime();
@@ -112,6 +113,7 @@ private:
 	bool ostion;
 	int jump_alfa;
 	int jump_y;
+	int jump_x;
 
 
 	//shooting data

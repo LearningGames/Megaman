@@ -255,15 +255,14 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 
 void cBicho::MoveLeft(int *map)
 {
-	
 	int xaux;
-	
+	int step = STEP_LENGTH;
+	if (ostion) step = 1;
 	//Whats next tile?
 	if( (x % TILE_SIZE) == 0)
 	{
 		xaux = x;
-		x -= STEP_LENGTH;
-
+		x -= step;
 		if(  CollidesMapWall(map,false))
 		{
 			x = xaux;
@@ -273,7 +272,7 @@ void cBicho::MoveLeft(int *map)
 	//Advance, no problem
 	else
 	{
-		x -= STEP_LENGTH;
+		x -= step;
 		if(state != STATE_WALKLEFT)
 		{
 			if (ostion) state = STATE_JUMP_HIT_LEFT;
@@ -281,9 +280,9 @@ void cBicho::MoveLeft(int *map)
 			else state = STATE_WALKLEFT;
 			ResetFrame();
 		}
-	}
-	
+	}	
 }
+
 void cBicho::MoveRight(int *map)
 {
 	int xaux;
@@ -334,10 +333,8 @@ void cBicho::Stop()
 }
 void cBicho::Jump(int *map)
 {
-	OutputDebugString("jump\n");
 	if(!jumping)
 	{
-		OutputDebugString("not jumping ");
 		if(CollidesMapFloor(map, false))
 		{
 			OutputDebugString("jumping true");
@@ -355,18 +352,11 @@ void cBicho::Jump(int *map)
 
 void cBicho::Ostion(int *map)
 {
-	//PlaySound(TEXT("hit.wav"), NULL, SND_FILENAME);
-	//PlaySound("hit g.WAV", NULL, SND_ASYNC);
-	
-
-	live += 1;
-	if (live == 5){
-		live = 0;
-	}
-	if (!jumping)
-	{
-		if (CollidesMapFloor(map, false))
-		{
+	if (!ostion){
+		live += 1;
+		if (live == 5){
+			live = 0;
+		}
 			ostion = true;
 			jumping = true;
 			jump_alfa = 0;
@@ -374,8 +364,12 @@ void cBicho::Ostion(int *map)
 			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
 				state = STATE_JUMP_HIT_LEFT;
 			else state = STATE_JUMP_HIT_RIGHT;
-		}
+
 	}
+}
+
+bool cBicho::IsOstioning(){
+	return ostion;
 }
 
 /*bool cBicho::IsHited(cEnemy Enemies[], int size){
@@ -515,7 +509,13 @@ void cBicho::ShotLogic(bool enemy)
 void cBicho::JumpLogic(int *map) {
 	float alfa;
 	OutputDebugString("jumping logic\n");
-	jump_alfa += JUMP_STEP;
+	int step = JUMP_STEP;
+	int height = JUMP_HEIGHT;
+	if (ostion){
+		step = 6;
+		height = 40;
+	}
+	jump_alfa += step;//JUMP_STEP;
 
 	if (jump_alfa == 180)
 	{
@@ -525,20 +525,21 @@ void cBicho::JumpLogic(int *map) {
 	}
 	else
 	{
+		if (ostion) MoveLeft(map);
 		alfa = ((float)jump_alfa) * 0.017453f;
-		y = jump_y + (int)(((float)JUMP_HEIGHT) * sin(alfa));
+		y = jump_y + (int)(((float)height) * sin(alfa));
 		if (jump_alfa > 90)
 		{
 			//Over floor?
-			ostion = !CollidesMapFloor(map, false);
 			jumping = !CollidesMapFloor(map, false);
 			//ESTA CAIENT DESPRES DE SALTAR
-			if (ostion){
-				if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
-					state = STATE_FALLING_LEFT;
-				}
-				else state = STATE_FALLING_RIGHT;
+			
+			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+				if (ostion) state = STATE_JUMP_HIT_LEFT;
+				else state = STATE_FALLING_LEFT;
 			}
+			else if (ostion) state = STATE_JUMP_HIT_RIGHT;
+			else state = STATE_FALLING_RIGHT;
 		}
 	}
 }
