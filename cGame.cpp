@@ -80,6 +80,7 @@ void cGame::InitBoss() {
 	BurstMan.SetTile(194, 4);
 	BurstMan.SetWidthHeight(54, 72);
 	BurstMan.SetState(STATE_LOOKLEFT);
+	BurstMan.SetShotDimensions(20, 26);
 }
 
 void cGame::InitEnemies(int level) {
@@ -208,6 +209,6 @@ void cGame::Render()
 			Enemies2[i].DrawShot(Data.GetID(IMG_HELISHOT));
 		}
 	}
-
+	if (BurstMan.IsShooting()) BurstMan.DrawShot(Data.GetID(IMG_HELISHOT));
 	glutSwapBuffers();
  }

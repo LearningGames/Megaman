@@ -340,12 +340,11 @@ void cBicho::Jump(int *map)
 	{
 		if(CollidesMapFloor(map, false))
 		{
-			OutputDebugString("jumping true");
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
 			//SALTA A ALGUN CANTO
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+			if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
 				state = STATE_JUMP_UP_LEFT;
 			else state = STATE_JUMP_UP_RIGHT;
 		}
@@ -364,7 +363,7 @@ void cBicho::Ostion(int *map)
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+			if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
 				state = STATE_JUMP_HIT_LEFT;
 			else state = STATE_JUMP_HIT_RIGHT;
 
@@ -395,7 +394,7 @@ bool cBicho::IsOstioning(){
 void cBicho::Hited()
 {
 	OutputDebugString("Player hited \n");
-	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT) {
+	if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT) {
 	}
 	else {
 		x -= STEP_LENGTH*3;
@@ -407,6 +406,7 @@ void cBicho::Hited()
 void cBicho::Shot(int *map, bool isRight)
 {
 	if (!shooting) {
+		OutputDebugString("Shot 1");
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;
@@ -511,7 +511,7 @@ void cBicho::ShotLogic(bool enemy)
 
 void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
-	OutputDebugString("jumping logic\n");
+
 	int step = JUMP_STEP;
 	int height = JUMP_HEIGHT;
 	if (ostion){
@@ -538,7 +538,7 @@ void cBicho::JumpLogic(int *map, bool boss) {
 			jumping = !CollidesMapFloor(map, false);
 			//ESTA CAIENT DESPRES DE SALTAR
 			
-			if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT){
+			if (state >= STATE_LOOKLEFT && state<= STATE_SHOOTLEFT){
 				if (ostion) state = STATE_JUMP_HIT_LEFT;
 				else state = STATE_FALLING_LEFT;
 			}
@@ -552,7 +552,7 @@ void cBicho::FallingLogic(int *map)
 {
 	y -= (2 * STEP_LENGTH);
 	//ESTA CAIENT D'ALGUN LLOC SOL SENSE SALTAR
-	if (state == STATE_LOOKLEFT || state == STATE_JUMP_UP_LEFT || state == STATE_WALKLEFT || state == STATE_FALLING_LEFT)
+	if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
 		state = STATE_FALLING_LEFT;
 	else state = STATE_FALLING_RIGHT;
 }

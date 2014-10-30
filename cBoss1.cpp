@@ -32,18 +32,26 @@ void cBoss1::Logic(int *map)
 	}
 	else {
 		++shootingTime;
-		if (shootingTime >= SHOT_TIME) {
+		if (shootingTime >= JUMP_TIME) {
 			Jump(map);
 			shootingTime = 0;
 		}
-		else if (shootingTime >= 3) {
-			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT)
-				SetState(STATE_SHOOTLEFT);
-			else SetState(STATE_SHOOTRIGHT);
-			if (shootingTime % 20 == 0)
-				OutputDebugString("Shot");
+		else if (shootingTime >= SHOT_TIME) {
+			if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
+				SetState(STATE_LOOKLEFT);
+			}
+			else if (GetState() > STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT){
+				SetState(STATE_LOOKRIGHT);
+			}
 		}
-		else if (shootingTime == 1) {
+		else if (shootingTime >= 3) {
+			if (GetState() >= STATE_LOOKLEFT && GetState() < STATE_SHOOTLEFT)
+				SetState(STATE_SHOOTLEFT);
+			else if (GetState() >= STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT)SetState(STATE_SHOOTRIGHT);
+			if (shootingTime % 30 == 0)
+				if (!IsShooting()) Shot(map, !(GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT));
+		}
+		else if (shootingTime == 1 )  {
 			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
 				SetState(STATE_LOOKRIGHT);
 			}
@@ -65,6 +73,10 @@ void cBoss1::Draw(int tex_id)
 	{
 	case STATE_SHOOTLEFT:
 		xo = (3.0f*size)+(GetFrame()* size); yo =0.0f;
+		NextFrame(3);
+		break;
+	case STATE_SHOOTRIGHT:
+		xo = (3.0f*size) + (GetFrame()* size); yo = 1.0f*sizey;
 		NextFrame(3);
 		break;
 	case STATE_LOOKLEFT:
@@ -104,12 +116,12 @@ void cBoss1::Draw(int tex_id)
 
 	DrawRect(tex_id, xo, yf, xf, yo);
 }
-void cBoss1::DrawShot(int tex_id, bool isRight)
+void cBoss1::DrawShot(int tex_id)
 {
 	float xo, yo, xf, yf;
-	xo = 0.0f + (GetFrame()*0.25f);
-	NextFrame(4);
-	xf = xo + 0.25f;
+	xo = 1.0f - (GetFrame()*(1.0f / 7.0f));
+	NextFrame(7);
+	xf = xo - (1.0f / 7.0f);
 	yo = 1.0f;
 	yf = 0.0f;
 	DrawShotRect(tex_id, xo, yo, xf, yf);
