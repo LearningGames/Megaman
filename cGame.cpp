@@ -216,7 +216,6 @@ bool cGame::Process()
 	RoundMan.GetShotArea(&EnemyShotPos);
 	if (Player.Collides(&EnemyShotPos)) RoundMan.EraseShot();
 	if (RoundMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
-	Player.Logic(Scene.GetCollisionMap());
 	if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();*/
 	return res;
 }
@@ -248,14 +247,10 @@ void cGame::Render()
 	}
 	if (BurstMan.IsShooting()) BurstMan.DrawShot(Data.GetID(IMG_HELISHOT));
 
+	glLoadIdentity();
+
 
 	/*RoundMan.Draw(Data.GetID(IMG_BOSS2));
-	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies2[i].Draw(Data.GetID(IMG_PLAYER));
-		if (Enemies2[i].IsShooting()) {
-			Enemies2[i].DrawShot(Data.GetID(IMG_HELISHOT));
-		}
-	}
 	if (RoundMan.IsShooting()) RoundMan.DrawShot(Data.GetID(IMG_HELISHOT));*/
 
 
