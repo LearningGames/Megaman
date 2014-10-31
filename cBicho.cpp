@@ -244,6 +244,8 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 
 	glBindTexture(GL_TEXTURE_2D, tex_id);
 	glBegin(GL_QUADS);
+	char s[256];
+
 	glTexCoord2f(xo, yo);	glVertex2i(screen_x, screen_y);
 	glTexCoord2f(xf, yo);	glVertex2i(screen_x + 80, screen_y);
 	glTexCoord2f(xf, yf);	glVertex2i(screen_x + 80.0f, screen_y + 16.0f);

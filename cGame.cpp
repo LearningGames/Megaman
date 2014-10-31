@@ -30,7 +30,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_MENU, "menu.png", GL_RGBA);
 	if(!res) return false;
 
-	res = Data.LoadImage(IMG_BLOCKS,"tile01.png",GL_RGBA);
+	res = Data.LoadImage(IMG_BLOCKS,"tile02.png",GL_RGBA);
 	if(!res) return false;
 	res = Scene.LoadLevel(level);
 	if(!res) return false;
