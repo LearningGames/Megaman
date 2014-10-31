@@ -16,7 +16,6 @@
 #define SHOT_TIME		120
 #define JUMP_TIME		160
 
-
 class cBoss2 : public cBicho
 {
 public:
@@ -34,6 +33,6 @@ public:
 private:
 	bool first;
 	int shootingTime;
-
+	int stop_time;
 	int seqShot, delayShot;
 };

@@ -24,6 +24,7 @@ public:
 	int *GetMap();
 	int *GetCollisionMap();
 	int GetCurrentLevel();
+	int NextLevel();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene

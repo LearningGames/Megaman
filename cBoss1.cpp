@@ -128,11 +128,10 @@ void cBoss1::Draw(int tex_id)
 void cBoss1::DrawShot(int tex_id)
 {
 	float xo, yo, xf, yf;
-	xo = 1.0f - (seqShot*(1.0f / 7.0f));
-	NextShotFrame(7);
-	xf = xo - (1.0f / 7.0f);
-	yo = 1.0f;
-	yf = 0.0f;
+	xo = 0.0f + (GetFrame()*0.25f); yo = 1.0f;
+	NextShotFrame(4);
+	xf = xo + 0.25f;
+	yf = yo - 0.5f;
 	DrawShotRect(tex_id, xo, yo, xf, yf);
 }
 

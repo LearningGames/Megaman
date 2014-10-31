@@ -4,13 +4,14 @@
 #include "Globals.h"
 
 //Image array size
-#define NUM_IMG		10
+#define NUM_IMG		11
 
 //Image identifiers
 #define IMG_LEVEL1	0
 #define IMG_LEVEL2	8
 #define IMG_PLAYER	1
 #define IMG_BOSS1	4
+#define IMG_BOSS1SHOT	10
 #define IMG_BOSS2	9
 
 #define IMG_MONSTER	1

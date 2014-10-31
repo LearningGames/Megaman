@@ -10,8 +10,10 @@
 
 #define GAME_WIDTH	400
 #define GAME_HEIGHT 240
-#define ENEMIES_1	3
-#define ENEMIES_2	1
+#define ENEMIES_11	3
+#define ENEMIES_21	1
+#define ENEMIES_12	3
+#define ENEMIES_22	1
 
 class cGame
 {
@@ -40,11 +42,10 @@ private:
 	cScene Scene;
 	cPlayer Player;
 	cData Data;
-	cEnemy Enemies[ENEMIES_1];
-	cRect EnemiesPosition[ENEMIES_1];
-	cRect EnemiesShot[ENEMIES_2];
-	cRect EnemiesPosition2[ENEMIES_2];
-	cEnemy2 Enemies2[ENEMIES_2];
+	cEnemy EnemiesLevel1[ENEMIES_11];
+	cEnemy2 Enemies2Level1[ENEMIES_21];
+	cEnemy EnemiesLevel2[ENEMIES_12];
+	cEnemy2 Enemies2Level2[ENEMIES_22];
 	cBoss1 BurstMan;
 	cBoss2 RoundMan;
 };
