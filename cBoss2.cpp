@@ -13,91 +13,56 @@ cBoss2::~cBoss2(void){}
 
 bool cBoss2::Logic(int *map, cRect *playerShot)
 {
-	boolean result = false;
+	
+	/*MoveLeft(map, true);*/
 	if (first) {
 		Jump(map);
 		first = false;
 	}
-	else {
-		if (Collides(playerShot)) {
-			OutputDebugString("OUCH");
-			result = true;
-		}
-		if (IsShooting()) {
-			ShotLogic(BURSTMAN);
-		}
-		if (IsJumping()) {
-			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-				MoveLeft(map, true);
-			}
-			else {
-				MoveRight(map, true);
-			}
-			JumpLogic(map, true);
-		}
-		else if (!CollidesMapFloor(map, false)) {
-			FallingLogic(map);
-		}
-		else {
-			++shootingTime;
-			if (shootingTime >= JUMP_TIME) {
-				Jump(map);
-				shootingTime = 0;
-			}
-			else if (shootingTime >= SHOT_TIME) {
-				if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-					SetState(STATE_LOOKLEFT);
-				}
-				else if (GetState() > STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT){
-					SetState(STATE_LOOKRIGHT);
-				}
-			}
-			else if (shootingTime >= 3) {
-				if (GetState() >= STATE_LOOKLEFT && GetState() < STATE_SHOOTLEFT)
-					SetState(STATE_SHOOTLEFT);
-				else if (GetState() >= STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT)SetState(STATE_SHOOTRIGHT);
-				if (shootingTime % 10 == 0)
-				if (!IsShooting()) Shot(map, !(GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT));
-			}
-			else if (shootingTime == 1)  {
-				if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-					SetState(STATE_LOOKRIGHT);
-				}
-				else {
-					SetState(STATE_LOOKLEFT);
-				}
-			}
-		}
+	if (IsJumping()) JumpLogic(map, false);
+	else if (GetState() != STATE_MOVE_RIGHT && CollidesMapFloor(map,false)) {
+		SetState(STATE_MOVE_RIGHT);
 	}
-	return result;
+	return false;
 }
 
 //Draw functions
 void cBoss2::Draw(int tex_id)
 {
 	float xo, yo, xf, yf;
-	float size = 1.0f / (490.0f / 54.0f);
-	float sizey = 1.0f / (490.0f / 72.0f);
+	float size = 1.0f / 5.0f;
+	float sizey = 1.0f / 5.0f;
+	float aux;
 
 	switch (GetState())
 	{
-	case STATE_SHOOTLEFT:
-		xo = (3.0f*size) + (GetFrame()* size); yo = 0.0f;
-		NextFrame(3);
-		break;
-	case STATE_SHOOTRIGHT:
-		xo = (3.0f*size) + (GetFrame()* size); yo = 1.0f*sizey;
-		NextFrame(3);
-		break;
+	/*case STATE_MOVELEFT:
+		xo = (0.0f*size) + (GetFrame()* size); yo = 1.0f*sizey;
+		NextFrame(4);
+		break;*/
 	case STATE_LOOKLEFT:
 		xo = (0.0f*size); yo = 0.0f;
-		NextFrame(3);
 		break;
 	case STATE_LOOKRIGHT:
 		xo = (0.0f*size); yo = 1.0f*sizey;
 		NextFrame(3);
 		break;
-	case STATE_JUMP_UP_RIGHT:
+		case STATE_JUMP_UP_LEFT:
+		xo = (1.0f*size);  yo = 0.0f;
+			//NextFrame(4);
+		break;
+	case STATE_MOVE_RIGHT:
+		xo = (3.0f*size) - (GetFrame()* size); yo = 1.0f*sizey;
+		NextFrame(4);
+		break;
+	case STATE_FALLING_LEFT:
+		aux = ((GetFrame()* size) / 3);
+		if ((int)aux % 1 == 0) {
+			xo = (2.0f*size) + ((GetFrame() / 3)* size);  yo = 0.0f;
+		}
+		NextFrame(9);
+		break;
+	/*case STATE_JUMP_UP_RIGHT:
 		xo = 1.0f*size; yo = 1.0f*sizey;
 		NextFrame(7);
 		break;
@@ -105,17 +70,14 @@ void cBoss2::Draw(int tex_id)
 		xo = 1.0f*size; yo = 0.0f;
 		NextFrame(7);
 		break;
-	case STATE_FALLING_RIGHT:
-		xo = 2.0f*size; yo = 1.0f*sizey;
-		NextFrame(7);
-		break;
+	
 	case STATE_FALLING_LEFT:
 		xo = 2.0f*size; yo = 0.0f;
 		NextFrame(7);
 		break;
 	case STATE_HITED:
 		xo = (size * 6.0f); yo = 0.0f;
-		break;
+		break;*/
 	default:
 		xo = 0.0f; yo = 0.0f*sizey;
 		break;

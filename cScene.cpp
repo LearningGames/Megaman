@@ -56,10 +56,10 @@ bool cScene::LoadLevel(int levelLoad, int sublevel)
 					else collisionMap[(j*SCENE_WIDTH) + i] = 1;
 				}
 				else if (level == 2) {
-					OutputDebugString("level 2");
-					//if (tile == 12 || tile == 22 || tile == 17 || tile == 27 || tile == 19 || tile == 20 || tile == 29 || tile == 30 || tile == 40 || tile == 66) 
-					//	collisionMap2[(j*SCENE_WIDTH) + i] = 0;
-					//else collisionMap2[(j*SCENE_WIDTH) + i] = 1;
+					
+					if (tile == 11 || tile == 21 || tile == 16 || tile == 26 || tile == 18 || tile == 19 || tile == 28 || tile == 29 || tile == 39 || tile == 65) 
+					collisionMap2[(j*SCENE_WIDTH) + i] = 0;
+					else collisionMap2[(j*SCENE_WIDTH) + i] = 1;
 				}
 
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
