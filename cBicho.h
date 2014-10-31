@@ -23,8 +23,6 @@
 #define STATE_SHOOTRIGHT	11
 #define STATE_HITED			12
 #define STATE_DIE			13
-#define STATE_TRANSFORM_RIGHT 14
-#define STATE_MOVE_RIGHT 15
 
 //Define type of Bicho
 #define PLAYER			0
@@ -93,6 +91,7 @@ public:
 	void JumpLogic(int *map, bool boss);
 	void FallingLogic(int *map);
 	void Logic(int *map);
+	bool IsLookingRight();
 
 	//Shooting functions
 	//bool IsHited(cEnemy Enemies[], int size);

@@ -44,7 +44,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(189, 4);
+	Player.SetTile(4, 4);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -86,7 +86,7 @@ void cGame::InitBoss(int level) {
 		BurstMan.SetShotDimensions(20, 26);
 
 		RoundMan.SetWidthHeight(57, 57);
-		RoundMan.SetTile(190, 4);
+		RoundMan.SetTile(194, 4);
 		RoundMan.SetWidthHeight(57, 57);
 		RoundMan.SetState(STATE_LOOKLEFT);
 		RoundMan.SetShotDimensions(20, 26);

@@ -20,8 +20,17 @@ bool cBoss2::Logic(int *map, cRect *playerShot)
 		first = false;
 	}
 	if (IsJumping()) JumpLogic(map, false);
-	else if (GetState() != STATE_MOVE_RIGHT && CollidesMapFloor(map,false)) {
-		SetState(STATE_MOVE_RIGHT);
+	else if (CollidesMapFloor(map,false) && CollidesMapWall(map,IsLookingRight())) {
+		if (IsLookingRight()) {
+			OutputDebugString("Right :D \n");
+			MoveLeft(map, true);
+		}
+		else MoveRight(map, true);
+		Jump(map);
+	}
+	else if (CollidesMapFloor(map, false)) {
+		if (IsLookingRight()) MoveRight(map, true);
+		else MoveLeft(map, true);
 	}
 	return false;
 }
@@ -36,25 +45,29 @@ void cBoss2::Draw(int tex_id)
 
 	switch (GetState())
 	{
-	/*case STATE_MOVELEFT:
-		xo = (0.0f*size) + (GetFrame()* size); yo = 1.0f*sizey;
-		NextFrame(4);
-		break;*/
 	case STATE_LOOKLEFT:
 		xo = (0.0f*size); yo = 0.0f;
 		break;
 	case STATE_LOOKRIGHT:
-		xo = (0.0f*size); yo = 1.0f*sizey;
+		xo = (5.0f*size); yo = 2.0f*sizey;
 		NextFrame(3);
 		break;
 		case STATE_JUMP_UP_LEFT:
 		xo = (1.0f*size);  yo = 0.0f;
 			//NextFrame(4);
 		break;
-	case STATE_MOVE_RIGHT:
+		case STATE_JUMP_UP_RIGHT:
+			xo = (3.0f*size);  yo = 2.0f*sizey;
+			//NextFrame(4);
+			break;
+		case STATE_WALKLEFT:
 		xo = (3.0f*size) - (GetFrame()* size); yo = 1.0f*sizey;
 		NextFrame(4);
 		break;
+		case STATE_WALKRIGHT:
+			xo = (1.0f*size) + (GetFrame()* size); yo = 3.0f*sizey;
+			NextFrame(4);
+			break;
 	case STATE_FALLING_LEFT:
 		aux = ((GetFrame()* size) / 3);
 		if ((int)aux % 1 == 0) {
@@ -62,22 +75,16 @@ void cBoss2::Draw(int tex_id)
 		}
 		NextFrame(9);
 		break;
-	/*case STATE_JUMP_UP_RIGHT:
-		xo = 1.0f*size; yo = 1.0f*sizey;
-		NextFrame(7);
-		break;
-	case STATE_JUMP_UP_LEFT:
-		xo = 1.0f*size; yo = 0.0f;
-		NextFrame(7);
-		break;
-	
-	case STATE_FALLING_LEFT:
-		xo = 2.0f*size; yo = 0.0f;
-		NextFrame(7);
+	case STATE_FALLING_RIGHT:
+		aux = ((GetFrame()* size) / 3);
+		if ((int)aux % 1 == 0) {
+			xo = (2.0f*size) - ((GetFrame() / 3)* size);  yo = 2.0f*sizey;
+		}
+		NextFrame(9);
 		break;
 	case STATE_HITED:
 		xo = (size * 6.0f); yo = 0.0f;
-		break;*/
+		break;
 	default:
 		xo = 0.0f; yo = 0.0f*sizey;
 		break;

@@ -256,6 +256,7 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 
 void cBicho::MoveLeft(int *map, bool boss)
 {
+	OutputDebugString("Move Left \n");
 	int xaux;
 	int step = STEP_LENGTH;
 	if (ostion) step = 1;
@@ -265,10 +266,17 @@ void cBicho::MoveLeft(int *map, bool boss)
 	{
 		xaux = x;
 		x -= step;
-		if(  CollidesMapWall(map,false))
+		if(CollidesMapWall(map,false))
 		{
 			x = xaux;
 			state = STATE_LOOKLEFT;
+		}
+		if (state != STATE_WALKLEFT)
+		{
+			if (ostion) state = STATE_JUMP_HIT_LEFT;
+			else if (jumping) state = STATE_JUMP_UP_LEFT;
+			else state = STATE_WALKLEFT;
+			ResetFrame();
 		}
 	}
 	//Advance, no problem
@@ -282,7 +290,10 @@ void cBicho::MoveLeft(int *map, bool boss)
 			else state = STATE_WALKLEFT;
 			ResetFrame();
 		}
-	}	
+	}
+	char s[256];
+	sprintf(s, "State %d \n", GetState());
+	OutputDebugString(s);
 }
 
 void cBicho::MoveRight(int *map, bool boss)
@@ -335,6 +346,13 @@ void cBicho::Stop()
 		}
 	}
 }
+
+bool cBicho::IsLookingRight()
+{
+	if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
+		return false;
+	else return true;
+}
 void cBicho::Jump(int *map)
 {
 	if(!jumping)
@@ -345,11 +363,15 @@ void cBicho::Jump(int *map)
 			jump_alfa = 0;
 			jump_y = y;
 			//SALTA A ALGUN CANTO
-			if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
+			if (!IsLookingRight()) {
+				OutputDebugString("NotLookingRight\n");
 				state = STATE_JUMP_UP_LEFT;
-			else state = STATE_JUMP_UP_RIGHT;
+			}
+			else {
+				OutputDebugString("LookingRight\n");
+				state = STATE_JUMP_UP_RIGHT;
+			}
 		}
-		OutputDebugString("\n");
 	}
 }
 
@@ -364,7 +386,7 @@ void cBicho::Ostion(int *map)
 			jumping = true;
 			jump_alfa = 0;
 			jump_y = y;
-			if (state >= STATE_LOOKLEFT && state <= STATE_SHOOTLEFT)
+			if (!IsLookingRight())
 				state = STATE_JUMP_HIT_LEFT;
 			else state = STATE_JUMP_HIT_RIGHT;
 
@@ -537,7 +559,9 @@ void cBicho::ShotLogic(int type)
 
 void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
-
+	char s[256];
+	sprintf(s, "Jump Logic state %d \n", GetState());
+	OutputDebugString(s);
 	int step = JUMP_STEP;
 	int height = JUMP_HEIGHT;
 	if (ostion){
@@ -564,7 +588,7 @@ void cBicho::JumpLogic(int *map, bool boss) {
 			jumping = !CollidesMapFloor(map, false);
 			//ESTA CAIENT DESPRES DE SALTAR
 			
-			if (state >= STATE_LOOKLEFT && state<= STATE_SHOOTLEFT){
+			if (!IsLookingRight()){
 				if (ostion) state = STATE_JUMP_HIT_LEFT;
 				else state = STATE_FALLING_LEFT;
 			}
