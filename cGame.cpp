@@ -39,7 +39,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(4, 4);
+	Player.SetTile(189, 4);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -163,23 +163,27 @@ bool cGame::Process()
 	//Obtain the Rect of the shot to know if it collides with an enemy
 	cRect playerShot;
 	Player.GetShotArea(&playerShot);
+	cRect EnemyPos;
+	cRect EnemyShotPos;
 	for (int i = 0; i < ENEMIES_1; ++i) {
-		Enemies[i].Logic(Scene.GetCollisionMap(), &playerShot);
-		cRect EnemyPos;
+		if (Enemies[i].Logic(Scene.GetCollisionMap(), &playerShot)&& (Player.IsShooting())) Player.EraseShot();;
 		Enemies[i].GetArea(&EnemyPos);
-		if (Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+		if (Enemies[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
 	}
 	for (int i = 0; i < ENEMIES_2; ++i) {
-		Enemies2[i].Logic(Scene.GetCollisionMap(), &playerShot);
-		cRect EnemyPos;
-		cRect EnemyShotPos;
+		if (Enemies2[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
 		Enemies2[i].GetArea(&EnemyPos);
 		Enemies2[i].GetShotArea(&EnemyShotPos);
-		if (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos)) Player.Ostion(Scene.GetCollisionMap());
+		if (Player.Collides(&EnemyShotPos)) Enemies2[i].EraseShot();
+		if (Enemies2[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
 	}
-
-	Player.Logic(Scene.GetCollisionMap(), EnemiesPosition, ENEMIES_1, EnemiesPosition2, ENEMIES_2, EnemiesShot, ENEMIES_2);
-	BurstMan.Logic(Scene.GetCollisionMap());
+	//Boss Area
+	BurstMan.GetArea(&EnemyPos);
+	BurstMan.GetShotArea(&EnemyShotPos);
+	if (Player.Collides(&EnemyShotPos)) BurstMan.EraseShot();
+	if (BurstMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+	Player.Logic(Scene.GetCollisionMap());
+	if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
 	return res;
 }
 

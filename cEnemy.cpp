@@ -9,11 +9,13 @@ cEnemy::cEnemy(void)
 
 cEnemy::~cEnemy(void){}
 
-void cEnemy::Logic(int *map, cRect *playerShot)
+bool cEnemy::Logic(int *map, cRect *playerShot)
 {
+	boolean result = false;
 	if (IsAlive() && GetState() != STATE_DIE) {
 		if (Collides(playerShot)) {
 			Die();
+			result = true;
 		}
 		else if (!CollidesMapFloor(map,true)) {
 			if (GetState() == STATE_WALKLEFT) MoveRight(map);
@@ -35,6 +37,7 @@ void cEnemy::Logic(int *map, cRect *playerShot)
 			SetAlive(false);
 		}
 	}
+	return result;
 }
 
 void cEnemy::Die() {

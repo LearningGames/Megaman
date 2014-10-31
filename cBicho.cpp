@@ -448,6 +448,10 @@ void cBicho::SetShotPosition(int xResult, int yResult) {
 	yShot = yResult;
 }
 
+void cBicho::SetShotProgress(int prog) {
+	shotProgress = prog;
+}
+
 bool cBicho::ShotCollidesWall(int *map)
 {
 	int xo, yo, xf, yf, tile_x, tile_y;
@@ -473,17 +477,39 @@ bool cBicho::ShotCollidesWall(int *map)
 	return false;
 }
 
-void cBicho::ShotLogic(bool enemy)
+void cBicho::EraseShot() {
+	shooting = false;
+	shotProgress = 0;
+	xShot = 0;
+	yShot = 0;
+}
+
+void cBicho::ShotLogic(int type)
 {
-	shotProgress += SHOT_ENEMY_STEP;
+	int step = SHOT_STEP;
+	int distShot = DIST_SHOT;
+	switch (type) {
+	case PLAYER:
+		step = SHOT_STEP;
+		distShot = DIST_SHOT;
+		break;
+	case ENEMY2:
+		step = SHOT_ENEMY_STEP;
+		distShot = DIST_SHOT_ENEMY;
+		break;
+	case BURSTMAN:
+		step = SHOT_BOSS_STEP;
+		distShot = DIST_SHOT_BOSS;
+		break;
+	}
+	shotProgress += step;
 	//We want to know if the shot collides with something
-	if (/*ShotCollidesWall(map) ||*/ shotProgress >= DIST_ENEMY_SHOT) {
-		shooting = false;
-		shotProgress = 0;
+	if (/*ShotCollidesWall(map) ||*/ shotProgress >= distShot) {
+		EraseShot();
 	}
 	else {
-		if (isRightShot) xShot += SHOT_ENEMY_STEP;
-		else xShot -= SHOT_ENEMY_STEP;
+		if (isRightShot) xShot += step;
+		else xShot -= step;
 	}
 }
 
@@ -557,9 +583,9 @@ void cBicho::FallingLogic(int *map)
 		state = STATE_FALLING_LEFT;
 	else state = STATE_FALLING_RIGHT;
 }
-void cBicho::Logic(int *map, cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
+void cBicho::Logic(int *map)
 {
-	if (shooting) ShotLogic(false);
+	if (shooting) ShotLogic(PLAYER);
 	if (jumping) JumpLogic(map,false);
 	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
 }

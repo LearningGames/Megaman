@@ -11,62 +11,65 @@ cBoss1::cBoss1(void)
 }
 cBoss1::~cBoss1(void){}
 
-void cBoss1::Logic(int *map)
+bool cBoss1::Logic(int *map, cRect *playerShot)
 {
+	boolean result = false;
 	if (first) {
 		Jump(map);
 		first = false;
 	}
-	if (IsShooting()) {
-		OutputDebugString("shot logic\n");
-		ShotLogic(false);
-	}
-	if (IsJumping()) {
-		OutputDebugString("isJumping\n");
-		if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-			MoveLeft(map,true);
-		}
-		else {
-			MoveRight(map,true);
-		}
-		JumpLogic(map,true);
-	}
-	else if (!CollidesMapFloor(map, false)) {
-		OutputDebugString("Falling\n");
-		FallingLogic(map);
-	}
 	else {
-		++shootingTime;
-		if (shootingTime >= JUMP_TIME) {
-			OutputDebugString("Jump_shoot\n");
-			Jump(map);
-			shootingTime = 0;
+		if (Collides(playerShot)) {
+			OutputDebugString("OUCH");
+			result = true;
+		} 
+		if (IsShooting()) {
+			ShotLogic(BURSTMAN);
 		}
-		else if (shootingTime >= SHOT_TIME) {
-			OutputDebugString("Wait\n");
-			if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-				SetState(STATE_LOOKLEFT);
-			}
-			else if (GetState() > STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT){
-				SetState(STATE_LOOKRIGHT);
-			}
-		}
-		else if (shootingTime >= 3) {
-			if (GetState() >= STATE_LOOKLEFT && GetState() < STATE_SHOOTLEFT)
-				SetState(STATE_SHOOTLEFT);
-			else if (GetState() >= STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT)SetState(STATE_SHOOTRIGHT);
-			if (shootingTime % 30 == 0)
-				if (!IsShooting()) Shot(map, !(GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT));
-		}
-		else if (shootingTime == 1 )  {
+		if (IsJumping()) {
 			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-				SetState(STATE_LOOKRIGHT);
+				MoveLeft(map, true);
 			}
 			else {
-				SetState(STATE_LOOKLEFT);
+				MoveRight(map, true);
+			}
+			JumpLogic(map, true);
+		}
+		else if (!CollidesMapFloor(map, false)) {
+			FallingLogic(map);
+		}
+		else {
+			++shootingTime;
+			if (shootingTime >= JUMP_TIME) {
+				Jump(map);
+				shootingTime = 0;
+			}
+			else if (shootingTime >= SHOT_TIME) {
+				if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
+					SetState(STATE_LOOKLEFT);
+				}
+				else if (GetState() > STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT){
+					SetState(STATE_LOOKRIGHT);
+				}
+			}
+			else if (shootingTime >= 3) {
+				if (GetState() >= STATE_LOOKLEFT && GetState() < STATE_SHOOTLEFT)
+					SetState(STATE_SHOOTLEFT);
+				else if (GetState() >= STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT)SetState(STATE_SHOOTRIGHT);
+				if (shootingTime % 10 == 0)
+					if (!IsShooting()) Shot(map, !(GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT));
+			}
+			else if (shootingTime == 1)  {
+				if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
+					SetState(STATE_LOOKRIGHT);
+				}
+				else {
+					SetState(STATE_LOOKLEFT);
+				}
 			}
 		}
 	}
+	return result;
 }
 
 //Draw functions
