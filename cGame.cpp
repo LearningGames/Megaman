@@ -31,18 +31,20 @@ bool cGame::Init()
 
 	res = Data.LoadImage(IMG_LEVEL1,"tile01.png",GL_RGBA);
 	if(!res) return false;
+	res = Data.LoadImage(IMG_LEVEL2, "tile02.png", GL_RGBA);
+	if (!res) return false;
 	level = Scene.GetCurrentLevel();
 	char s[256];
 	sprintf(s, "level %d \n", level);
 	OutputDebugString(s);
-	res = Scene.LoadLevel(level);
+	res = Scene.LoadLevel(level,1);
 	if(!res) return false;
 
 	//Player initialization
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(189, 4);
+	Player.SetTile(2, 4);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -177,9 +179,13 @@ bool cGame::Process()
 	if (keys[GLUT_KEY_LEFT] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap(), false);
 	else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false);
 	else Player.Stop();
-
+	
 	if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
 
+	if (keys['a']) {
+		level++;
+		Scene.LoadLevel(level, 1);
+	}
 	//Obtain the Rect of the shot to know if it collides with an enemy
 	cRect playerShot;
 	Player.GetShotArea(&playerShot);
@@ -222,7 +228,8 @@ void cGame::Render()
 	
 	glLoadIdentity();
 
-	Scene.Draw(Data.GetID(IMG_LEVEL1));
+	if (Scene.GetCurrentLevel() == 1) Scene.Draw(Data.GetID(IMG_LEVEL1));
+	else Scene.Draw(Data.GetID(IMG_LEVEL2));
 	if (Player.IsShooting()) {
 		if (Player.IsShootingRight()) Player.DrawShot(Data.GetID(IMG_SHOTRIGHT),true);
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);

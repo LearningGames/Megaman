@@ -19,7 +19,7 @@ int cScene::GetCurrentLevel()
 	return level;
 }
 
-bool cScene::LoadLevel(int level)
+bool cScene::LoadLevel(int levelLoad, int sublevel)
 {
 	bool res;
 	FILE *fd;
@@ -29,10 +29,9 @@ bool cScene::LoadLevel(int level)
 	float coordx_tile, coordy_tile;
 
 	res = true;
-
-	if (level<10) sprintf(file, "%s%d%s", (char *)FILENAME, level, (char *)FILENAME_EXT);
+	level = levelLoad;
+	if (levelLoad<10) sprintf(file, "%s%d%d%s", (char *)FILENAME, level, sublevel, (char *)FILENAME_EXT);
 	else		 sprintf(file, "%s%d%s", (char *)FILENAME, level, (char *)FILENAME_EXT);
-
 	fd = fopen(file, "r");
 	if (fd == NULL) return false;
 
@@ -51,8 +50,17 @@ bool cScene::LoadLevel(int level)
 			if (tile != 0) {
 				tile -= 1;
 				map[(j*SCENE_WIDTH) + i] = tile;
-				if (tile >= 77 && tile <= 79 || tile >= 84 && tile <= 86) collisionMap[(j*SCENE_WIDTH) + i] = 1;
-				else  collisionMap[(j*SCENE_WIDTH) + i] = 0;
+				if (level == 1) {
+					if (tile == 30) collisionMap[(j*SCENE_WIDTH) + i] = 2;
+					if (tile < 60) collisionMap[(j*SCENE_WIDTH) + i] = 0;
+					else collisionMap[(j*SCENE_WIDTH) + i] = 1;
+				}
+				else if (level == 2) {
+					OutputDebugString("level 2");
+					//if (tile == 12 || tile == 22 || tile == 17 || tile == 27 || tile == 19 || tile == 20 || tile == 29 || tile == 30 || tile == 40 || tile == 66) 
+					//	collisionMap2[(j*SCENE_WIDTH) + i] = 0;
+					//else collisionMap2[(j*SCENE_WIDTH) + i] = 1;
+				}
 
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
 				//else if (tile == ) collisionMap[(j*SCENE_WIDTH) + i] = 0;
@@ -91,7 +99,7 @@ bool cScene::LoadLevel(int level)
 void cScene::Draw(int tex_id)
 {
 	if (lev > 29) lev = 10;
-	if (lev%10 == 0) LoadLevel(lev/10);
+	if (lev%10 == 0) LoadLevel(level,lev/10);
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D,tex_id);
 	glCallList(id_DL);
@@ -105,5 +113,6 @@ int* cScene::GetMap()
 
 int* cScene::GetCollisionMap()
 {
-	return collisionMap;
+	if (level == 1) return collisionMap;
+	else return collisionMap2;
 }

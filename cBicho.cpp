@@ -265,7 +265,7 @@ void cBicho::MoveLeft(int *map, bool boss)
 	{
 		xaux = x;
 		x -= step;
-		if(  CollidesMapWall(map,false))
+		if(CollidesMapWall(map,false))
 		{
 			x = xaux;
 			state = STATE_LOOKLEFT;
@@ -511,29 +511,6 @@ void cBicho::ShotLogic(int type)
 		else xShot -= step;
 	}
 }
-
-/*bool cBicho::CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
-{
-	char s[256];
-	sprintf(s, "CollideWithSomething \n");
-	OutputDebugStringA(s);
-	sprintf(s, "EnemyPos %d \n", sizeEnemies1);
-	OutputDebugStringA(s);
-	for (int i = 0; i < sizeEnemies1; ++i) {
-		if (Collides(&EnemiesPosition[i])) return true;
-	}
-	sprintf(s, "EnemyPos2 %d \n", sizeEnemies2);
-	OutputDebugStringA(s);
-	for (int i = 0; i < sizeEnemies2; ++i) {
-		sprintf(s, "Heli x %d y %d \n", EnemiesPosition2[i].right, EnemiesPosition2[i].top);
-		OutputDebugStringA(s);
-		if (Collides(&EnemiesPosition2[i])) return true;
-	}
-	for (int i = 0; i < sizeShot; ++i) {
-		if (Collides(&EnemiesShot[i])) return true;
-	}
-	return false;
-}*/
 
 void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
