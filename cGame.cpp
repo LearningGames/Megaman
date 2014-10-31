@@ -88,13 +88,13 @@ void cGame::InitBoss(int level) {
 		BurstMan.SetShotDimensions(20, 26);
 		break;
 
-	case 2:
+	/*case 2:
 		RoundMan.SetWidthHeight(57, 57);
 		RoundMan.SetTile(190, 4);
 		RoundMan.SetWidthHeight(57, 57);
 		RoundMan.SetState(STATE_LOOKLEFT);
 		RoundMan.SetShotDimensions(20, 26);
-		break;
+		break;*/
 	}
 }
 
@@ -212,12 +212,12 @@ bool cGame::Process()
 	if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
 
 	//Boss Area 2
-	RoundMan.GetArea(&EnemyPos);
+	/*RoundMan.GetArea(&EnemyPos);
 	RoundMan.GetShotArea(&EnemyShotPos);
 	if (Player.Collides(&EnemyShotPos)) RoundMan.EraseShot();
 	if (RoundMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
 	Player.Logic(Scene.GetCollisionMap());
-	if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
+	if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();*/
 	return res;
 }
 
@@ -249,14 +249,14 @@ void cGame::Render()
 	if (BurstMan.IsShooting()) BurstMan.DrawShot(Data.GetID(IMG_HELISHOT));
 
 
-	RoundMan.Draw(Data.GetID(IMG_BOSS2));
+	/*RoundMan.Draw(Data.GetID(IMG_BOSS2));
 	for (int i = 0; i < ENEMIES_2; ++i) {
 		Enemies2[i].Draw(Data.GetID(IMG_PLAYER));
 		if (Enemies2[i].IsShooting()) {
 			Enemies2[i].DrawShot(Data.GetID(IMG_HELISHOT));
 		}
 	}
-	if (RoundMan.IsShooting()) RoundMan.DrawShot(Data.GetID(IMG_HELISHOT));
+	if (RoundMan.IsShooting()) RoundMan.DrawShot(Data.GetID(IMG_HELISHOT));*/
 
 
 	glutSwapBuffers();
