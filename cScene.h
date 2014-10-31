@@ -11,6 +11,7 @@
 #define FILENAME_EXT	".txt"
 
 #define TILE_SIZE		16
+#define TILE_SIZE2		32
 
 class cScene
 {

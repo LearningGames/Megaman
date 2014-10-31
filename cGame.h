@@ -46,5 +46,5 @@ private:
 	cRect EnemiesPosition2[ENEMIES_2];
 	cEnemy2 Enemies2[ENEMIES_2];
 	cBoss1 BurstMan;
-	//cBoss2 RoundMan;
+	cBoss2 RoundMan;
 };
