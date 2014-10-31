@@ -3,6 +3,7 @@
 #include "cScene.h"
 #include "cPlayer.h"
 #include "cBoss1.h"
+#include "cBoss2.h"
 #include "cData.h"
 #include "cEnemy2.h"
 #include "cEnemy.h"
@@ -22,6 +23,7 @@ public:
 	void InitEnemies(int level);
 	void InitEnemies2(int level);
 	void InitBoss();
+	void InitBoss2();
 	bool Loop();
 	void Finalize();
 
@@ -45,4 +47,5 @@ private:
 	cRect EnemiesPosition2[ENEMIES_2];
 	cEnemy2 Enemies2[ENEMIES_2];
 	cBoss1 BurstMan;
+	cBoss2 RoundMan;
 };
