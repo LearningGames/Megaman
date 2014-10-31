@@ -14,7 +14,6 @@ cGame::~cGame(void)
 bool cGame::Init()
 {
 	bool res=true;
-	if (level == 0) level = 1;
 	//Graphics initialization
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
 	glMatrixMode(GL_PROJECTION);
@@ -30,8 +29,12 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_MENU, "menu.png", GL_RGBA);
 	if(!res) return false;
 
-	res = Data.LoadImage(IMG_BLOCKS,"tile01.png",GL_RGBA);
+	res = Data.LoadImage(IMG_LEVEL1,"tile01.png",GL_RGBA);
 	if(!res) return false;
+	level = Scene.GetCurrentLevel();
+	char s[256];
+	sprintf(s, "level %d \n", level);
+	OutputDebugString(s);
 	res = Scene.LoadLevel(level);
 	if(!res) return false;
 
@@ -68,30 +71,35 @@ bool cGame::Init()
 	InitEnemies2(level);
 	//res = Data.LoadImage(IMG_PLAYER, "boss1.png", GL_RGBA);
 	if (!res) return false;
-	InitBoss();
-	InitBoss2();
+	InitBoss(level);
 
 	return res;
 }
 
-void cGame::InitBoss() {
-	BurstMan.SetWidthHeight(54, 72);
-	BurstMan.SetTile(194, 4);
-	BurstMan.SetWidthHeight(54, 72);
-	BurstMan.SetState(STATE_LOOKLEFT);
-	BurstMan.SetShotDimensions(20, 26);
+void cGame::InitBoss(int level) {
+	switch (level) {
+	case 1:
+		BurstMan.SetWidthHeight(54, 72);
+		BurstMan.SetTile(194, 4);
+		BurstMan.SetWidthHeight(54, 72);
+		BurstMan.SetState(STATE_LOOKLEFT);
+		BurstMan.SetShotDimensions(20, 26);
+		break;
+
+	case 2:
+		RoundMan.SetWidthHeight(57, 57);
+		RoundMan.SetTile(190, 4);
+		RoundMan.SetWidthHeight(57, 57);
+		RoundMan.SetState(STATE_LOOKLEFT);
+		RoundMan.SetShotDimensions(20, 26);
+		break;
+	}
 }
 
-void cGame::InitBoss2(){
-	RoundMan.SetWidthHeight(57, 57);
-	RoundMan.SetTile(190, 4);
-	RoundMan.SetWidthHeight(57, 57);
-	RoundMan.SetState(STATE_LOOKLEFT);
-	RoundMan.SetShotDimensions(20, 26);
-}
 
 void cGame::InitEnemies(int level) {
-	if (level == 1) {
+	switch (level) {
+	case 1:
 		//First Monster
 		cEnemy Monster = cEnemy();
 		Monster.SetWidthHeight(35, 35);
@@ -102,11 +110,13 @@ void cGame::InitEnemies(int level) {
 		Enemies[1] = Monster;
 		Monster.SetTile(78, 5);
 		Enemies[2] = Monster;
+		break;
 	}
 }
 
 void cGame::InitEnemies2(int level) {
-	if (level == 1) {
+	switch (level) {
+	case 1:
 		//First Monster
 		cEnemy2 Monster = cEnemy2();
 		Monster.SetOrientation(false);
@@ -120,6 +130,7 @@ void cGame::InitEnemies2(int level) {
 		Monster.SetState(STATE_LOOKLEFT);
 		Monster.SetShotDimensions(20, 26);
 		Enemies2[0] = Monster;
+		break;
 	}
 }
 
@@ -210,7 +221,8 @@ void cGame::Render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	
 	glLoadIdentity();
-	Scene.Draw(Data.GetID(IMG_BLOCKS));
+
+	Scene.Draw(Data.GetID(IMG_LEVEL1));
 	if (Player.IsShooting()) {
 		if (Player.IsShootingRight()) Player.DrawShot(Data.GetID(IMG_SHOTRIGHT),true);
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);

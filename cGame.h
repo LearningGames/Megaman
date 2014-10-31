@@ -22,8 +22,7 @@ public:
 	bool Init();
 	void InitEnemies(int level);
 	void InitEnemies2(int level);
-	void InitBoss();
-	void InitBoss2();
+	void InitBoss(int level);
 	bool Loop();
 	void Finalize();
 

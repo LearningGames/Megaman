@@ -7,10 +7,16 @@ int lev;
 cScene::cScene(void)
 {
 	lev = 10;
+	level = 1;
 }
 
 cScene::~cScene(void)
 {
+}
+
+int cScene::GetCurrentLevel()
+{
+	return level;
 }
 
 bool cScene::LoadLevel(int level)

@@ -22,9 +22,11 @@ public:
 	void Draw(int tex_id);
 	int *GetMap();
 	int *GetCollisionMap();
+	int GetCurrentLevel();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int collisionMap[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
 	int id_DL;								//actual level display list
+	int level;
 };
