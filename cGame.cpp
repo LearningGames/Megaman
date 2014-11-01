@@ -44,7 +44,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_PLAYER,"megaman.png",GL_RGBA);
 	if(!res) return false;
 	Player.SetWidthHeight(35,35);
-	Player.SetTile(4, 4);
+	Player.SetTile(189, 4);
 	Player.SetWidthHeight(35,35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -84,12 +84,13 @@ void cGame::InitBoss(int level) {
 		BurstMan.SetWidthHeight(54, 72);
 		BurstMan.SetState(STATE_LOOKLEFT);
 		BurstMan.SetShotDimensions(20, 26);
-
+		BurstMan.isBoss = true;
 		RoundMan.SetWidthHeight(57, 57);
 		RoundMan.SetTile(194, 4);
 		RoundMan.SetWidthHeight(57, 57);
 		RoundMan.SetState(STATE_LOOKLEFT);
 		RoundMan.SetShotDimensions(20, 26);
+		RoundMan.isBoss = true;
 }
 
 
@@ -205,7 +206,7 @@ bool cGame::Process()
 	Player.Logic(Scene.GetCollisionMap());
 	//if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
 
-	//Boss Area 2
+	//Boss Area 2live
 	RoundMan.GetArea(&EnemyPos);
 	if (RoundMan.IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
 	if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
@@ -227,7 +228,6 @@ void cGame::Render()
 		else Player.DrawShot(Data.GetID(IMG_SHOTLEFT),false);
 	}
 	Player.Draw(Data.GetID(IMG_PLAYER));
-	Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
 	for (int i = 0; i < ENEMIES_1; ++i) {
 		Enemies[i].Draw(Data.GetID(IMG_MONSTER));
 	}
@@ -243,7 +243,7 @@ void cGame::Render()
 	glLoadIdentity();
 
 	RoundMan.Draw(Data.GetID(IMG_BOSS2));
-
-
+	RoundMan.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
+	Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
 	glutSwapBuffers();
  }

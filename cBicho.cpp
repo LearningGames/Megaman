@@ -16,6 +16,7 @@ cBicho::cBicho(void)
 	shotProgress = 0;
 	isAlive = true;
 	deadTime = 0;
+	isBoss = false;
 }
 
 cBicho::~cBicho(void){}
@@ -240,6 +241,9 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 		screen_x = (180 * 16) - 50;
 	}
 
+	if (isBoss){
+		screen_x = (180 * 17)+50;
+	}
 	glEnable(GL_TEXTURE_2D);
 
 	glBindTexture(GL_TEXTURE_2D, tex_id);

@@ -28,6 +28,10 @@ bool cBoss2::Logic(int *map, cRect *playerShot)
 		else MoveRight(map, true);
 		Jump(map);
 	}
+	else if (Collides(playerShot)){
+		live++;
+		if (live > 5)live = 0;
+	}
 	else if (CollidesMapFloor(map, false)) {
 		if (IsLookingRight()) MoveRight(map, true);
 		else MoveLeft(map, true);
@@ -114,5 +118,14 @@ void cBoss2::NextShotFrame(int max)
 		seqShot %= max;
 		delayShot = 0;
 	}
+
 }
+void cBoss2::DrawLiveBar(int tex_id){
+		float xo, yo, xf, yf;
+		xo = 0.0f;
+		xf = 1.0f;
+		yo = (live * 0.2f) + 0.2f;
+		yf = (live * 0.2f);
+		DrawLiveBarRect(tex_id, xo, yo, xf, yf);
+	}
 

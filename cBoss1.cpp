@@ -21,6 +21,8 @@ bool cBoss1::Logic(int *map, cRect *playerShot)
 	else {
 		if (Collides(playerShot)) {
 			OutputDebugString("OUCH");
+			live++;
+			if (live > 5)live = 0;
 			result = true;
 		} 
 		if (IsShooting()) {

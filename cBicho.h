@@ -48,6 +48,7 @@ class cRect
 public:
 	int left,top,
 		right,bottom;
+	
 };
 
 class cBicho
@@ -114,6 +115,7 @@ public:
 	int  GetFrame();
 	int live;
 	bool ShotCollidesWall(int *map);
+	bool isBoss;
 	
 private:
 	int x,y;
