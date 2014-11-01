@@ -30,6 +30,7 @@ public:
 	void DrawShot(int tex_id);
 
 	void NextShotFrame(int max);
+	void DrawLiveBar(int tex_id);
 
 private:
 	bool first;

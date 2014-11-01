@@ -19,6 +19,11 @@ int cScene::GetCurrentLevel()
 	return level;
 }
 
+int cScene::NextLevel()
+{
+	return level++;
+}
+
 bool cScene::LoadLevel(int levelLoad, int sublevel)
 {
 	bool res;

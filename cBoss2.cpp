@@ -8,13 +8,13 @@ cBoss2::cBoss2(void)
 {
 	first = true;
 	shootingTime = 0;
+	stop_time = 0;
 }
 cBoss2::~cBoss2(void){}
 
 bool cBoss2::Logic(int *map, cRect *playerShot)
 {
 	
-	/*MoveLeft(map, true);*/
 	if (first) {
 		Jump(map);
 		first = false;
@@ -22,7 +22,7 @@ bool cBoss2::Logic(int *map, cRect *playerShot)
 	if (IsJumping()) JumpLogic(map, false);
 	else if (CollidesMapFloor(map,false) && CollidesMapWall(map,IsLookingRight())) {
 		if (IsLookingRight()) {
-			OutputDebugString("Right :D \n");
+				
 			MoveLeft(map, true);
 		}
 		else MoveRight(map, true);
@@ -36,6 +36,7 @@ bool cBoss2::Logic(int *map, cRect *playerShot)
 		if (IsLookingRight()) MoveRight(map, true);
 		else MoveLeft(map, true);
 	}
+	else FallingLogic(map);
 	return false;
 }
 

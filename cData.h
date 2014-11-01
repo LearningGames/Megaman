@@ -4,13 +4,14 @@
 #include "Globals.h"
 
 //Image array size
-#define NUM_IMG		10
+#define NUM_IMG		13
 
 //Image identifiers
 #define IMG_LEVEL1	0
 #define IMG_LEVEL2	8
 #define IMG_PLAYER	1
 #define IMG_BOSS1	4
+#define IMG_BOSS1SHOT	10
 #define IMG_BOSS2	9
 
 #define IMG_MONSTER	1
@@ -20,6 +21,8 @@
 #define IMG_HELISHOT	5
 #define IMG_GUI_MEGA	6
 #define IMG_MENU		7
+#define IMG_INST		11
+#define IMG_CREDITS		12
 
 
 class cData
