@@ -182,13 +182,13 @@ bool cGame::Process()
 		if (keys['1']){
 			state = SCREEN_GAME;
 		}
-		if (keys['2']){
+		if (keys['3']){
 			state = SCREEN_INSTRUCTIONS;
 		}
-		if (keys['3']){
+		if (keys['2']){
 			state = SCREEN_CREDITS;
 		}
-		if (keys[27]){
+		if (keys['4']){
 			res = false;
 		}
 	}//END SCREEN_MENU
