@@ -56,6 +56,10 @@ bool cGame::Init()
 	//Barra vida initialization
 	res = Data.LoadImage(IMG_GUI_MEGA, "guimega.png", GL_RGBA);
 	Player.SetLiveBar(80, 16);
+	res = Data.LoadImage(IMG_GUI_ROUND, "vidaRound.png", GL_RGBA);
+	Player.SetLiveBar(80, 16);
+	res = Data.LoadImage(IMG_GUI_BURST, "vidaBurst.png", GL_RGBA);
+	Player.SetLiveBar(80, 16);
 
 	//Monster initialization
 	res = Data.LoadImage(IMG_MONSTER, "megaman.png", GL_RGBA);
@@ -202,7 +206,7 @@ bool cGame::Process()
 	}
 
 	else if (state == SCREEN_GAME){ //START SCREEN_MENU
-		if (keys[27])	res = false;
+		if (keys[27])	state = SCREEN_MENU;
 		if (keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
 		if (keys[GLUT_KEY_LEFT] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap(), false);
 		else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false);
@@ -311,8 +315,8 @@ void cGame::Render()
 			if (BurstMan.IsShooting()) BurstMan.DrawShot(Data.GetID(IMG_BOSS1SHOT));
 		}
 		RoundMan.Draw(Data.GetID(IMG_BOSS2));
-		if(level == 2)RoundMan.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
-		if(level == 1)BurstMan.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
+		if(level == 2)RoundMan.DrawLiveBar(Data.GetID(IMG_GUI_ROUND));
+		if(level == 1)BurstMan.DrawLiveBar(Data.GetID(IMG_GUI_BURST));
 		Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
 	}
 	else{
