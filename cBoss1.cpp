@@ -9,75 +9,79 @@ using namespace std;
 
 cBoss1::cBoss1(void)
 {
-
+	start = false;
 	first = true;
 	shootingTime = 0;
 	engine = createIrrKlangDevice();
 }
 cBoss1::~cBoss1(void){}
 
+void cBoss1::Start(){
+	start = true;
+}
+
 bool cBoss1::Logic(int *map, cRect *playerShot)
 {
 	boolean result = false;
-	if (first) {
-		Jump(map);
-		first = false;
-	}
-	else {
-		if (Collides(playerShot)) {
-			char s[256];
-			sprintf(s, "live: %d", live + 1);
-				OutputDebugString(s);
-			live++;
-			if (live >= 4) {
-				SetAlive(false);
-				SetState(STATE_HITED);
-				engine->play2D("shout.wav");
-			}
-			result = true;
-		} 
-		if (IsShooting()) {
-			ShotLogic(BURSTMAN);
-		}
-		if (IsJumping()) {
-			if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-				MoveLeft(map, true);
-			}
-			else {
-				MoveRight(map, true);
-			}
-			JumpLogic(map, true);
-		}
-		else if (!CollidesMapFloor(map, false)) {
-			FallingLogic(map);
+	if (IsAlive() && start) {
+		if (first) {
+			Jump(map);
+			first = false;
 		}
 		else {
-			++shootingTime;
-			if (shootingTime >= JUMP_TIME) {
-				Jump(map);
-				shootingTime = 0;
-			}
-			else if (shootingTime >= SHOT_TIME) {
-				if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-					SetState(STATE_LOOKLEFT);
+			if (Collides(playerShot)) {
+				live++;
+				if (live >= 4) {
+					SetAlive(false);
+					if (!IsLookingRight()) SetState(STATE_HITED);
+					else SetState(STATE_HITED_LEFT);
+					engine->play2D("shout.wav");
 				}
-				else if (GetState() > STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT){
-					SetState(STATE_LOOKRIGHT);
-				}
+				result = true;
 			}
-			else if (shootingTime >= 3) {
-				if (GetState() >= STATE_LOOKLEFT && GetState() < STATE_SHOOTLEFT)
-					SetState(STATE_SHOOTLEFT);
-				else if (GetState() >= STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT)SetState(STATE_SHOOTRIGHT);
-				if (shootingTime % 10 == 0)
-					if (!IsShooting()) Shot(map, !(GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT));
+			if (IsShooting()) {
+				ShotLogic(BURSTMAN);
 			}
-			else if (shootingTime == 1)  {
+			if (IsJumping()) {
 				if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-					SetState(STATE_LOOKRIGHT);
+					MoveLeft(map, true);
 				}
 				else {
-					SetState(STATE_LOOKLEFT);
+					MoveRight(map, true);
+				}
+				JumpLogic(map, true);
+			}
+			else if (!CollidesMapFloor(map, false)) {
+				FallingLogic(map);
+			}
+			else {
+				++shootingTime;
+				if (shootingTime >= JUMP_TIME) {
+					Jump(map);
+					shootingTime = 0;
+				}
+				else if (shootingTime >= SHOT_TIME) {
+					if (GetState() > STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
+						SetState(STATE_LOOKLEFT);
+					}
+					else if (GetState() > STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT){
+						SetState(STATE_LOOKRIGHT);
+					}
+				}
+				else if (shootingTime >= 3) {
+					if (GetState() >= STATE_LOOKLEFT && GetState() < STATE_SHOOTLEFT)
+						SetState(STATE_SHOOTLEFT);
+					else if (GetState() >= STATE_LOOKRIGHT && GetState() < STATE_SHOOTRIGHT)SetState(STATE_SHOOTRIGHT);
+					if (shootingTime % 10 == 0)
+						if (!IsShooting()) Shot(map, !(GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT));
+				}
+				else if (shootingTime == 1)  {
+					if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
+						SetState(STATE_LOOKRIGHT);
+					}
+					else {
+						SetState(STATE_LOOKLEFT);
+					}
 				}
 			}
 		}
@@ -129,8 +133,8 @@ void cBoss1::Draw(int tex_id)
 	case STATE_HITED:
 		xo = (size * 6.0f); yo = 0.0f;
 		break;
-	default:
-		xo = 0.0f; yo = 0.0f*sizey;
+	case STATE_HITED_LEFT:
+		xo = (size * 6.0f); yo = 1.0f*sizey;
 		break;
 	}
 	xf = xo + size;

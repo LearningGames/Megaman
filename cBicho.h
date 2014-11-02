@@ -25,7 +25,8 @@ using namespace irrklang;
 #define STATE_JUMP_HIT_RIGHT 10 
 #define STATE_SHOOTRIGHT	11
 #define STATE_HITED			12
-#define STATE_DIE			13
+#define STATE_HITED_LEFT	13
+#define STATE_DIE			14
 
 //Define type of Bicho
 #define PLAYER			0

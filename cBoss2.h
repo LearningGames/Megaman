@@ -27,7 +27,7 @@ public:
 	~cBoss2(void);
 
 	bool Logic(int *map, cRect *playerShot);
-
+	void Start();
 	void Draw(int tex_id);
 	void DrawShot(int tex_id);
 
@@ -35,6 +35,7 @@ public:
 	void DrawLiveBar(int tex_id);
 
 private:
+	bool start;
 	bool first;
 	int shootingTime;
 	int stop_time;

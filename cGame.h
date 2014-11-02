@@ -10,8 +10,8 @@
 
 #define GAME_WIDTH	400
 #define GAME_HEIGHT 240
-#define ENEMIES_11	3
-#define ENEMIES_21	1
+#define ENEMIES_11	5
+#define ENEMIES_21	4
 #define ENEMIES_12	3
 #define ENEMIES_22	1
 
@@ -49,6 +49,7 @@ private:
 	int level = 0;
 	int state;
 	int deadtime;
+	int deadBosstime;
 	cScene Scene;
 	cPlayer Player;
 	cData Data;

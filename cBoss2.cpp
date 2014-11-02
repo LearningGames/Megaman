@@ -16,35 +16,45 @@ cBoss2::cBoss2(void)
 }
 cBoss2::~cBoss2(void){}
 
+void cBoss2::Start() {
+	start = true;
+}
+
 bool cBoss2::Logic(int *map, cRect *playerShot)
 {
-	
-	if (first) {
-		Jump(map);
-		first = false;
-	}
-	if (IsJumping()) JumpLogic(map, false);
-	else if (CollidesMapFloor(map,false) && CollidesMapWall(map,IsLookingRight())) {
-		if (IsLookingRight()) {
-				
-			MoveLeft(map, true);
+	boolean result = false;
+	if (start) {
+		if (IsAlive()) {
+			if (first) {
+				Jump(map);
+				first = false;
+			}
+			if (IsJumping()) JumpLogic(map, false);
+			else if (CollidesMapFloor(map, false) && CollidesMapWall(map, IsLookingRight())) {
+				if (IsLookingRight()) {
+					MoveLeft(map, true);
+				}
+				else MoveRight(map, true);
+				Jump(map);
+			}
+			else if (Collides(playerShot)){
+				live++;
+				if (live >= 4){
+					engine->play2D("bossdead.wav");
+					SetAlive(false);
+					if (!IsLookingRight())SetState(STATE_HITED);
+					else SetState(STATE_HITED_LEFT);
+				}
+				result = true;
+			}
+			else if (CollidesMapFloor(map, false)) {
+				if (IsLookingRight()) MoveRight(map, true);
+				else MoveLeft(map, true);
+			}
+			else FallingLogic(map);
 		}
-		else MoveRight(map, true);
-		Jump(map);
 	}
-	else if (Collides(playerShot)){
-		live++;
-		if (live > 5){ 
-			engine->play2D("bossdead.wav");
-			live = 0; 
-		}
-	}
-	else if (CollidesMapFloor(map, false)) {
-		if (IsLookingRight()) MoveRight(map, true);
-		else MoveLeft(map, true);
-	}
-	else FallingLogic(map);
-	return false;
+	return result;
 }
 
 //Draw functions
@@ -95,7 +105,10 @@ void cBoss2::Draw(int tex_id)
 		NextFrame(9);
 		break;
 	case STATE_HITED:
-		xo = (size * 6.0f); yo = 0.0f;
+		xo = (size * 1.0f); yo = 0.0f;
+		break;
+	case STATE_HITED_LEFT:
+		xo = (size * 3.0f); yo = 2.0f*sizey;
 		break;
 	default:
 		xo = 0.0f; yo = 0.0f*sizey;
