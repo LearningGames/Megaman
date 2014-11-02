@@ -28,4 +28,6 @@ public:
 	bool IsHited(int xRival, int yRival);
 
 	void Draw(int tex_id);
+
+	ISoundEngine* engine;
 };

@@ -40,4 +40,5 @@ private:
 
 	bool lookRight;
 	bool movingDown;
+	ISoundEngine* engine;
 };
