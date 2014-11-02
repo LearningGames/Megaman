@@ -564,28 +564,24 @@ void cBicho::SetShotProgress(int prog) {
 	shotProgress = prog;
 }
 
-bool cBicho::ShotCollidesWall(int *map)
+bool cBicho::ShotCollidesWall(int *map, bool right, int level)
 {
-	int xo, yo, xf, yf, tile_x, tile_y;
+	int tile_x, tile_y;
+	int j;
+	int width_tiles, height_tiles;
 
-	xo = xShot;
-	yo = yShot;
-	xf = xShot + wShot;
-	yf = yShot + hShot;
+	tile_x = xShot / TILE_SIZE;
+	tile_y = yShot / TILE_SIZE;
+	width_tiles = wShot / TILE_SIZE;
+	height_tiles = hShot / TILE_SIZE;
 
-	if (isRightShot)
+	int width = SCENE_WIDTH;
+	if (level == 3) width = SCENE_WIDTH_VS;
+	for (j = 0; j<height_tiles; j++)
 	{
-		//xf e yf
-		tile_x = xf / TILE_SIZE;
-		tile_y = yf / TILE_SIZE;
-		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
+		if (map[tile_x + ((tile_y + j)*width)] != 0)	return true;
 	}
-	else
-	{
-		tile_x = xo / TILE_SIZE;
-		tile_y = yo / TILE_SIZE;
-		if (map[tile_x + tile_y*(199 / TILE_SIZE)] == 17) return true;
-	}
+
 	return false;
 }
 
@@ -616,7 +612,7 @@ void cBicho::ShotLogic(int type, int *map)
 	}
 	shotProgress += step;
 
-	if (ShotCollidesWall(map) || shotProgress >= distShot) {
+	if (shotProgress >= distShot) {
 		EraseShot();
 	}
 	else {

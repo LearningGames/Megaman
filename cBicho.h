@@ -122,7 +122,7 @@ public:
 	void NextFrame(int max);
 	int  GetFrame();
 	int live;
-	bool ShotCollidesWall(int *map);
+	bool ShotCollidesWall(int *map, bool right, int level);
 	bool isBoss;
 	bool isPlayer;
 private:

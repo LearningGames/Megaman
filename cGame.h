@@ -22,7 +22,7 @@
 #define SCREEN_TWO_PLAYERS  4
 #define SCREEN_INSTRUCTIONS2 5
 
-#define DEAD_TIME	60
+#define DEAD_TIME	35
 
 class cGame
 {
