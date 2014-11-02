@@ -241,21 +241,23 @@ void cBicho::GetShotArea(cRect *rc)
 	rc->top = yShot + hShot - SHOT_OFFSET_Y;
 }
 
+
+
 void cBicho::DrawRect(int tex_id, float xo, float yo, float xf, float yf)
 {
-	int screen_x,screen_y;
+	int screen_x, screen_y;
 
 	screen_x = x + SCENE_Xo;
 	screen_y = y + SCENE_Yo;
 
 	glEnable(GL_TEXTURE_2D);
-	
-	glBindTexture(GL_TEXTURE_2D,tex_id);
-	glBegin(GL_QUADS);	
-		glTexCoord2f(xo,yo);	glVertex2i(screen_x  ,screen_y);
-		glTexCoord2f(xf,yo);	glVertex2i(screen_x+w,screen_y);
-		glTexCoord2f(xf,yf);	glVertex2i(screen_x+w,screen_y+h);
-		glTexCoord2f(xo,yf);	glVertex2i(screen_x  ,screen_y+h);
+
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	glBegin(GL_QUADS);
+	glTexCoord2f(xo, yo);	glVertex2i(screen_x, screen_y);
+	glTexCoord2f(xf, yo);	glVertex2i(screen_x + w, screen_y);
+	glTexCoord2f(xf, yf);	glVertex2i(screen_x + w, screen_y + h);
+	glTexCoord2f(xo, yf);	glVertex2i(screen_x, screen_y + h);
 	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
@@ -313,6 +315,35 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 		glTexCoord2f(xf, yf);	glVertex2i(screen_x + 80.0f, screen_y + 16.0f);
 		glTexCoord2f(xo, yf);	glVertex2i(screen_x, screen_y + 16.0f);
 		glEnd();
+
+	glDisable(GL_TEXTURE_2D);
+}
+
+void cBicho::DrawLiveBarRect2(int tex_id, float xo, float yo, float xf, float yf, int num)
+{
+	int screen_x, screen_y;
+
+	screen_x = 30;
+	screen_y = 230;
+
+	if (num == 1){
+		screen_x = 70;
+	}
+	else 
+	{
+		screen_x = 310;
+	}
+	
+	glEnable(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, tex_id);
+	glBegin(GL_QUADS);
+	char s[256];
+	glTexCoord2f(xo, yo);	glVertex2i(screen_x, screen_y);
+	glTexCoord2f(xf, yo);	glVertex2i(screen_x + 80, screen_y);
+	glTexCoord2f(xf, yf);	glVertex2i(screen_x + 80.0f, screen_y + 16.0f);
+	glTexCoord2f(xo, yf);	glVertex2i(screen_x, screen_y + 16.0f);
+	glEnd();
 
 	glDisable(GL_TEXTURE_2D);
 }

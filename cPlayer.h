@@ -14,6 +14,7 @@ public:
 	void Draw(int tex_id);
 	void DrawShot(int tex_id, bool isRight);
 	void DrawLiveBar(int tex_id);
+	void DrawLiveBar2(int tex_id,int num);
 private:
 	ISoundEngine* engine;
 };

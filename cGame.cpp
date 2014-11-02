@@ -75,7 +75,8 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_BOSS1, "boss1.png", GL_RGBA);
 	res = Data.LoadImage(IMG_BOSS1SHOT, "bubble.png", GL_RGBA);
 	res = Data.LoadImage(IMG_BOSS2, "boss2.png", GL_RGBA);
-	res = Data.LoadImage(IMG_INST2, "instructions2.png", GL_RGBA);
+	res = Data.LoadImage(IMG_INST2, "instructions2.png", GL_RGBA); 
+	res = Data.LoadImage(IMG_PLAYER2, "megaman2.png", GL_RGBA);
 
 	//Init Player
 	Player.SetWidthHeight(35, 35);
@@ -228,7 +229,10 @@ bool cGame::Loop()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	if (playerX<180) glOrtho(0+32, GAME_WIDTH+32, 0 + 16, GAME_HEIGHT + 16, 0, 1);
+	if (Scene.GetCurrentLevel() == 3){
+		glOrtho(0 + 32, GAME_WIDTH + 32, 0 + 16, GAME_HEIGHT + 16, 0, 1);
+	}
+	else if (playerX<180) glOrtho(0+32, GAME_WIDTH+32, 0 + 16, GAME_HEIGHT + 16, 0, 1);
 	else if (playerX>185 * 16) glOrtho(176* 16, 201 * 16, 0 + 16, GAME_HEIGHT + 16, 0, 1);
 	else glOrtho(playerX-150,playerX +250, 0+16, GAME_HEIGHT+16, 0, 1);
 	glMatrixMode(GL_MODELVIEW);
@@ -382,7 +386,7 @@ void cGame::LogicLevel1() {
 		Scene.NextLevel();
 
 		engine->play2D("music2.wav", true);
-		//engine->removeAllSoundSources();
+		engine->removeAllSoundSources();
 		Init();
 	}
 	else ++deadBosstime;
@@ -527,12 +531,14 @@ void cGame::Render()
 				if (Player2.IsShootingRight()) Player2.DrawShot(Data.GetID(IMG_SHOTRIGHT), true);
 				else Player2.DrawShot(Data.GetID(IMG_SHOTLEFT), false);
 			}
-			Player2.Draw(Data.GetID(IMG_PLAYER));
-			Player2.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
+			Player2.Draw(Data.GetID(IMG_PLAYER2));
+			Player2.DrawLiveBar2(Data.GetID(IMG_GUI_MEGA),2);
 		}
 		if(level == 2)RoundMan.DrawLiveBar(Data.GetID(IMG_GUI_ROUND));
 		if(level == 1)BurstMan.DrawLiveBar(Data.GetID(IMG_GUI_BURST));
-		Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
+		
+		if (level == 3)Player.DrawLiveBar2(Data.GetID(IMG_GUI_MEGA),1);
+		else Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
 	}
 	else{
 		char imatge[256];

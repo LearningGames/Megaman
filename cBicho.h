@@ -90,6 +90,7 @@ public:
 	void DrawRect(int tex_id,float xo,float yo,float xf,float yf);
 	void DrawShotRect(int tex_id, float xo, float yo, float xf, float yf);
 	void DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf);
+	void DrawLiveBarRect2(int tex_id, float xo, float yo, float xf, float yf,int num);
 
 	void MoveRight(int *map, bool boss, int level);
 	void MoveLeft(int *map, bool boss, int level);

@@ -92,3 +92,13 @@ void cPlayer::DrawLiveBar(int tex_id)
 	yf = (live * 0.2f);
 	DrawLiveBarRect(tex_id, xo, yo, xf, yf);
 }
+
+void cPlayer::DrawLiveBar2(int tex_id, int num)
+{
+	float xo, yo, xf, yf;
+	xo = 0.0f;
+	xf = 1.0f;
+	yo = (live * 0.2f) + 0.2f;
+	yf = (live * 0.2f);
+	DrawLiveBarRect2(tex_id, xo, yo, xf, yf, num);
+}
