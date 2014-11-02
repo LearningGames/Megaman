@@ -33,6 +33,7 @@ private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int collisionMap[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
 	int collisionMap2[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
+	int collisionMap3[SCENE_WIDTH * SCENE_HEIGHT];
 	int id_DL;								//actual level display list
 	int level;
 	ISoundEngine* engine;

@@ -218,7 +218,7 @@ bool cBicho::CollidesWater(int *map)
 		}
 		i++;
 	}
-	return false;
+	return on_base;
 }
 
 void cBicho::GetArea(cRect *rc)

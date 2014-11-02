@@ -71,6 +71,11 @@ bool cScene::LoadLevel(int levelLoad, int sublevel)
 					collisionMap2[(j*SCENE_WIDTH) + i] = 0;
 					else collisionMap2[(j*SCENE_WIDTH) + i] = 1;
 				}
+				else if (level == 3) {
+					if (tile == 11 || tile == 21 || tile == 16 || tile == 26 || tile == 18 || tile == 19 || tile == 28 || tile == 29 || tile == 39 || tile == 65)
+						collisionMap3[(j*SCENE_WIDTH) + i] = 0;
+					else collisionMap3[(j*SCENE_WIDTH) + i] = 1;
+				}
 
 				coordx_tile = (map[(j*SCENE_WIDTH) + i]) % 10;
 				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 10;

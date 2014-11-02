@@ -78,7 +78,7 @@ bool cGame::Init()
 
 	//Init Player
 	Player.SetWidthHeight(35, 35);
-	Player.SetTile(150, 4);
+	Player.SetTile(3, 4);
 	Player.SetWidthHeight(35, 35);
 	Player.SetState(STATE_LOOKRIGHT);
 	Player.SetShotDimensions(20, 26);
@@ -120,10 +120,10 @@ void cGame::InitBoss(int level) {
 
 
 void cGame::InitEnemies(int level) {
+	cEnemy Monster = cEnemy();
 	switch (level) {
 	case 1:
 		//First Monster
-		cEnemy Monster = cEnemy();
 		Monster.SetWidthHeight(35, 35);
 		Monster.SetTile(16, 6);
 		Monster.SetState(STATE_LOOKRIGHT);
@@ -137,24 +137,34 @@ void cGame::InitEnemies(int level) {
 		Monster.SetPosition(1690, 48);
 		EnemiesLevel1[4] = Monster;
 		break;
+	case 2:
+		//First Monster
+		cEnemy Monster = cEnemy();
+		Monster.SetWidthHeight(35, 35);
+		Monster.SetPosition(219, 48);
+		Monster.SetState(STATE_LOOKRIGHT);
+		EnemiesLevel2[0] = Monster;
+		Monster.SetPosition(828, 128);
+		EnemiesLevel2[1] = Monster;
+		Monster.SetPosition(1641, 32);
+		EnemiesLevel2[2] = Monster;
+		break;
 	}
 }
 
 void cGame::InitEnemies2(int level) {
+	cEnemy2 Monster = cEnemy2();
+	Monster.SetWidthHeight(35, 35);
+	Monster.SetState(STATE_LOOKLEFT);
+	Monster.SetShotDimensions(20, 26);
+	int x, y;
 	switch (level) {
 	case 1:
 		//First Monster
-		cEnemy2 Monster = cEnemy2();
-		Monster.SetOrientation(false);
-		Monster.SetWidthHeight(35, 35);
 		Monster.SetMaxStep(22);
 		Monster.SetTile(35, 7);
-		int x, y;
 		Monster.GetPosition(&x, &y);
 		Monster.SetInitialPosition(y);
-		Monster.SetWidthHeight(35, 35);
-		Monster.SetState(STATE_LOOKLEFT);
-		Monster.SetShotDimensions(20, 26);
 		Enemies2Level1[0] = Monster;
 		Monster.SetMaxStep(22);
 		Monster.SetPosition(1110, 65);
@@ -171,6 +181,29 @@ void cGame::InitEnemies2(int level) {
 		Monster.GetPosition(&x, &y);
 		Monster.SetInitialPosition(y);
 		Enemies2Level1[3] = Monster;
+		break;
+	case 2:
+		//First Monster
+		Monster.SetMaxStep(22);
+		Monster.SetPosition(0,0);
+		Monster.GetPosition(&x, &y);
+		Monster.SetInitialPosition(y);
+		Enemies2Level2[0] = Monster;
+		Monster.SetMaxStep(22);
+		Monster.SetPosition(1074, 120);
+		Monster.GetPosition(&x, &y);
+		Monster.SetInitialPosition(y);
+		Enemies2Level2[1] = Monster;
+		Monster.SetMaxStep(22);
+		Monster.SetPosition(2007, 120);
+		Monster.GetPosition(&x, &y);
+		Monster.SetInitialPosition(y);
+		Enemies2Level2[2] = Monster;
+		Monster.SetMaxStep(25);
+		Monster.SetPosition(2415, 100);
+		Monster.GetPosition(&x, &y);
+		Monster.SetInitialPosition(y);
+		Enemies2Level2[3] = Monster;
 		break;
 	}
 }
@@ -248,8 +281,8 @@ bool cGame::Process()
 
 	else if (state == SCREEN_GAME){ //START SCREEN_MENU
 		if (!gaming){
-			//if(Scene.GetCurrentLevel()==1)engine->play2D("music1.wav", true);
-			//else engine->play2D("music2.wav");
+			if(Scene.GetCurrentLevel()==1)engine->play2D("music1.wav", true);
+			else engine->play2D("music2.wav");
 			gaming = true;
 			Reset (Scene.GetCurrentLevel() );
 		}
@@ -272,7 +305,7 @@ bool cGame::Process()
 			Scene.NextLevel();
 
 			engine->play2D("music2.wav", true);
-			//engine->removeAllSoundSources();
+		//engine->removeAllSoundSources();
 			Init();
 		}
 		if (keys['b']) {
@@ -296,14 +329,14 @@ bool cGame::Process()
 					for (int i = 0; i < ENEMIES_11; ++i) {
 						if (EnemiesLevel1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
 						EnemiesLevel1[i].GetArea(&EnemyPos);
-						//if (EnemiesLevel1[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+						if (EnemiesLevel1[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
 					}
 					for (int i = 0; i < ENEMIES_21; ++i) {
 						if (Enemies2Level1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
 						Enemies2Level1[i].GetArea(&EnemyPos);
 						Enemies2Level1[i].GetShotArea(&EnemyShotPos);
 						if (Player.Collides(&EnemyShotPos)) Enemies2Level1[i].EraseShot();
-						//if (Enemies2Level1[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+						if (Enemies2Level1[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
 					}
 					//Boss Area
 					BurstMan.GetArea(&EnemyPos);
@@ -335,6 +368,18 @@ bool cGame::Process()
 					RoundMan.Start();
 				}
 				if (RoundMan.IsAlive()) {
+					for (int i = 0; i < ENEMIES_21; ++i) {
+						if (EnemiesLevel2[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
+						EnemiesLevel2[i].GetArea(&EnemyPos);
+						if (EnemiesLevel2[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+					}
+					for (int i = 1; i < ENEMIES_22; ++i) {
+						if (Enemies2Level2[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
+						Enemies2Level2[i].GetArea(&EnemyPos);
+						Enemies2Level2[i].GetShotArea(&EnemyShotPos);
+						if (Player.Collides(&EnemyShotPos)) Enemies2Level2[i].EraseShot();
+						if (Enemies2Level2[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+					}
 					RoundMan.GetArea(&EnemyPos);
 					if (RoundMan.IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
 					if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
@@ -354,9 +399,9 @@ bool cGame::Process()
 	}//END SCREEN_GAME
 	int x, y;
 	Player.GetPosition(&x, &y);
-	/*char s[256];
+	char s[256];
 	sprintf(s, "x: %d, y: %d \n", x, y);
-	OutputDebugString(s);*/
+	OutputDebugString(s);
 	return res;
 }
 
@@ -419,7 +464,19 @@ void cGame::Render()
 			BurstMan.Draw(Data.GetID(IMG_BOSS1));
 			if (BurstMan.IsShooting() && BurstMan.IsAlive()) BurstMan.DrawShot(Data.GetID(IMG_BOSS1SHOT));
 		}
-		RoundMan.Draw(Data.GetID(IMG_BOSS2));
+		else if (level == 2) {
+			for (int i = 0; i < ENEMIES_12; ++i) {
+				EnemiesLevel2[i].Draw(Data.GetID(IMG_MONSTER));
+			}
+
+			for (int i = 1; i < ENEMIES_22; ++i) {
+				Enemies2Level2[i].Draw(Data.GetID(IMG_PLAYER));
+				if (Enemies2Level2[i].IsShooting() && Enemies2Level2[i].IsAlive()) {
+					Enemies2Level2[i].DrawShot(Data.GetID(IMG_HELISHOT));
+				}
+			}
+			RoundMan.Draw(Data.GetID(IMG_BOSS2));
+		}
 		if(level == 2)RoundMan.DrawLiveBar(Data.GetID(IMG_GUI_ROUND));
 		if(level == 1)BurstMan.DrawLiveBar(Data.GetID(IMG_GUI_BURST));
 		Player.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));

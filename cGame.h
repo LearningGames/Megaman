@@ -13,7 +13,7 @@
 #define ENEMIES_11	5
 #define ENEMIES_21	4
 #define ENEMIES_12	3
-#define ENEMIES_22	1
+#define ENEMIES_22	4
 
 #define SCREEN_MENU			0
 #define SCREEN_CREDITS		1

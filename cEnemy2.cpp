@@ -13,10 +13,6 @@ void cEnemy2::SetInitialPosition(int posy)
 	initialY = posy;
 }
 
-void cEnemy2::SetOrientation(bool right)
-{
-	lookRight = right;
-}
 void cEnemy2::SetMaxStep(int max) {
 	maxStep = max;
 }
@@ -36,11 +32,11 @@ bool cEnemy2::Logic(int *map, cRect *playerShot)
 		}
 		else if (y > initialY + maxStep) {		
 			MoveDown(map);
-			Shot(map,lookRight);
+			Shot(map,IsLookingRight());
 		}
 		else if (y < initialY - maxStep) {
 			MoveUp(map);
-			Shot(map, lookRight);
+			Shot(map, IsLookingRight());
 		}
 		else if (movingDown) {
 			MoveDown(map);
@@ -64,7 +60,7 @@ void cEnemy2::MoveDown(int *map)
 	SetPosition(x, y);
 	movingDown = true;
 	
-	if (lookRight) {
+	if (IsLookingRight()) {
 		if (GetState() != STATE_WALKRIGHT) SetState(STATE_WALKRIGHT);
 	}
 	else if (GetState() != STATE_WALKLEFT)SetState(STATE_WALKLEFT);
@@ -77,7 +73,7 @@ void cEnemy2::MoveUp(int *map)
 	y += STEP_LENGTH;
 	SetPosition(x, y);
 	movingDown = false;
-	if (lookRight) {
+	if (IsLookingRight()) {
 		if (GetState() != STATE_WALKRIGHT) SetState(STATE_WALKRIGHT);
 	}
 	else if (GetState() != STATE_WALKLEFT)SetState(STATE_WALKLEFT);
@@ -85,17 +81,6 @@ void cEnemy2::MoveUp(int *map)
 
 void cEnemy2::Die() {
 	SetState(STATE_DIE);
-}
-
-bool cEnemy2::IsHited(int xRival, int yRival){
-	int x, y;
-	GetPosition(&x, &y);
-	//35 = w&h && xR+10 = wShot/2 && xY+13 = hShot/2
-	if (x + 35 >= xRival - (10) && x + 35 <= xRival + (10)) {
-		if (((y + 35 / 2) >= (yRival - 13)) && ((y + 35 / 2) <= (yRival + 13))) return true;
-		else return false;
-	}
-	else return false;
 }
 
 void cEnemy2::Draw(int tex_id)

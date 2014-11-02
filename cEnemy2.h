@@ -22,7 +22,6 @@ public:
 	~cEnemy2(void);
 
 	void SetInitialPosition(int y);
-	void SetOrientation(bool right);
 	void SetMaxStep(int max);
 
 
@@ -31,9 +30,6 @@ public:
 	void MoveDown(int *map);
 	void MoveUp(int *map);
 	void Die();
-
-	//Shooting functions
-	bool IsHited(int xRival, int yRival);
 
 	void Draw(int tex_id);
 	void DrawShot(int tex_id);
