@@ -1,6 +1,9 @@
 #pragma once
 
 #include "cTexture.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 #define SCENE_Xo		(2*TILE_SIZE)
 #define SCENE_Yo		TILE_SIZE
@@ -32,4 +35,7 @@ private:
 	int collisionMap2[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
 	int id_DL;								//actual level display list
 	int level;
+	ISoundEngine* engine;
+	bool first;
+	bool pintant;
 };

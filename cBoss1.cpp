@@ -2,12 +2,17 @@
 #include "cScene.h"
 #include "Globals.h"
 #include <stdio.h>
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 using namespace std;
 
 cBoss1::cBoss1(void)
 {
+
 	first = true;
 	shootingTime = 0;
+	engine = createIrrKlangDevice();
 }
 cBoss1::~cBoss1(void){}
 
@@ -20,9 +25,16 @@ bool cBoss1::Logic(int *map, cRect *playerShot)
 	}
 	else {
 		if (Collides(playerShot)) {
-			OutputDebugString("OUCH");
+			char s[256];
+			sprintf(s, "live: %d", live + 1);
+				OutputDebugString(s);
 			live++;
-			if (live > 5)live = 0;
+			if (live > 5){
+				live = 0;
+			}
+			else
+			if (live == 5) engine->play2D("leveldone.wav");
+			else engine->play2D("./bossdead.wav");
 			result = true;
 		} 
 		if (IsShooting()) {

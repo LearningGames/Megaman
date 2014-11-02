@@ -1,11 +1,16 @@
 #include "cGame.h"
 #include "Globals.h";
 #include <iostream>;
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 
 cGame::cGame(void)
 {
 	state = SCREEN_MENU;
+	engine = createIrrKlangDevice();
+	gaming = false;
 }
 
 cGame::~cGame(void)
@@ -73,7 +78,7 @@ bool cGame::Init()
 
 	//Init Player
 	Player.SetWidthHeight(35, 35);
-	Player.SetTile(3, 4);
+	Player.SetTile(189, 4);
 	Player.SetWidthHeight(35, 35);
 	Player.SetState(STATE_LOOKRIGHT);
 
@@ -178,6 +183,12 @@ bool cGame::Process()
 {
 	bool res = true;
 	//Process Input
+	if (state != SCREEN_GAME) {
+		engine->removeSoundSource("music1.wav");
+		engine->removeSoundSource("music2.wav");
+		gaming = false;
+	}
+
 	if (state == SCREEN_MENU){ //START SCREEN_MENU
 		if (keys['1']){
 			state = SCREEN_GAME;
@@ -206,7 +217,14 @@ bool cGame::Process()
 	}
 
 	else if (state == SCREEN_GAME){ //START SCREEN_MENU
-		if (keys[27])	state = SCREEN_MENU;
+		if (!gaming){
+			engine->play2D("music1.wav", true);
+			gaming = true;
+		}
+		if (keys[27]){
+			state = SCREEN_MENU;
+			engine->stopAllSounds();
+		}
 		if (keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
 		if (keys[GLUT_KEY_LEFT] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap(), false);
 		else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false);
@@ -215,7 +233,12 @@ bool cGame::Process()
 		if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
 
 		if (keys['a']) {
+			
+			engine->removeSoundSource("music1.wav");
 			Scene.NextLevel();
+
+			engine->play2D("shout.wav", true);
+			//engine->removeAllSoundSources();
 			Init();
 		}
 		//Obtain the Rect of the shot to know if it collides with an enemy

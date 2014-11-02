@@ -44,7 +44,7 @@
     <OutDir>Debug\</OutDir>
     <IntDir>Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>\\psf\Home\Desktop\Megaman\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,7 +62,7 @@
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\\psf\Home\Desktop\Megaman\include;C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <Link>
@@ -71,7 +71,7 @@
       <ProgramDatabaseFile>$(OutDir)2DEngine.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalLibraryDirectories>C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>\\psf\Home\Desktop\Megaman\Win32-visualStudio;C:\Users\Albert Alma\Downloads\glut-3.7.6-bin\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\glut-3.7.6-bin;\\psf\Home\Desktop\VIDEOJOCS\MATERIAL\glaux\gl;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

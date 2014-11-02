@@ -3,6 +3,9 @@
 #include "cTexture.h"
 #include "Globals.h"
 #include "cBicho.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 #define FRAME_DELAY		3
 #define STEP_LENGTH		3
@@ -36,4 +39,5 @@ private:
 	int shootingTime;
 	int stop_time;
 	int seqShot, delayShot;
+	ISoundEngine* engine;
 };

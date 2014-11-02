@@ -35,6 +35,6 @@ public:
 private:
 	bool first;
 	int shootingTime;
-
+	ISoundEngine* engine;
 	int seqShot, delayShot;
 };

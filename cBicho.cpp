@@ -260,7 +260,6 @@ void cBicho::DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf)
 
 void cBicho::MoveLeft(int *map, bool boss)
 {
-	OutputDebugString("Move Left \n");
 	int xaux;
 	int step = STEP_LENGTH;
 	if (ostion) step = 1;
@@ -295,9 +294,6 @@ void cBicho::MoveLeft(int *map, bool boss)
 			ResetFrame();
 		}
 	}
-	char s[256];
-	sprintf(s, "State %d \n", GetState());
-	OutputDebugString(s);
 }
 
 void cBicho::MoveRight(int *map, bool boss)
@@ -563,9 +559,6 @@ void cBicho::ShotLogic(int type)
 
 void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
-	char s[256];
-	sprintf(s, "Jump Logic state %d \n", GetState());
-	OutputDebugString(s);
 	int step = JUMP_STEP;
 	int height = JUMP_HEIGHT;
 	if (ostion){

@@ -3,6 +3,9 @@
 #include "cTexture.h"
 #include "Globals.h"
 //#include "cEnemy.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 #define FRAME_DELAY		3
 #define STEP_LENGTH		3

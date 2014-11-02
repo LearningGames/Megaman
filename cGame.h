@@ -55,4 +55,6 @@ private:
 	cEnemy2 Enemies2Level2[ENEMIES_22];
 	cBoss1 BurstMan;
 	cBoss2 RoundMan;
+	ISoundEngine* engine;
+	bool gaming;
 };

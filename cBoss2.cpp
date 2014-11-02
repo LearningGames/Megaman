@@ -2,6 +2,9 @@
 #include "cScene.h"
 #include "Globals.h"
 #include <stdio.h>
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 using namespace std;
 
 cBoss2::cBoss2(void)
@@ -9,6 +12,7 @@ cBoss2::cBoss2(void)
 	first = true;
 	shootingTime = 0;
 	stop_time = 0;
+	engine = createIrrKlangDevice();
 }
 cBoss2::~cBoss2(void){}
 
@@ -30,7 +34,10 @@ bool cBoss2::Logic(int *map, cRect *playerShot)
 	}
 	else if (Collides(playerShot)){
 		live++;
-		if (live > 5)live = 0;
+		if (live > 5){ 
+			engine->play2D("bossdead.wav");
+			live = 0; 
+		}
 	}
 	else if (CollidesMapFloor(map, false)) {
 		if (IsLookingRight()) MoveRight(map, true);

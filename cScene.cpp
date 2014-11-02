@@ -1,5 +1,8 @@
 #include "cScene.h"
 #include "Globals.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 int size = 1 / 16;
 int lev;
@@ -8,6 +11,9 @@ cScene::cScene(void)
 {
 	lev = 10;
 	level = 1;
+	engine = createIrrKlangDevice();
+	first = true;
+	pintant = false;
 }
 
 cScene::~cScene(void)
@@ -26,13 +32,13 @@ int cScene::NextLevel()
 
 bool cScene::LoadLevel(int levelLoad, int sublevel)
 {
+
 	bool res;
 	FILE *fd;
 	char file[16];
 	int i, j, px, py;
 	int tile;
 	float coordx_tile, coordy_tile;
-
 	res = true;
 	level = levelLoad;
 	if (levelLoad<10) sprintf(file, "%s%d%d%s", (char *)FILENAME, level, sublevel, (char *)FILENAME_EXT);
@@ -103,6 +109,7 @@ bool cScene::LoadLevel(int levelLoad, int sublevel)
 }
 void cScene::Draw(int tex_id)
 {
+	pintant = true;
 	if (lev > 29) lev = 10;
 	if (lev%10 == 0) LoadLevel(level,lev/10);
 	glEnable(GL_TEXTURE_2D);
