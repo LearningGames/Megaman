@@ -31,6 +31,7 @@ public:
 	int GetCurrentLevel();
 	int ResetLevel();
 	int NextLevel();
+	int Level3();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene

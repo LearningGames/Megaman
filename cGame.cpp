@@ -107,7 +107,10 @@ void cGame::InitPlayer2()
 void cGame::Reset(int level)
 {
 	//Init Player
-	if (level == 3) Player2.Reset(18, 4);
+	if (level == 3) {
+		InitPlayer2();
+		Player2.Reset(18, 4);
+	}
 	Player.Reset(3,4);
 	InitEnemies2(level);
 	InitEnemies(level);
@@ -318,7 +321,8 @@ bool cGame::Process()
 
 	else if (state == SCREEN_TWO_PLAYERS){
 		//AQUI POSAR DOS PLAYERS
-		level = 3; 
+		level = Scene.Level3();
+		Reset(level);
 		state = SCREEN_GAME;
 	}
 

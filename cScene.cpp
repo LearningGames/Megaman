@@ -36,6 +36,12 @@ int cScene::ResetLevel()
 	return level;
 }
 
+int cScene::Level3()
+{
+	level = 3;
+	return level;
+}
+
 bool cScene::LoadLevel(int levelLoad, int sublevel)
 {
 
