@@ -36,7 +36,7 @@ cBicho::cBicho(int posx,int posy,int width,int height)
 
 void cBicho::Reset(int tileX, int tileY)
 {
-	SetTile(3, 4);
+	SetTile(tileX, tileY);
 	seq = 0;
 	delay = 0;
 	live = 0;

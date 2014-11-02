@@ -107,6 +107,7 @@ void cGame::InitPlayer2()
 void cGame::Reset(int level)
 {
 	//Init Player
+	if (level == 3) Player2.Reset(18, 4);
 	Player.Reset(3,4);
 	InitEnemies2(level);
 	InitEnemies(level);
@@ -445,24 +446,32 @@ void cGame::LogicLevel2() {
 void cGame::LogicVersusMode() {
 	cRect playerShot, player2Shot;
 	Player.GetShotArea(&playerShot);
-	
-	if (keys['i'])			Player2.Jump(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
-	if (keys['j'] && (!Player2.IsOstioning()))			Player2.MoveLeft(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
-	else if (keys['l'] && (!Player2.IsOstioning()))	Player2.MoveRight(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
-	else Player2.Stop();
-	if (keys['m']){
-		Player2.Shot(Scene.GetMap(), (Player2.IsLookingRight()));
+	if (!Player2.IsAlive()){
+		++deadtime;
+		if (deadtime >= DEAD_TIME) {
+			deadtime = 0;
+			Reset(Scene.GetCurrentLevel());
+		}
 	}
-	Player2.GetShotArea(&player2Shot);
-	if (Player.Collides(&player2Shot) && Player2.IsShooting()) {
-		Player.Ostion(Scene.GetCollisionMap());
-		Player2.EraseShot();
+	else {
+		if (keys['i'])			Player2.Jump(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
+		if (keys['j'] && (!Player2.IsOstioning()))			Player2.MoveLeft(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
+		else if (keys['l'] && (!Player2.IsOstioning()))	Player2.MoveRight(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
+		else Player2.Stop();
+		if (keys['m']){
+			Player2.Shot(Scene.GetMap(), (Player2.IsLookingRight()));
+		}
+		Player2.GetShotArea(&player2Shot);
+		if (Player.Collides(&player2Shot) && Player2.IsShooting()) {
+			Player.Ostion(Scene.GetCollisionMap());
+			Player2.EraseShot();
+		}
+		if (Player2.Collides(&playerShot) && Player.IsShooting()) {
+			Player2.Ostion(Scene.GetCollisionMap());
+			Player.EraseShot();
+		}
+		if (Player2.IsShooting() && Player2.ShotCollidesWall(Scene.GetCollisionMap(), Player2.IsLookingRight(), 3)) Player2.EraseShot();
 	}
-	if (Player2.Collides(&playerShot) && Player.IsShooting()) {
-		Player2.Ostion(Scene.GetCollisionMap());
-		Player.EraseShot();
-	}
-	if (Player2.IsShooting() && Player2.ShotCollidesWall(Scene.GetCollisionMap(), Player2.IsLookingRight(),3)) Player2.EraseShot();
 	Player2.Logic(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
 }
 
