@@ -20,6 +20,8 @@
 #define SCREEN_INSTRUCTIONS	2
 #define SCREEN_GAME			3
 
+#define DEAD_TIME	60
+
 class cGame
 {
 public:
@@ -32,7 +34,7 @@ public:
 	void InitBoss(int level);
 	bool Loop();
 	void Finalize();
-
+	void Reset(int level);
 	//Input
 	void ReadKeyboard(unsigned char key, int x, int y, bool press);
 	void ReadMouse(int button, int state, int x, int y);
@@ -46,6 +48,7 @@ private:
 	unsigned char keys[256];
 	int level = 0;
 	int state;
+	int deadtime;
 	cScene Scene;
 	cPlayer Player;
 	cData Data;

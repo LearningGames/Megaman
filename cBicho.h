@@ -61,6 +61,8 @@ public:
 	cBicho(int x,int y,int w,int h);
 	~cBicho(void);
 
+	void Reset(int tileX, int tileY);
+
 	void SetPosition(int x,int y);
 	void GetPosition(int *x,int *y);
 	void SetTile(int tx,int ty);

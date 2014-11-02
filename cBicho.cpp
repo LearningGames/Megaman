@@ -28,6 +28,21 @@ cBicho::cBicho(int posx,int posy,int width,int height)
 	w = width;
 	h = height;
 }
+
+void cBicho::Reset(int tileX, int tileY)
+{
+	SetTile(3, 4);
+	seq = 0;
+	delay = 0;
+	live = 0;
+	shooting = false;
+	ostion = false;
+	jumping = false;
+	shotProgress = 0;
+	isAlive = true;
+	deadTime = 0;
+	isBoss = false;
+}
 void cBicho::SetPosition(int posx,int posy)
 {
 	x = posx;
@@ -399,11 +414,9 @@ void cBicho::Jump(int *map)
 			jump_y = y;
 			//SALTA A ALGUN CANTO
 			if (!IsLookingRight()) {
-				OutputDebugString("NotLookingRight\n");
 				state = STATE_JUMP_UP_LEFT;
 			}
 			else {
-				OutputDebugString("LookingRight\n");
 				state = STATE_JUMP_UP_RIGHT;
 			}
 		}
@@ -414,8 +427,8 @@ void cBicho::Ostion(int *map)
 {
 	if (!ostion){
 		live += 1;
-		if (live == 5){
-			live = 0;
+		if (live >= 4){
+			isAlive = false;
 		}
 			ostion = true;
 			jumping = true;
@@ -618,6 +631,7 @@ void cBicho::FallingLogic(int *map)
 void cBicho::Logic(int *map)
 {
 	if (CollidesWater(map)) {
+		live = 3;
 		Ostion(map);
 	}
 	else {

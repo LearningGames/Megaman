@@ -29,12 +29,11 @@ bool cBoss1::Logic(int *map, cRect *playerShot)
 			sprintf(s, "live: %d", live + 1);
 				OutputDebugString(s);
 			live++;
-			if (live > 5){
-				live = 0;
+			if (live >= 4) {
+				SetAlive(false);
+				SetState(STATE_HITED);
+				engine->play2D("shout.wav");
 			}
-			else
-			if (live == 5) engine->play2D("leveldone.wav");
-			else engine->play2D("./bossdead.wav");
 			result = true;
 		} 
 		if (IsShooting()) {
