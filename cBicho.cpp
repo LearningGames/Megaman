@@ -129,20 +129,18 @@ bool cBicho::CollidesMapFloor(int *map, bool nextStep)
 	bool on_base;
 	int i;
 
-	if (nextStep) {
-		char s[256];
-		sprintf(s, "x %d \n", x);
-		//OutputDebugStringA(s);
-		int xAux = x;
-		xAux += STEP_LENGTH;
-		tile_x = xAux / TILE_SIZE;
-	}
-	else tile_x = x / TILE_SIZE;
+	tile_x = x / TILE_SIZE;
 	tile_y = y / TILE_SIZE;
+
+	if (nextStep && IsLookingRight()) {
+		tile_x += 2;
+	}
+	else if (nextStep) {
+		tile_x -= 2;
+	}
 
 	width_tiles = w / TILE_SIZE;
 	if ((x % TILE_SIZE) != 0) width_tiles++;
-
 	on_base = false;
 	i = 0;
 	while ((i<width_tiles) && !on_base)
@@ -156,6 +154,43 @@ bool cBicho::CollidesMapFloor(int *map, bool nextStep)
 		else
 		{
 			if (map[(tile_x + i) + (tile_y * SCENE_WIDTH)] != 0)
+			{
+				y = (tile_y + 1) * TILE_SIZE;
+				on_base = true;
+			}
+		}
+		i++;
+	}
+	return on_base;
+}
+
+bool cBicho::CollidesWater(int *map)
+{
+	int tile_x, tile_y;
+	int width_tiles;
+	bool on_base;
+	int i;
+
+
+	tile_x = x / TILE_SIZE;
+	tile_y = y / TILE_SIZE;
+
+	width_tiles = w / TILE_SIZE;
+	if ((x % TILE_SIZE) != 0) width_tiles++;
+
+	on_base = false;
+	i = 0;
+	while ((i<width_tiles) && !on_base)
+	{
+		if ((y % TILE_SIZE) == 0)
+		{
+			if (map[(tile_x + i) + ((tile_y - 1) * SCENE_WIDTH)] == 2) {
+				on_base = true;
+			}
+		}
+		else
+		{
+			if (map[(tile_x + i) + (tile_y * SCENE_WIDTH)] == 2)
 			{
 				y = (tile_y + 1) * TILE_SIZE;
 				on_base = true;
@@ -538,34 +573,8 @@ void cBicho::ShotLogic(int type)
 	}
 }
 
-/*bool cBicho::CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot)
-{
-	char s[256];
-	sprintf(s, "CollideWithSomething \n");
-	OutputDebugStringA(s);
-	sprintf(s, "EnemyPos %d \n", sizeEnemies1);
-	OutputDebugStringA(s);
-	for (int i = 0; i < sizeEnemies1; ++i) {
-		if (Collides(&EnemiesPosition[i])) return true;
-	}
-	sprintf(s, "EnemyPos2 %d \n", sizeEnemies2);
-	OutputDebugStringA(s);
-	for (int i = 0; i < sizeEnemies2; ++i) {
-		sprintf(s, "Heli x %d y %d \n", EnemiesPosition2[i].right, EnemiesPosition2[i].top);
-		OutputDebugStringA(s);
-		if (Collides(&EnemiesPosition2[i])) return true;
-	}
-	for (int i = 0; i < sizeShot; ++i) {
-		if (Collides(&EnemiesShot[i])) return true;
-	}
-	return false;
-}*/
-
 void cBicho::JumpLogic(int *map, bool boss) {
 	float alfa;
-	char s[256];
-	sprintf(s, "Jump Logic state %d \n", GetState());
-	OutputDebugString(s);
 	int step = JUMP_STEP;
 	int height = JUMP_HEIGHT;
 	if (ostion){
@@ -612,9 +621,14 @@ void cBicho::FallingLogic(int *map)
 }
 void cBicho::Logic(int *map)
 {
-	if (shooting) ShotLogic(PLAYER);
-	if (jumping) JumpLogic(map,false);
-	else if (!CollidesMapFloor(map, false)) FallingLogic(map);
+	if (CollidesWater(map)) {
+		Ostion(map);
+	}
+	else {
+		if (shooting) ShotLogic(PLAYER);
+		if (jumping) JumpLogic(map, false);
+		else if (!CollidesMapFloor(map, false)) FallingLogic(map);
+	}
 }
 
 void cBicho::NextFrame(int max)

@@ -77,6 +77,7 @@ public:
 	bool CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
 	bool CollidesMapWall(int *map, bool right);
 	bool CollidesMapFloor(int *map, bool nextStep);
+	bool CollidesWater(int *map);
 
 	void GetArea(cRect *rc);
 	void GetShotArea(cRect *rc);
