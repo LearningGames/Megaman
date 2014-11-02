@@ -1,0 +1,20 @@
+Integrants:
+- Albert Almà
+- Pau Vila
+Personatges del joc:
+- Megaman
+	- Es pot moure cap a dreta i esquerra , pot saltar i disparar amb el seu canó.
+	- Megaman pot ser ferit al tocar els enemics, quan un tret el toqui o si cau a l’aigua.
+	- Per a eliminar els enemics Megaman haurà de disparar cap a ells.
+- Enemics
+	-Guardia: Es tracta d’un enemic que s’encarrega d’anar d’una banda a l’altre d’una plataforma.
+	-Helicopter: És un enemic que vola de dalt a baix i dispara trets que poden ferir en Megaman.
+- Enemics finals
+	- BurstMan: És l’enemic final del nivell1, dona salts d’una banda a l’altre de la pantalla i quan es para dispara trets per a ferir en Megaman.
+	- RoundMan: És l’enemic final del nivell2, com el seu nom indica, roda d’una banda a l’altre de la pantalla i salta.
+Funcionalitats:
+	- Pantalla de Menú: L’usuari podrà escollir l’opció que vulgui mitjançant un teclat numèric.
+	- Instruccions: Instruccions pel Mode normal i pel 2 players.
+	- El joc compta amb so.
+	- El joc porta una UI on l'usuari pot veure la seva vida i la dels seus enemics.
+    - Mode 2Players: Podras enfrontar-te amb un enemic Megaman VS Megaman.
