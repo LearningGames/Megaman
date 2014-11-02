@@ -22,7 +22,10 @@ bool cBoss1::Logic(int *map, cRect *playerShot)
 		if (Collides(playerShot)) {
 			OutputDebugString("OUCH");
 			live++;
-			if (live > 5)live = 0;
+			if (live >= 4) {
+				SetAlive(false);
+				SetState(STATE_HITED);
+			}
 			result = true;
 		} 
 		if (IsShooting()) {

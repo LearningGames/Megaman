@@ -51,8 +51,7 @@ bool cGame::Init()
 	if (!res) return false;
 	res = Data.LoadImage(IMG_SHOTLEFT, "shootLeft.png", GL_RGBA);
 	if (!res) return false;
-	Player.SetShotDimensions(20, 26);
-	
+
 	//Barra vida initialization
 	res = Data.LoadImage(IMG_GUI_MEGA, "guimega.png", GL_RGBA);
 	Player.SetLiveBar(80, 16);
@@ -76,11 +75,22 @@ bool cGame::Init()
 	Player.SetTile(3, 4);
 	Player.SetWidthHeight(35, 35);
 	Player.SetState(STATE_LOOKRIGHT);
+	Player.SetShotDimensions(20, 26);
+	Player.SetLiveBar(80, 16);
 
 	InitEnemies2(level);
 	InitEnemies(level);
 	InitBoss(level);
 	return res;
+}
+
+void cGame::Reset(int level)
+{
+	//Init Player
+	Player.Reset(3,4);
+	InitEnemies2(level);
+	InitEnemies(level);
+	InitBoss(level);
 }
 
 void cGame::InitBoss(int level) {
@@ -218,38 +228,47 @@ bool cGame::Process()
 			Scene.NextLevel();
 			Init();
 		}
-		//Obtain the Rect of the shot to know if it collides with an enemy
-		cRect playerShot;
-		Player.GetShotArea(&playerShot);
-		cRect EnemyPos;
-		cRect EnemyShotPos;
-		if (level == 1) {
-			for (int i = 0; i < ENEMIES_11; ++i) {
-				if (EnemiesLevel1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
-				EnemiesLevel1[i].GetArea(&EnemyPos);
-				if (EnemiesLevel1[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+		if (!Player.IsAlive()){
+			++deadtime;
+			if (deadtime >= DEAD_TIME) {
+				deadtime = 0;
+				Reset(Scene.GetCurrentLevel());
 			}
-			for (int i = 0; i < ENEMIES_21; ++i) {
-				if (Enemies2Level1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
-				Enemies2Level1[i].GetArea(&EnemyPos);
-				Enemies2Level1[i].GetShotArea(&EnemyShotPos);
-				if (Player.Collides(&EnemyShotPos)) Enemies2Level1[i].EraseShot();
-				if (Enemies2Level1[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+		}
+		else {
+			//Obtain the Rect of the shot to know if it collides with an enemy
+			cRect playerShot;
+			Player.GetShotArea(&playerShot);
+			cRect EnemyPos;
+			cRect EnemyShotPos;
+			if (level == 1) {
+				for (int i = 0; i < ENEMIES_11; ++i) {
+					if (EnemiesLevel1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
+					EnemiesLevel1[i].GetArea(&EnemyPos);
+					if (EnemiesLevel1[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+				}
+				for (int i = 0; i < ENEMIES_21; ++i) {
+					if (Enemies2Level1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
+					Enemies2Level1[i].GetArea(&EnemyPos);
+					Enemies2Level1[i].GetShotArea(&EnemyShotPos);
+					if (Player.Collides(&EnemyShotPos)) Enemies2Level1[i].EraseShot();
+					if (Enemies2Level1[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+				}
+				//Boss Area
+				BurstMan.GetArea(&EnemyPos);
+				BurstMan.GetShotArea(&EnemyShotPos);
+				if (Player.Collides(&EnemyShotPos)) BurstMan.EraseShot();
+				if (BurstMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+				if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
 			}
-			//Boss Area
-			BurstMan.GetArea(&EnemyPos);
-			BurstMan.GetShotArea(&EnemyShotPos);
-			if (Player.Collides(&EnemyShotPos)) BurstMan.EraseShot();
-			if (BurstMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
-			if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
-		}
-		else if (level == 2) {
-			RoundMan.GetArea(&EnemyPos);
-			if (RoundMan.IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
-			if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
-		}
+			else if (level == 2) {
+				RoundMan.GetArea(&EnemyPos);
+				if (RoundMan.IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+				if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
+			}
 
-		Player.Logic(Scene.GetCollisionMap());
+			Player.Logic(Scene.GetCollisionMap());
+		}
 	}//END SCREEN_GAME
 
 	return res;
