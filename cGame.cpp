@@ -302,12 +302,23 @@ bool cGame::Process()
 		}
 	}
 	else if (state == SCREEN_INSTRUCTIONS2){
+		if (keys['4']){
+			state = SCREEN_TWO_PLAYERS;
+		}
+	}
+	else if (state == SCREEN_INSTRUCTIONS2){
 		if (keys['5']){
 			state = SCREEN_MENU;
 		}
 		else if (keys['9']){
 			state = SCREEN_INSTRUCTIONS;
 		}
+	}
+
+	else if (state == SCREEN_TWO_PLAYERS){
+		//AQUI POSAR DOS PLAYERS
+		level = 3; 
+		state = SCREEN_GAME;
 	}
 
 	else if (state == SCREEN_GAME){ //START SCREEN_MENU
