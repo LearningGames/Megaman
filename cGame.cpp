@@ -75,6 +75,7 @@ bool cGame::Init()
 	res = Data.LoadImage(IMG_BOSS1, "boss1.png", GL_RGBA);
 	res = Data.LoadImage(IMG_BOSS1SHOT, "bubble.png", GL_RGBA);
 	res = Data.LoadImage(IMG_BOSS2, "boss2.png", GL_RGBA);
+	res = Data.LoadImage(IMG_INST2, "instructions2.png", GL_RGBA);
 
 	//Init Player
 	Player.SetWidthHeight(35, 35);
@@ -268,13 +269,16 @@ bool cGame::Process()
 		if (keys['1']){
 			state = SCREEN_GAME;
 		}
-		if (keys['3']){
+		if (keys['2']){
 			state = SCREEN_INSTRUCTIONS;
 		}
-		if (keys['2']){
+		if (keys['3']){
 			state = SCREEN_CREDITS;
 		}
 		if (keys['4']){
+			state = SCREEN_TWO_PLAYERS;
+		}
+		if (keys['E'] || keys['e']){
 			res = false;
 		}
 	}//END SCREEN_MENU
@@ -288,6 +292,17 @@ bool cGame::Process()
 	else if (state == SCREEN_INSTRUCTIONS){
 		if (keys['5']){
 			state = SCREEN_MENU;
+		}
+		else if (keys['8']){
+			state = SCREEN_INSTRUCTIONS2;
+		}
+	}
+	else if (state == SCREEN_INSTRUCTIONS2){
+		if (keys['5']){
+			state = SCREEN_MENU;
+		}
+		else if (keys['9']){
+			state = SCREEN_INSTRUCTIONS;
 		}
 	}
 
@@ -440,6 +455,7 @@ void cGame::drawImage(int i){
 	if(i==1) glBindTexture(GL_TEXTURE_2D, Data.GetID(IMG_MENU));
 	else if (i == 2) glBindTexture(GL_TEXTURE_2D, Data.GetID(IMG_INST));
 	else if (i == 3)glBindTexture(GL_TEXTURE_2D, Data.GetID(IMG_CREDITS));
+	else if (i == 4)glBindTexture(GL_TEXTURE_2D, Data.GetID(IMG_INST2));
 
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
@@ -527,11 +543,15 @@ void cGame::Render()
 			break;
 			case SCREEN_CREDITS:
 				sprintf(imatge, "credits.png");
-				drawImage(2);
+				drawImage(3);
 				break;
 			case SCREEN_INSTRUCTIONS:
 				sprintf(imatge, "instructions.png");
-				drawImage(3);
+				drawImage(2);
+				break;
+			case SCREEN_INSTRUCTIONS2:
+				sprintf(imatge, "instructions2.png");
+				drawImage(4);
 				break;
 		}
 		OutputDebugString(imatge);

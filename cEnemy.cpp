@@ -1,10 +1,15 @@
 #include "cEnemy.h"
 #include "cScene.h"
 #include "Globals.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 cEnemy::cEnemy(void)
 {
 	SetDeadTime(0);
+	engine = createIrrKlangDevice();
+
 }
 
 cEnemy::~cEnemy(void){}
@@ -41,6 +46,7 @@ bool cEnemy::Logic(int *map, cRect *playerShot, int level)
 }
 
 void cEnemy::Die() {
+	engine->play2D("monsterdead.wav");
 	SetState(STATE_DIE);
 }
 void cEnemy::MoveLeft(int *map)

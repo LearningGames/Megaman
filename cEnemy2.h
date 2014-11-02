@@ -40,5 +40,7 @@ private:
 
 	bool lookRight;
 	bool movingDown;
+
 	int seqShot, delayShot;
+	ISoundEngine* engine;
 };

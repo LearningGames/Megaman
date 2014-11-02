@@ -1,10 +1,14 @@
 #include "cEnemy2.h"
 #include "cScene.h"
 #include "Globals.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 cEnemy2::cEnemy2(void)
 {
 	movingDown = true;
+	engine = createIrrKlangDevice();
 }
 cEnemy2::~cEnemy2(void){}
 
@@ -80,6 +84,7 @@ void cEnemy2::MoveUp(int *map)
 }
 
 void cEnemy2::Die() {
+	engine->play2D("monsterdead.wav");
 	SetState(STATE_DIE);
 }
 
