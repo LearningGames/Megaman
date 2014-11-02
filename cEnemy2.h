@@ -23,9 +23,9 @@ public:
 
 	void SetInitialPosition(int y);
 	void SetMaxStep(int max);
+	void NextShotFrame(int max);
 
-
-	bool Logic(int *map, cRect *playerShot);
+	bool Logic(int *map, cRect *playerShot, int level);
 
 	void MoveDown(int *map);
 	void MoveUp(int *map);
@@ -40,4 +40,5 @@ private:
 
 	bool lookRight;
 	bool movingDown;
+	int seqShot, delayShot;
 };

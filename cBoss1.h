@@ -24,7 +24,7 @@ public:
 	cBoss1(int x, int y, int w, int h);
 	~cBoss1(void);
 
-	bool Logic(int *map, cRect *playerShot);
+	bool Logic(int *map, cRect *playerShot, int level);
 	void Start();
 
 	void Draw(int tex_id);

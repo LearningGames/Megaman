@@ -84,10 +84,22 @@ bool cGame::Init()
 	Player.SetShotDimensions(20, 26);
 	Player.SetLiveBar(80, 16);
 
+	if (level == 3) InitPlayer2();
+
 	InitEnemies2(level);
 	InitEnemies(level);
 	InitBoss(level);
 	return res;
+}
+
+void cGame::InitPlayer2()
+{
+	Player2.SetWidthHeight(35, 35);
+	Player2.SetTile(18, 4);
+	Player2.SetWidthHeight(35, 35);
+	Player2.SetState(STATE_LOOKLEFT);
+	Player2.SetShotDimensions(20, 26);
+	Player2.SetLiveBar(80, 16);
 }
 
 void cGame::Reset(int level)
@@ -290,26 +302,17 @@ bool cGame::Process()
 			state = SCREEN_MENU;
 			engine->stopAllSounds();
 		}
-		if (keys[GLUT_KEY_UP])			Player.Jump(Scene.GetCollisionMap());
-		if (keys[GLUT_KEY_LEFT] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap(), false);
-		else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false);
+		if (keys['b']) {
+			Scene.NextLevel();
+			Init();
+		}
+		if (keys['w'])			Player.Jump(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
+		if (keys['a'] && (!Player.IsOstioning()))			Player.MoveLeft(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
+		else if (keys['d'] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
 		else Player.Stop();
 
 		if (keys[' ']){
 			Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
-		}
-
-		if (keys['a']) {
-			
-			engine->removeSoundSource("music1.wav");
-			Scene.NextLevel();
-
-			engine->play2D("music2.wav", true);
-		//engine->removeAllSoundSources();
-			Init();
-		}
-		if (keys['b']) {
-			Player.SetPosition(2700, 16);
 		}
 		if (!Player.IsAlive()){
 			++deadtime;
@@ -319,90 +322,116 @@ bool cGame::Process()
 			}
 		}
 		else {
-			//Obtain the Rect of the shot to know if it collides with an enemy
-			cRect playerShot;
-			Player.GetShotArea(&playerShot);
-			cRect EnemyPos;
-			cRect EnemyShotPos;
-			if (level == 1) {
-				if (BurstMan.IsAlive()) {
-					for (int i = 0; i < ENEMIES_11; ++i) {
-						if (EnemiesLevel1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
-						EnemiesLevel1[i].GetArea(&EnemyPos);
-						if (EnemiesLevel1[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
-					}
-					for (int i = 0; i < ENEMIES_21; ++i) {
-						if (Enemies2Level1[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
-						Enemies2Level1[i].GetArea(&EnemyPos);
-						Enemies2Level1[i].GetShotArea(&EnemyShotPos);
-						if (Player.Collides(&EnemyShotPos)) Enemies2Level1[i].EraseShot();
-						if (Enemies2Level1[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
-					}
-					//Boss Area
-					BurstMan.GetArea(&EnemyPos);
-					BurstMan.GetShotArea(&EnemyShotPos);
-					if (Player.Collides(&EnemyShotPos)) BurstMan.EraseShot();
-					if (BurstMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
-					int x, y;
-					Player.GetPosition(&x, &y);
-					if (x >= 2855 && x <= 3000 && y <= 80) {
-						BurstMan.Start();
-					}
-					if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
-				}
-				else if (deadBosstime >= DEAD_TIME) {
-					deadBosstime = 0;
-					engine->removeSoundSource("music1.wav");
-					Scene.NextLevel();
-
-					engine->play2D("music2.wav", true);
-					//engine->removeAllSoundSources();
-					Init();
-				}
-				else ++deadBosstime;
-			}
-			else if (level == 2) {
-				int x, y;
-				Player.GetPosition(&x, &y);
-				if (x >= 2855 && x <= 3000 && y <= 20) {
-					RoundMan.Start();
-				}
-				if (RoundMan.IsAlive()) {
-					for (int i = 0; i < ENEMIES_21; ++i) {
-						if (EnemiesLevel2[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
-						EnemiesLevel2[i].GetArea(&EnemyPos);
-						if (EnemiesLevel2[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
-					}
-					for (int i = 1; i < ENEMIES_22; ++i) {
-						if (Enemies2Level2[i].Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();;
-						Enemies2Level2[i].GetArea(&EnemyPos);
-						Enemies2Level2[i].GetShotArea(&EnemyShotPos);
-						if (Player.Collides(&EnemyShotPos)) Enemies2Level2[i].EraseShot();
-						if (Enemies2Level2[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
-					}
-					RoundMan.GetArea(&EnemyPos);
-					if (RoundMan.IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
-					if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot) && (Player.IsShooting())) Player.EraseShot();
-
-				}
-				else if (deadBosstime >= DEAD_TIME) {
-					deadBosstime = 0;
-					engine->removeSoundSource("music1.wav");
-					state = SCREEN_MENU;
-					engine->stopAllSounds();
-				}
-				else ++deadBosstime;
-			}
-
-			Player.Logic(Scene.GetCollisionMap());
+			if (level == 1) LogicLevel1();
+			else if (level == 2) LogicLevel2();
+			else LogicVersusMode();
+			Player.Logic(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
 		}
 	}//END SCREEN_GAME
+	return res;
+}
+
+void cGame::LogicLevel1() {
+	cRect playerShot;
+	Player.GetShotArea(&playerShot);
+	cRect EnemyPos;
+	cRect EnemyShotPos;
+	if (BurstMan.IsAlive()) {
+		for (int i = 0; i < ENEMIES_11; ++i) {
+			if (EnemiesLevel1[i].Logic(Scene.GetCollisionMap(), &playerShot, Scene.GetCurrentLevel()) && (Player.IsShooting())) Player.EraseShot();;
+			EnemiesLevel1[i].GetArea(&EnemyPos);
+			if (EnemiesLevel1[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+		}
+		for (int i = 0; i < ENEMIES_21; ++i) {
+			if (Enemies2Level1[i].Logic(Scene.GetCollisionMap(), &playerShot, Scene.GetCurrentLevel()) && (Player.IsShooting())) Player.EraseShot();;
+			Enemies2Level1[i].GetArea(&EnemyPos);
+			Enemies2Level1[i].GetShotArea(&EnemyShotPos);
+			if (Player.Collides(&EnemyShotPos)) Enemies2Level1[i].EraseShot();
+			if (Enemies2Level1[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+		}
+		//Boss Area
+		BurstMan.GetArea(&EnemyPos);
+		BurstMan.GetShotArea(&EnemyShotPos);
+		if (Player.Collides(&EnemyShotPos)) BurstMan.EraseShot();
+		if (BurstMan.IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+		int x, y;
+		Player.GetPosition(&x, &y);
+		if (x >= 2855 && x <= 3000 && y <= 80) {
+			BurstMan.Start();
+		}
+		if (BurstMan.Logic(Scene.GetCollisionMap(), &playerShot, Scene.GetCurrentLevel()) && (Player.IsShooting())) Player.EraseShot();
+	}
+	else if (deadBosstime >= DEAD_TIME) {
+		deadBosstime = 0;
+		engine->removeSoundSource("music1.wav");
+		Scene.NextLevel();
+
+		engine->play2D("music2.wav", true);
+		//engine->removeAllSoundSources();
+		Init();
+	}
+	else ++deadBosstime;
+}
+
+void cGame::LogicLevel2() {
+	cRect playerShot;
+	Player.GetShotArea(&playerShot);
+	cRect EnemyPos;
+	cRect EnemyShotPos;
 	int x, y;
 	Player.GetPosition(&x, &y);
-	char s[256];
-	sprintf(s, "x: %d, y: %d \n", x, y);
-	OutputDebugString(s);
-	return res;
+	if (x >= 2855 && x <= 3000 && y <= 20) {
+		RoundMan.Start();
+	}
+	if (RoundMan.IsAlive()) {
+		for (int i = 0; i < ENEMIES_21; ++i) {
+			if (EnemiesLevel2[i].Logic(Scene.GetCollisionMap(), &playerShot, Scene.GetCurrentLevel()) && (Player.IsShooting())) Player.EraseShot();;
+			EnemiesLevel2[i].GetArea(&EnemyPos);
+			if (EnemiesLevel2[i].IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+		}
+		for (int i = 1; i < ENEMIES_22; ++i) {
+			if (Enemies2Level2[i].Logic(Scene.GetCollisionMap(), &playerShot, Scene.GetCurrentLevel()) && (Player.IsShooting())) Player.EraseShot();;
+			Enemies2Level2[i].GetArea(&EnemyPos);
+			Enemies2Level2[i].GetShotArea(&EnemyShotPos);
+			if (Player.Collides(&EnemyShotPos)) Enemies2Level2[i].EraseShot();
+			if (Enemies2Level2[i].IsAlive() && (Player.Collides(&EnemyPos) || Player.Collides(&EnemyShotPos))) Player.Ostion(Scene.GetCollisionMap());
+		}
+		RoundMan.GetArea(&EnemyPos);
+		if (RoundMan.IsAlive() && Player.Collides(&EnemyPos)) Player.Ostion(Scene.GetCollisionMap());
+		if (RoundMan.Logic(Scene.GetCollisionMap(), &playerShot, Scene.GetCurrentLevel()) && (Player.IsShooting())) Player.EraseShot();
+
+	}
+	else if (deadBosstime >= DEAD_TIME) {
+		deadBosstime = 0;
+		engine->removeSoundSource("music1.wav");
+		Scene.ResetLevel();
+		state = SCREEN_MENU;
+		engine->stopAllSounds();
+	}
+	else ++deadBosstime;
+}
+
+void cGame::LogicVersusMode() {
+	cRect playerShot, player2Shot;
+	Player.GetShotArea(&playerShot);
+	
+	if (keys['i'])			Player2.Jump(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
+	if (keys['j'] && (!Player2.IsOstioning()))			Player2.MoveLeft(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
+	else if (keys['l'] && (!Player2.IsOstioning()))	Player2.MoveRight(Scene.GetCollisionMap(), false, Scene.GetCurrentLevel());
+	else Player2.Stop();
+	if (keys['m']){
+		Player2.Shot(Scene.GetMap(), (Player2.IsLookingRight()));
+	}
+	Player2.GetShotArea(&player2Shot);
+	if (Player.Collides(&player2Shot) && Player2.IsShooting()) {
+		Player.Ostion(Scene.GetCollisionMap());
+		Player2.EraseShot();
+	}
+	if (Player2.Collides(&playerShot) && Player.IsShooting()) {
+		Player2.Ostion(Scene.GetCollisionMap());
+		Player.EraseShot();
+	}
+	Player2.Logic(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
 }
 
 void cGame::drawImage(int i){
@@ -476,6 +505,14 @@ void cGame::Render()
 				}
 			}
 			RoundMan.Draw(Data.GetID(IMG_BOSS2));
+		}
+		else if (level == 3) {
+			if (Player2.IsShooting()) {
+				if (Player2.IsShootingRight()) Player2.DrawShot(Data.GetID(IMG_SHOTRIGHT), true);
+				else Player2.DrawShot(Data.GetID(IMG_SHOTLEFT), false);
+			}
+			Player2.Draw(Data.GetID(IMG_PLAYER));
+			Player2.DrawLiveBar(Data.GetID(IMG_GUI_MEGA));
 		}
 		if(level == 2)RoundMan.DrawLiveBar(Data.GetID(IMG_GUI_ROUND));
 		if(level == 1)BurstMan.DrawLiveBar(Data.GetID(IMG_GUI_BURST));

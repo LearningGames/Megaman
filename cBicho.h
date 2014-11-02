@@ -81,8 +81,8 @@ public:
 
 	bool Collides(cRect *rc);
 	bool CollideWithSomething(cRect EnemiesPosition[], int sizeEnemies1, cRect EnemiesPosition2[], int sizeEnemies2, cRect EnemiesShot[], int sizeShot);
-	bool CollidesMapWall(int *map, bool right);
-	bool CollidesMapFloor(int *map, bool nextStep);
+	bool CollidesMapWall(int *map, bool right, int level);
+	bool CollidesMapFloor(int *map, bool nextStep, int level);
 	bool CollidesWater(int *map);
 
 	void GetArea(cRect *rc);
@@ -91,21 +91,21 @@ public:
 	void DrawShotRect(int tex_id, float xo, float yo, float xf, float yf);
 	void DrawLiveBarRect(int tex_id, float xo, float yo, float xf, float yf);
 
-	void MoveRight(int *map, bool boss);
-	void MoveLeft(int *map, bool boss);
-	void Jump(int *map);
+	void MoveRight(int *map, bool boss, int level);
+	void MoveLeft(int *map, bool boss, int level);
+	void Jump(int *map, int level);
 	void Ostion(int *map);
 	void Stop();
-	void JumpLogic(int *map, bool boss);
+	void JumpLogic(int *map, bool boss, int level);
 	void FallingLogic(int *map);
-	void Logic(int *map);
+	void Logic(int *map, int level);
 	bool IsLookingRight();
 
 	//Shooting functions
 	//bool IsHited(cEnemy Enemies[], int size);
 	void Hited();
 	void Shot(int *map, bool isRight);
-	void ShotLogic(int type);
+	void ShotLogic(int type, int *map);
 	bool IsShooting();
 	bool IsShootingRight();
 	void SetShotDimensions(int width, int height);

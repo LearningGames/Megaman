@@ -30,6 +30,12 @@ int cScene::NextLevel()
 	return level++;
 }
 
+int cScene::ResetLevel()
+{
+	level = 1;
+	return level;
+}
+
 bool cScene::LoadLevel(int levelLoad, int sublevel)
 {
 
@@ -50,35 +56,44 @@ bool cScene::LoadLevel(int levelLoad, int sublevel)
 	glNewList(id_DL, GL_COMPILE);
 	glBegin(GL_QUADS);
 	char s[256];
-	for (j = SCENE_HEIGHT - 1; j >= 0; j--)
+	int sceneH, sceneW;
+	if (level == 3) {
+		sceneH = SCENE_HEIGHT_VS;
+		sceneW = SCENE_WIDTH_VS;
+	}
+	else {
+		sceneH = SCENE_HEIGHT;
+		sceneW = SCENE_WIDTH;
+	}
+	for (j = sceneH - 1; j >= 0; j--)
 	{
 		px = SCENE_Xo;
 		py = SCENE_Yo + (j*TILE_SIZE);
 
-		for (i = 0; i<SCENE_WIDTH; i++)
+		for (i = 0; i<sceneW; i++)
 		{
 			fscanf(fd, "%d", &tile);
 			if (tile != 0) {
 				tile -= 1;
-				map[(j*SCENE_WIDTH) + i] = tile;
+				map[(j*sceneW) + i] = tile;
 				if (level == 1) {
-					if (tile == 29) collisionMap[(j*SCENE_WIDTH) + i] = 2;
-					else if (tile < 60) collisionMap[(j*SCENE_WIDTH) + i] = 0;
-					else collisionMap[(j*SCENE_WIDTH) + i] = 1;
+					if (tile == 29) collisionMap[(j*sceneW) + i] = 2;
+					else if (tile < 60) collisionMap[(j*sceneW) + i] = 0;
+					else collisionMap[(j*sceneW) + i] = 1;
 				}
 				else if (level == 2) {
 					if (tile == 11 || tile == 21 || tile == 16 || tile == 26 || tile == 18 || tile == 19 || tile == 28 || tile == 29 || tile == 39 || tile == 65) 
-					collisionMap2[(j*SCENE_WIDTH) + i] = 0;
-					else collisionMap2[(j*SCENE_WIDTH) + i] = 1;
+						collisionMap2[(j*sceneW) + i] = 0;
+					else collisionMap2[(j*sceneW) + i] = 1;
 				}
 				else if (level == 3) {
 					if (tile == 11 || tile == 21 || tile == 16 || tile == 26 || tile == 18 || tile == 19 || tile == 28 || tile == 29 || tile == 39 || tile == 65)
-						collisionMap3[(j*SCENE_WIDTH) + i] = 0;
-					else collisionMap3[(j*SCENE_WIDTH) + i] = 1;
+						collisionMap3[(j*sceneW) + i] = 0;
+					else collisionMap3[(j*sceneW) + i] = 1;
 				}
 
-				coordx_tile = (map[(j*SCENE_WIDTH) + i]) % 10;
-				coordy_tile = (map[(j*SCENE_WIDTH) + i]) / 10;
+				coordx_tile = (map[(j*sceneW) + i]) % 10;
+				coordy_tile = (map[(j*sceneW) + i]) / 10;
 
 				float size_g = 1.0f / 10.0f;
 
@@ -126,5 +141,6 @@ int* cScene::GetMap()
 int* cScene::GetCollisionMap()
 {
 	if (level == 1) return collisionMap;
-	else return collisionMap2;
+	else if (level == 2) return collisionMap2;
+	else return collisionMap3;
 }

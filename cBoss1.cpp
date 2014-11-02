@@ -20,12 +20,12 @@ void cBoss1::Start(){
 	start = true;
 }
 
-bool cBoss1::Logic(int *map, cRect *playerShot)
+bool cBoss1::Logic(int *map, cRect *playerShot, int level)
 {
 	boolean result = false;
 	if (IsAlive() && start) {
 		if (first) {
-			Jump(map);
+			Jump(map, level);
 			first = false;
 		}
 		else {
@@ -40,24 +40,24 @@ bool cBoss1::Logic(int *map, cRect *playerShot)
 				result = true;
 			}
 			if (IsShooting()) {
-				ShotLogic(BURSTMAN);
+				ShotLogic(BURSTMAN,map);
 			}
 			if (IsJumping()) {
 				if (GetState() >= STATE_LOOKLEFT && GetState() <= STATE_SHOOTLEFT) {
-					MoveLeft(map, true);
+					MoveLeft(map, true, level);
 				}
 				else {
-					MoveRight(map, true);
+					MoveRight(map, true, level);
 				}
-				JumpLogic(map, true);
+				JumpLogic(map, true, level);
 			}
-			else if (!CollidesMapFloor(map, false)) {
+			else if (!CollidesMapFloor(map, false, level)) {
 				FallingLogic(map);
 			}
 			else {
 				++shootingTime;
 				if (shootingTime >= JUMP_TIME) {
-					Jump(map);
+					Jump(map, level);
 					shootingTime = 0;
 				}
 				else if (shootingTime >= SHOT_TIME) {

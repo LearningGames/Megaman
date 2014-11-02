@@ -9,7 +9,7 @@ cEnemy::cEnemy(void)
 
 cEnemy::~cEnemy(void){}
 
-bool cEnemy::Logic(int *map, cRect *playerShot)
+bool cEnemy::Logic(int *map, cRect *playerShot, int level)
 {
 	boolean result = false;
 	if (IsAlive() && GetState() != STATE_DIE) {
@@ -17,7 +17,7 @@ bool cEnemy::Logic(int *map, cRect *playerShot)
 			Die();
 			result = true;
 		}
-		else if (!CollidesMapFloor(map,true)) {
+		else if (!CollidesMapFloor(map,true,level)) {
 			if (GetState() == STATE_WALKLEFT) MoveRight(map);
 			else if (GetState() == STATE_WALKRIGHT) MoveLeft(map);
 		}

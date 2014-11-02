@@ -20,22 +20,22 @@ void cBoss2::Start() {
 	start = true;
 }
 
-bool cBoss2::Logic(int *map, cRect *playerShot)
+bool cBoss2::Logic(int *map, cRect *playerShot, int level)
 {
 	boolean result = false;
 	if (start) {
 		if (IsAlive()) {
 			if (first) {
-				Jump(map);
+				Jump(map, level);
 				first = false;
 			}
-			if (IsJumping()) JumpLogic(map, false);
-			else if (CollidesMapFloor(map, false) && CollidesMapWall(map, IsLookingRight())) {
+			if (IsJumping()) JumpLogic(map, false, level);
+			else if (CollidesMapFloor(map, false, level) && CollidesMapWall(map, IsLookingRight(),level)) {
 				if (IsLookingRight()) {
-					MoveLeft(map, true);
+					MoveLeft(map, true, level);
 				}
-				else MoveRight(map, true);
-				Jump(map);
+				else MoveRight(map, true, level);
+				Jump(map, level);
 			}
 			else if (Collides(playerShot)){
 				live++;
@@ -47,9 +47,9 @@ bool cBoss2::Logic(int *map, cRect *playerShot)
 				}
 				result = true;
 			}
-			else if (CollidesMapFloor(map, false)) {
-				if (IsLookingRight()) MoveRight(map, true);
-				else MoveLeft(map, true);
+			else if (CollidesMapFloor(map, false, level)) {
+				if (IsLookingRight()) MoveRight(map, true, level);
+				else MoveLeft(map, true, level);
 			}
 			else FallingLogic(map);
 		}

@@ -22,7 +22,7 @@ public:
 	void Stop();
 	/*void Logic(int *map);*/
 
-	bool Logic(int *map, cRect *playerShot);
+	bool Logic(int *map, cRect *playerShot, int level);
 	void Die();
 
 	bool IsHited(int xRival, int yRival);

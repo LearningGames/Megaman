@@ -9,6 +9,8 @@ using namespace irrklang;
 #define SCENE_Yo		TILE_SIZE
 #define SCENE_WIDTH		199
 #define SCENE_HEIGHT	15
+#define SCENE_WIDTH_VS	25
+#define SCENE_HEIGHT_VS	15
 
 #define FILENAME		"MAPA0"
 #define FILENAME_EXT	".txt"
@@ -27,13 +29,14 @@ public:
 	int *GetMap();
 	int *GetCollisionMap();
 	int GetCurrentLevel();
+	int ResetLevel();
 	int NextLevel();
 
 private:
 	int map[SCENE_WIDTH * SCENE_HEIGHT];	//scene
 	int collisionMap[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
 	int collisionMap2[SCENE_WIDTH * SCENE_HEIGHT];  //collision scene
-	int collisionMap3[SCENE_WIDTH * SCENE_HEIGHT];
+	int collisionMap3[SCENE_WIDTH_VS * SCENE_HEIGHT_VS];
 	int id_DL;								//actual level display list
 	int level;
 	ISoundEngine* engine;

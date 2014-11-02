@@ -32,6 +32,7 @@ public:
 	void InitEnemies(int level);
 	void InitEnemies2(int level);
 	void InitBoss(int level);
+	void InitPlayer2();
 	bool Loop();
 	void Finalize();
 	void Reset(int level);
@@ -40,6 +41,9 @@ public:
 	void ReadMouse(int button, int state, int x, int y);
 	//Process
 	bool Process();
+	void LogicLevel1();
+	void LogicLevel2();
+	void LogicVersusMode();
 	//Output
 	void Render();
 	void drawImage(int i);
@@ -52,6 +56,7 @@ private:
 	int deadBosstime;
 	cScene Scene;
 	cPlayer Player;
+	cPlayer Player2;
 	cData Data;
 	cEnemy EnemiesLevel1[ENEMIES_11];
 	cEnemy2 Enemies2Level1[ENEMIES_21];
