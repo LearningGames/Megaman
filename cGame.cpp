@@ -340,6 +340,7 @@ bool cGame::Process()
 			if (level == 1) LogicLevel1();
 			else if (level == 2) LogicLevel2();
 			else LogicVersusMode();
+			if (Player.IsShooting() && Player.ShotCollidesWall(Scene.GetCollisionMap(), Player.IsLookingRight(),Scene.GetCurrentLevel())) Player.EraseShot();
 			Player.Logic(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
 		}
 	}//END SCREEN_GAME
@@ -446,6 +447,7 @@ void cGame::LogicVersusMode() {
 		Player2.Ostion(Scene.GetCollisionMap());
 		Player.EraseShot();
 	}
+	if (Player2.IsShooting() && Player2.ShotCollidesWall(Scene.GetCollisionMap(), Player2.IsLookingRight(),3)) Player2.EraseShot();
 	Player2.Logic(Scene.GetCollisionMap(), Scene.GetCurrentLevel());
 }
 
