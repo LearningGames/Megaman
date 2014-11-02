@@ -1,7 +1,11 @@
 
 #include "cPlayer.h"
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 
 cPlayer::cPlayer() {
+	engine = createIrrKlangDevice();
 }
 cPlayer::~cPlayer(){}
 

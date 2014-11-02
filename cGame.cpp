@@ -64,6 +64,7 @@ bool cGame::Init()
 	Player.SetLiveBar(80, 16);
 	res = Data.LoadImage(IMG_GUI_BURST, "vidaBurst.png", GL_RGBA);
 	Player.SetLiveBar(80, 16);
+	Player.isPlayer = true;
 
 	//Monster initialization
 	res = Data.LoadImage(IMG_MONSTER, "megaman.png", GL_RGBA);
@@ -77,7 +78,7 @@ bool cGame::Init()
 
 	//Init Player
 	Player.SetWidthHeight(35, 35);
-	Player.SetTile(189, 4);
+	Player.SetTile(3, 4);
 	Player.SetWidthHeight(35, 35);
 	Player.SetState(STATE_LOOKRIGHT);
 	Player.SetShotDimensions(20, 26);
@@ -228,8 +229,10 @@ bool cGame::Process()
 
 	else if (state == SCREEN_GAME){ //START SCREEN_MENU
 		if (!gaming){
-			engine->play2D("music1.wav", true);
+			if(Scene.GetCurrentLevel()==1)engine->play2D("music1.wav", true);
+			else engine->play2D("music2.wav");
 			gaming = true;
+			Reset(Scene.GetCurrentLevel() );
 		}
 		if (keys[27]){
 			state = SCREEN_MENU;
@@ -240,7 +243,9 @@ bool cGame::Process()
 		else if (keys[GLUT_KEY_RIGHT] && (!Player.IsOstioning()))	Player.MoveRight(Scene.GetCollisionMap(), false);
 		else Player.Stop();
 
-		if (keys[' ']) Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
+		if (keys[' ']){
+			Player.Shot(Scene.GetMap(), (Player.GetState() == STATE_LOOKRIGHT || Player.GetState() == STATE_WALKRIGHT || Player.GetState() == STATE_JUMP_UP_RIGHT || Player.GetState() == STATE_FALLING_RIGHT));
+		}
 
 		if (keys['a']) {
 			

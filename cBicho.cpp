@@ -3,6 +3,9 @@
 #include "Globals.h"
 #include <stdio.h>
 #include <Windows.h>
+#include <irrKlang.h>
+using namespace irrklang;
+#pragma comment(lib, "irrKlang.lib")
 using namespace std;
 
 cBicho::cBicho(void)
@@ -17,6 +20,8 @@ cBicho::cBicho(void)
 	isAlive = true;
 	deadTime = 0;
 	isBoss = false;
+	engine = createIrrKlangDevice();
+	isPlayer = false;
 }
 
 cBicho::~cBicho(void){}
@@ -477,6 +482,7 @@ void cBicho::Hited()
 void cBicho::Shot(int *map, bool isRight)
 {
 	if (!shooting) {
+		if (isPlayer)engine->play2D("megamanshoot.wav");
 		if (isRight) isRightShot = true;
 		else isRightShot = false;
 		shooting = true;

@@ -122,7 +122,7 @@ public:
 	int live;
 	bool ShotCollidesWall(int *map);
 	bool isBoss;
-	
+	bool isPlayer;
 private:
 	int x,y;
 	int w,h;
@@ -142,9 +142,11 @@ private:
 	int wShot, hShot;		//Shot size
 	int shotProgress;		//Shot Progres
 	bool isRightShot;
+	
 
 	bool shooting;			//Get if the bicho is shooting or not
 	int wLive, hLive;
 
-	int seq,delay;
+	int seq, delay;
+	ISoundEngine* engine;
 };
